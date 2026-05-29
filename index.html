@@ -3,119 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرض العقارات الاحترافي</title>
+    <title>منصة عقاراتي PREMIUM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* تنسيقات مرنة وحديثة متوافقة مع جميع الشاشات */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f6f9;
+            background-color: #0b1329;
+            color: #f8fafc;
+            font-family: system-ui, -apple-system, sans-serif;
             margin: 0;
-            padding: 20px;
-            color: #333;
+            padding: 0;
+            box-sizing: border-box;
         }
-        h1 {
+        nav {
+            background: #1c2541;
+            padding: 18px;
+            border-bottom: 1px solid #2a375e;
             text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-            font-size: 2rem;
         }
-        
-        /* شبكة عرض مرنة: تتشكل وتترتب تلقائياً حسب حجم الشاشة */
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: #f8fafc;
+            letter-spacing: 1px;
+        }
+        .logo span {
+            color: #f59e0b;
+            margin-right: 5px;
+        }
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .hero h1 {
+            color: #f59e0b;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            color: #94a3b8;
+            font-size: 14px;
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+        }
         .properties-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px 40px 20px;
         }
-        
-        /* كرت العقار: أصبح رابطاً بالكامل ليفتح التفاصيل عند الضغط عليه */
         .property-card {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: #1c2541;
+            border-radius: 16px;
+            border: 1px solid #2e3c63;
             overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
             text-decoration: none;
             color: inherit;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         .property-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.1);
+        }
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 220px;
         }
         .property-img {
             width: 100%;
-            height: 220px;
+            height: 100%;
             object-fit: cover;
-            background-color: #ddd;
+        }
+        .local-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #10b981;
+            color: #0b1329;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
         }
         .property-details {
-            padding: 15px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
-        .property-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 0 0 10px 0;
-        }
         .property-price {
-            color: #e74c3c;
-            font-size: 1.15rem;
-            font-weight: bold;
-            margin-bottom: 12px;
+            color: #f59e0b;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        .property-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 15px 0;
+            color: #f8fafc;
+            line-height: 1.4;
         }
         .property-meta {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
+            border-top: 1px solid rgba(46, 60, 99, 0.6);
+            padding-top: 12px;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
         .loading-text {
             text-align: center;
-            font-size: 1.2rem;
-            color: #7f8c8d;
             grid-column: 1 / -1;
-            padding: 40px;
-        }
-        .nav-buttons {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .add-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #2ecc71;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        .add-btn:hover {
-            background-color: #27ae60;
+            padding: 50px;
+            color: #94a3b8;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
-    <h1>معرض العقارات المتاحة</h1>
-    
-    <div class="nav-buttons">
-        <a href="add.html" class="add-btn">➕ إضافة عقار جديد</a>
+    <nav>
+        <div class="logo">عقاراتي <span>PREMIUM</span></div>
+    </nav>
+
+    <div class="hero">
+        <h1>صالة العروض الحصرية لكبار المستثمرين</h1>
+        <p>مساحة رقمية مخصصة ومحمية تمنحك إمكانية المعاينة الافتراضية وتقديم طلبات الشراء المباشرة لأفخم الأصول العقارية.</p>
     </div>
 
     <div class="properties-container" id="propertiesWrapper">
-        <div class="loading-text">جاري جلب العقارات الحية من السيرفر السحابي...</div>
+        <div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> جاري جلب الأصول العقارية المتاحة...</div>
     </div>
 
     <script>
-        // إعدادات الاتصال بالسيرفر
         const SUPABASE_URL = "https://plfibajexgugqhunmepv.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmliYWpleGd1Z3FodW5tZXB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Mjk0MTcsImV4cCI6MjA2NDAwNTQxN30.0b_XbQhVz8v0w7XhWhS8xJ4367bB_m7G8P6N2C1mZ20"; 
 
@@ -123,8 +153,8 @@
             const wrapper = document.getElementById('propertiesWrapper');
             let properties = [];
 
+            // 1. محاولة جلب البيانات من السيرفر السحابي
             try {
-                // محاولة جلب البيانات من السيرفر أولاً
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/properties`, {
                     method: 'GET',
                     headers: {
@@ -133,68 +163,57 @@
                         'Content-Type': 'application/json'
                     }
                 });
-                
                 if (response.ok) {
                     properties = await response.json();
                 }
             } catch (error) {
-                console.log("السيرفر غير متاح حالياً، سيتم الاعتماد على الذاكرة المحلية فقط.");
+                console.log("تعذر الاتصال بالسيرفر، سيتم الاعتماد على العرض الاحتياطي.");
             }
 
-            // تصفير الحاوية لبدء بناء العروض
-            wrapper.innerHTML = ''; 
+            wrapper.innerHTML = '';
 
-            // --- 💡 هندسة الدمج الذكي لعقار عمار الجديد من الذاكرة المحلية 💡 ---
-            const savedProperty = localStorage.getItem('new_client_property');
-            if (savedProperty) {
+            // 2. هندسة الدمج الذكي لتخطي حجب السيرفر أو مشاكل الـ VPN
+            const localSaved = localStorage.getItem('backup_property_data');
+            if (localSaved) {
                 try {
-                    const localData = JSON.parse(savedProperty);
-                    
-                    // تحويل وتجهيز البيانات لتتطابق تماماً مع تركيبة جداول الموقع الأصلي
-                    const localItem = {
-                        id: 'local_' + Date.now(),
-                        title: localData.title || 'عقار جديد مضاف',
-                        price: (localData.price || '0').replace(/[^0-9]/g, ''), // تنظيف السعر ليكون رقماً نقياً
-                        location: localData.location || 'غير محدد',
-                        area: localData.area || '--',
-                        rooms: localData.details || '--',
-                        main_img: localData.image || 'villa.jpg'
-                    };
-                    
-                    // حقن العقار الجديد في أول المصفوفة (الأولوية القصوى للعرض في البداية)
-                    properties.unshift(localItem);
+                    const localItems = JSON.parse(localSaved);
+                    // حقن العقارات المحلية في بداية المصفوفة لتظهر أولاً وبشكل فوري
+                    if (Array.isArray(localItems)) {
+                        properties = [...localItems, ...properties];
+                    } else {
+                        properties.unshift(localItems);
+                    }
                 } catch (e) {
-                    console.error("خطأ في قراءة بيانات العقار المحلي:", e);
+                    console.error(e);
                 }
             }
 
-            // إذا كانت المصفوفة فارغة تماماً ولم يجد أي عقار
             if (properties.length === 0) {
-                wrapper.innerHTML = '<div class="loading-text">لا توجد عقارات مضافة حالياً. اذهب للوحة التحكم وأضف أول عقار!</div>';
+                wrapper.innerHTML = '<div class="loading-text">لا توجد عقارات معروضة حالياً. أضف عقاراً من لوحة التحكم.</div>';
                 return;
             }
-            
-            // حلقة بناء الكروت وعرضها على الشاشة
+
+            // 3. بناء واجهة العرض الاحترافية المتطابقة مع هويتك البصرية
             properties.forEach(item => {
                 const card = document.createElement('a');
-                // إذا كان العقار محلياً يربطه بصفحة وهمية أو تفاصيل، وإذا كان من السيرفر يوجهه لصفحته المعتادة
-                card.href = item.id.toString().startsWith('local_') ? '#' : `details.html?id=${item.id}`; 
                 card.className = 'property-card';
-                
-                // تنسيق وعرض السعر بالعملة المعتمدة في كودك الأصلي
-                const formattedPrice = Number(item.price).toLocaleString();
+                card.href = item.id.toString().startsWith('offline_') ? '#' : `details.html?id=${item.id}`;
+
+                const imgUrl = item.main_img && item.main_img.startsWith('http') ? item.main_img : 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80';
+                const isOffline = item.id.toString().startsWith('offline_');
 
                 card.innerHTML = `
-                    <img src="${item.main_img}" class="property-img" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'" alt="${item.title}">
+                    <div class="image-wrapper">
+                        <img src="${imgUrl}" class="property-img" alt="${item.title}">
+                        ${isOffline ? '<span class="local-badge"><i class="fa-solid fa-bolt"></i> مضاف حديثاً</span>' : ''}
+                    </div>
                     <div class="property-details">
+                        <div class="property-price">$${Number(item.price).toLocaleString()}</div>
                         <h3 class="property-title">${item.title}</h3>
-                        <div class="property-price">${formattedPrice} ل.س</div>
                         <div class="property-meta">
-                            <span>📍 ${item.location}</span>
-                            <span>📐 ${item.area} م²</span>
-                        </div>
-                        <div class="property-meta">
-                            <span>🚪 ${item.rooms}</span>
+                            <span class="meta-item"><i class="fa-solid fa-location-dot" style="color:#f59e0b;"></i> ${item.location}</span>
+                            <span class="meta-item"><i class="fa-solid fa-ruler-combined"></i> ${item.area} م²</span>
+                            <span class="meta-item"><i class="fa-solid fa-bed"></i> ${item.rooms}</span>
                         </div>
                     </div>
                 `;
@@ -202,7 +221,6 @@
             });
         }
 
-        // تشغيل الدالة تلقائياً بمجرد تحميل الصفحة
         document.addEventListener('DOMContentLoaded', fetchProperties);
     </script>
 </body>
