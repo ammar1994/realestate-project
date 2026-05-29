@@ -41,31 +41,31 @@
             <form id="property-form">
                 <div class="form-group">
                     <label>عنوان العقار:</label>
-                    <input type="text" id="title" placeholder="مثال: فيلا ملكية فاخرة" required>
+                    <input type="text" id="title" placeholder="مثال: قصر ملكي" required>
                 </div>
                 <div class="form-group">
                     <label>السعر (بالدولار $):</label>
-                    <input type="number" id="price" placeholder="مثال: 500000" required>
+                    <input type="number" id="price" placeholder="مثال: 35000" required>
                 </div>
                 <div class="form-group">
                     <label>الموقع / المدينة:</label>
-                    <input type="text" id="location" placeholder="مثال: دبي - نخلة جميرا" required>
+                    <input type="text" id="location" placeholder="مثال: دمشق" required>
                 </div>
                 <div class="form-group">
                     <label>المساحة (متر مربع):</label>
-                    <input type="number" id="area" placeholder="مثال: 250" required>
+                    <input type="number" id="area" placeholder="مثال: 150" required>
                 </div>
                 <div class="form-group">
                     <label>عدد الغرف والتفاصيل:</label>
-                    <input type="text" id="details" placeholder="مثال: 5 غرف - 4 حمامات" required>
+                    <input type="text" id="details" placeholder="مثال: 5 غرف" required>
                 </div>
                 <div class="form-group">
                     <label>رابط الصورة الرئيسية للعقار:</label>
-                    <input type="url" id="image" placeholder="https://example.com/image.jpg">
+                    <input type="url" id="image" placeholder="ضع رابط الصورة هنا">
                 </div>
 
                 <button type="submit" class="submit-btn">حفظ العقار ونشره فوراً</button>
-                <div class="success-msg" id="success-box">✨ تم النشر والربط التلقائي! جاري الانتقال للوحة التحكم...</div>
+                <div class="success-msg" id="success-box">✨ تم المزامنة والنشر الحي! جاري الانتقال للوحة التحكم...</div>
             </form>
         </div>
     </div>
@@ -76,9 +76,8 @@
             
             var priceInput = document.getElementById('price').value;
             
-            // تجميع بيانات العقار بالكامل في كائن واحد مخصص
             var newProperty = {
-                id: 'prop_' + Date.now(), // معرف فريد لكل عقار لتمكين حذفه لاحقاً
+                id: 'prop_' + Date.now(),
                 title: document.getElementById('title').value,
                 price: parseFloat(priceInput),
                 location: document.getElementById('location').value,
@@ -87,24 +86,17 @@
                 main_img: document.getElementById('image').value || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
             };
             
-            // جلب المصفوفة الحالية من الذاكرة أو إنشائها إن لم تكن موجودة
             var currentProperties = localStorage.getItem('global_properties_list');
             var propertiesArray = currentProperties ? JSON.parse(currentProperties) : [];
             
-            // إضافة العقار الجديد في مقدمة القائمة
             propertiesArray.unshift(newProperty);
-            
-            // حفظ المصفوفة المحدثة بالكامل بالذاكرة
             localStorage.setItem('global_properties_list', JSON.stringify(propertiesArray));
-            
-            // حفظ قيمة السعر الأخير لتغذية العدادات التفاعلية والرسوم البيانية في لوحة التحكم
-            localStorage.setItem('last_added_price', priceInput);
             
             document.getElementById('success-box').style.display = 'block';
             
             setTimeout(function() {
                 window.location.href = 'dashboard.html';
-            }, 1200);
+            }, 1000);
         });
     </script>
 </body>
