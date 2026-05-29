@@ -169,14 +169,23 @@
                     
                     const pType = item.property_type || "شقة";
                     const pDesc = item.description || "لا يوجد وصف إضافي متوفر.";
-                    const mainImage = item.main_img || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80';
                     
-                    // إعداد الواتساب بـ السلام عليكم متبوعة بتفاصيل العقار المطلوبة
+                    // استخراج أول صورة من المصفوفة المرفوعة إن وجدت، وإلا نستخدم صورة افتراضية
+                    let mainImage = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80';
+                    if (item.media_list && item.media_list.length > 0) {
+                        const firstMedia = item.media_list[0];
+                        if (firstMedia.type === 'image') {
+                            mainImage = firstMedia.data;
+                        }
+                    } else if (item.main_img) {
+                        mainImage = item.main_img;
+                    }
+                    
+                    // الترحيب التلقائي في الواتساب فقط
                     const messageText = encodeURIComponent(`السلام عليكم، أريد الاستفسار عن عقار: (${item.title}) المعروض بسعر (${Number(item.price).toLocaleString()} ريال). هل هو متاح؟`);
                     const whatsappUrl = `https://wa.me/${item.phone || '966500000000'}?text=${messageText}`;
                     
-                    // رابط الخريطة من الإحداثيات المسجلة
-                    const mapUrl = (item.lat && item.lng) ? `http://maps.google.com/?q=${item.lat},${item.lng}` : '#';
+                    const mapUrl = (item.lat && item.lng) ? `https://maps.google.com/?q=${item.lat},${item.lng}` : '#';
 
                     card.innerHTML = `
                         <span class="type-badge">${pType}</span>
