@@ -37,7 +37,7 @@
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-building"></i> لوحة التحكم الفاخرة <span>PREMIUM</span></div>
+        <div class="logo"><i class="fa-solid fa-building"></i> لوحة التحكم <span>PREMIUM</span></div>
     </nav>
 
     <div class="content">
@@ -104,7 +104,6 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // إعداد الخريطة الافتراضية متمركزة فوق الرياض كخيار أساسي للطابع السعودي
         var map = L.map('map').setView([24.7136, 46.6753], 11);
         
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -114,21 +113,18 @@
 
         var marker = L.marker([24.7136, 46.6753], {draggable: true}).addTo(map);
 
-        // تحديث الحقول عند تحريك الدبوس باليد
         marker.on('dragend', function(e) {
             var position = marker.getLatLng();
             document.getElementById('lat').value = position.lat;
             document.getElementById('lng').value = position.lng;
         });
 
-        // وضع دبوس عند الضغط في أي مكان على الخريطة
         map.on('click', function(e) {
             marker.setLatLng(e.latlng);
             document.getElementById('lat').value = e.latlng.lat;
             document.getElementById('lng').value = e.latlng.lng;
         });
 
-        // دالة التقاط موقع المستخدم الفعلي عبر GPS الجوال
         function locateMe() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
@@ -146,7 +142,6 @@
             }
         }
 
-        // محرك رفع وضغط الصور ومقاطع الفيديو المتعددة لحماية مساحة التخزين وسرعة الموقع
         let loadedMediaArray = [];
         document.getElementById('mediaFiles').addEventListener('change', function(e) {
             const files = Array.from(e.target.files);
@@ -164,7 +159,6 @@
                 reader.readAsDataURL(file);
                 reader.onload = function(event) {
                     if (file.type.startsWith('image/')) {
-                        // محرك ضغط الصور الذكي لتصغير الحجم تلقائياً
                         const img = new Image();
                         img.src = event.target.result;
                         img.onload = function() {
@@ -202,7 +196,6 @@
             setTimeout(() => { document.getElementById('upload-status').innerText = "✨ تم إضافة الميديا بنجاح!"; }, 1200);
         });
 
-        // حفظ البيانات في خزنة التخزين المحلي الآمنة للعمل دون مشاكل اتصال
         document.getElementById('saudi-property-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
