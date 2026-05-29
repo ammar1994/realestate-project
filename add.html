@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>إضافة عقار جديد</title>
+    <title>إضافة عقار جديد - نظام الضغط الذكي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,7 +20,15 @@
         label { display: block; font-size: 12px; color: #cbd5e1; margin-bottom: 6px; font-weight: bold; }
         input { width: 100%; padding: 12px; background: #0b1329; border: 1px solid #2e3c63; border-radius: 8px; color: white; box-sizing: border-box; font-size: 14px; }
         input:focus { border-color: #10b981; outline: none; }
-        .submit-btn { width: 100%; padding: 14px; background: #10b981; border: none; border-radius: 8px; color: #0b1329; font-size: 14px; font-weight: 900; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        
+        /* تصميم مخصص واحترافي لزر رفع الصور */
+        .file-dropzone { border: 2px dashed #3a4b7c; padding: 15px; border-radius: 8px; text-align: center; background: #0b1329; cursor: pointer; transition: 0.2s; }
+        .file-dropzone:hover { border-color: #10b981; }
+        .file-dropzone i { font-size: 24px; color: #10b981; margin-bottom: 6px; }
+        .file-dropzone p { margin: 0; font-size: 11px; color: #94a3b8; }
+        .preview-box { display: none; width: 100%; height: 120px; object-fit: cover; border-radius: 6px; margin-top: 10px; border: 1px solid #10b981; }
+        
+        .submit-btn { width: 100%; padding: 14px; background: #10b981; border: none; border-radius: 8px; color: #0b1329; font-size: 14px; font-weight: 900; cursor: pointer; margin-top: 15px; transition: 0.2s; }
         .submit-btn:hover { background: #059669; }
         .success-msg { display: none; color: #10b981; font-size: 12px; font-weight: bold; margin-top: 10px; text-align: center; }
     </style>
@@ -28,7 +36,7 @@
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-circle-plus"></i> إدارة المحتوى <span>العقاري المستقل</span></div>
+        <div class="logo"><i class="fa-solid fa-circle-plus"></i> إدارة المحتوى <span>المستقل المحسن</span></div>
     </nav>
 
     <div class="content">
@@ -41,36 +49,86 @@
             <form id="property-form">
                 <div class="form-group">
                     <label>عنوان العقار:</label>
-                    <input type="text" id="title" placeholder="مثال: قصر ملكي" required>
+                    <input type="text" id="title" placeholder="مثال: فيلا ملكية مودرن" required>
                 </div>
                 <div class="form-group">
                     <label>السعر (بالدولار $):</label>
-                    <input type="number" id="price" placeholder="مثال: 35000" required>
+                    <input type="number" id="price" placeholder="مثال: 450000" required>
                 </div>
                 <div class="form-group">
                     <label>الموقع / المدينة:</label>
-                    <input type="text" id="location" placeholder="مثال: دمشق" required>
+                    <input type="text" id="location" placeholder="مثال: حلب - الشهباء" required>
                 </div>
                 <div class="form-group">
                     <label>المساحة (متر مربع):</label>
-                    <input type="number" id="area" placeholder="مثال: 150" required>
+                    <input type="number" id="area" placeholder="مثال: 200" required>
                 </div>
                 <div class="form-group">
                     <label>عدد الغرف والتفاصيل:</label>
-                    <input type="text" id="details" placeholder="مثال: 5 غرف" required>
+                    <input type="text" id="details" placeholder="مثال: 4 غرف وصالون" required>
                 </div>
+                
                 <div class="form-group">
-                    <label>رابط الصورة الرئيسية للعقار:</label>
-                    <input type="url" id="image" placeholder="ضع رابط الصورة هنا">
+                    <label>صورة العقار (الرفع المباشر السريع من الجوال):</label>
+                    <div class="file-dropzone" onclick="document.getElementById('imageFile').click()">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p id="upload-status">اضغط هنا لاختيار صورة من استوديو الجوال</p>
+                        <input type="file" id="imageFile" accept="image/*" style="display: none;">
+                    </div>
+                    <img id="imagePreview" class="preview-box">
                 </div>
 
-                <button type="submit" class="submit-btn">حفظ العقار ونشره فوراً</button>
-                <div class="success-msg" id="success-box">✨ تم المزامنة والنشر الحي! جاري الانتقال للوحة التحكم...</div>
+                <button type="submit" class="submit-btn">معالجة وحفظ العقار فوراً</button>
+                <div class="success-msg" id="success-box">✨ تم ضغط الصورة وحفظ المعطيات حياً! جاري التوجيه...</div>
             </form>
         </div>
     </div>
 
     <script>
+        let compressedImageBase64 = "";
+
+        // محرك القراءة والضغط الفوري لمنع بطء الموقع
+        document.getElementById('imageFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            document.getElementById('upload-status').innerText = "جاري معالجة وضغط الصورة...";
+            
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function() {
+                    // إعداد أبعاد مرنة ومثالية للعرض السريع
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800; 
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // تحويل الصورة لنص مضغوط جداً بجودة 70% لمنع استهلاك الذاكرة والبطء
+                    compressedImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    
+                    // إظهار المعاينة الفورية للعميل
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = compressedImageBase64;
+                    preview.style.display = 'block';
+                    document.getElementById('upload-status').innerText = "✨ تم معالجة الصورة بنجاح وتجهيزها للحفظ الفوري!";
+                }
+            }
+        });
+
         document.getElementById('property-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -83,7 +141,8 @@
                 location: document.getElementById('location').value,
                 area: document.getElementById('area').value,
                 rooms: document.getElementById('details').value,
-                main_img: document.getElementById('image').value || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
+                // إذا لم يختر العميل صورة نضع له صورة الأيقونة الفاخرة الافتراضية
+                main_img: compressedImageBase64 || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
             };
             
             var currentProperties = localStorage.getItem('global_properties_list');
