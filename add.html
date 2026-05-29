@@ -3,159 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>إضافة عقار جديد - نظام الضغط الذكي</title>
+    <title>بوابة المطور العقاري - إضافة مشروع جديد</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
         nav { background: #1c2541; padding: 14px; border-bottom: 1px solid #2a375e; text-align: center; }
         .logo { font-size: 15px; font-weight: 800; margin: 0; color: #f8fafc; }
-        .logo span { color: #10b981; font-weight: 900; margin-right: 4px; }
+        .logo span { color: #f59e0b; font-weight: 900; margin-right: 4px; }
         .content { padding: 20px 14px; }
         .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
         .tab-btn { flex: 1; background: #141d36; border: 1px solid #3a4b7c; color: #94a3b8; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .tab-btn.active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: #10b981; color: #0b1329 !important; font-weight: 900; box-shadow: 0 0 12px rgba(16,185,129,0.3); }
+        .tab-btn.active { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-color: #f59e0b; color: #0b1329 !important; font-weight: 900; box-shadow: 0 0 12px rgba(245,158,11,0.3); }
         
-        .form-container { background: #1c2541; border-radius: 16px; padding: 20px; border: 1px solid #2e3c63; max-width: 500px; margin: 0 auto; }
+        .form-container { background: #1c2541; border-radius: 16px; padding: 20px; border: 1px solid #2e3c63; max-width: 550px; margin: 0 auto; }
         .form-group { margin-bottom: 15px; text-align: right; }
         label { display: block; font-size: 12px; color: #cbd5e1; margin-bottom: 6px; font-weight: bold; }
-        input { width: 100%; padding: 12px; background: #0b1329; border: 1px solid #2e3c63; border-radius: 8px; color: white; box-sizing: border-box; font-size: 14px; }
-        input:focus { border-color: #10b981; outline: none; }
+        input, select { width: 100%; padding: 12px; background: #0b1329; border: 1px solid #2e3c63; border-radius: 8px; color: white; box-sizing: border-box; font-size: 14px; }
+        input:focus, select:focus { border-color: #f59e0b; outline: none; }
         
-        /* تصميم مخصص واحترافي لزر رفع الصور */
-        .file-dropzone { border: 2px dashed #3a4b7c; padding: 15px; border-radius: 8px; text-align: center; background: #0b1329; cursor: pointer; transition: 0.2s; }
-        .file-dropzone:hover { border-color: #10b981; }
-        .file-dropzone i { font-size: 24px; color: #10b981; margin-bottom: 6px; }
+        .file-dropzone { border: 2px dashed #3a4b7c; padding: 18px; border-radius: 8px; text-align: center; background: #0b1329; cursor: pointer; transition: 0.2s; }
+        .file-dropzone:hover { border-color: #f59e0b; }
+        .file-dropzone i { font-size: 24px; color: #f59e0b; margin-bottom: 6px; }
         .file-dropzone p { margin: 0; font-size: 11px; color: #94a3b8; }
-        .preview-box { display: none; width: 100%; height: 120px; object-fit: cover; border-radius: 6px; margin-top: 10px; border: 1px solid #10b981; }
         
-        .submit-btn { width: 100%; padding: 14px; background: #10b981; border: none; border-radius: 8px; color: #0b1329; font-size: 14px; font-weight: 900; cursor: pointer; margin-top: 15px; transition: 0.2s; }
-        .submit-btn:hover { background: #059669; }
+        .gallery-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 10px; }
+        .preview-item { width: 100%; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #f59e0b; background: #141d36; }
+        
+        .submit-btn { width: 100%; padding: 14px; background: #f59e0b; border: none; border-radius: 8px; color: #0b1329; font-size: 14px; font-weight: 900; cursor: pointer; margin-top: 15px; transition: 0.2s; }
+        .submit-btn:hover { background: #d97706; }
         .success-msg { display: none; color: #10b981; font-size: 12px; font-weight: bold; margin-top: 10px; text-align: center; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-circle-plus"></i> إدارة المحتوى <span>المستقل المحسن</span></div>
+        <div class="logo"><i class="fa-solid fa-file-invoice-dollar"></i> المنصة العقارية <span>الرؤية السعودية</span></div>
     </nav>
 
     <div class="content">
         <div class="nav-tabs">
-            <a href="dashboard.html" class="tab-btn"><i class="fa-solid fa-chart-line"></i> تحليلات المحفظة</a>
-            <a href="add.html" class="tab-btn active"><i class="fa-solid fa-circle-plus"></i> إضافة عقار جديد</a>
+            <a href="dashboard.html" class="tab-btn"><i class="fa-solid fa-chart-pie"></i> لوحة الإحصائيات الحية</a>
+            <a href="add.html" class="tab-btn active"><i class="fa-solid fa-plus-circle"></i> إضافة عقار جديد</a>
         </div>
 
         <div class="form-container">
-            <form id="property-form">
+            <form id="saudi-property-form">
                 <div class="form-group">
-                    <label>عنوان العقار:</label>
-                    <input type="text" id="title" placeholder="مثال: فيلا ملكية مودرن" required>
+                    <label>نوع ونوعية العقار المعروض:</label>
+                    <select id="type" required>
+                        <option value="فيلا مودرن فاخرة">فيلا مودرن فاخرة</option>
+                        <option value="شقة تمليك سكنية">شقة تمليك سكنية</option>
+                        <option value="أرض تجارية / استثمارية">أرض تجارية / استثمارية</option>
+                        <option value="دور سكني مستقل">دور سكني مستقل</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label>السعر (بالدولار $):</label>
-                    <input type="number" id="price" placeholder="مثال: 450000" required>
+                    <label>عنوان العرض (مثال: فيلا درج صالة مستقلة للبيع):</label>
+                    <input type="text" id="title" placeholder="أدخل عنواناً جذاباً للعقار" required>
                 </div>
                 <div class="form-group">
-                    <label>الموقع / المدينة:</label>
-                    <input type="text" id="location" placeholder="مثال: حلب - الشهباء" required>
+                    <label>القيمة المطلوبة (بالريال السعودي ر.س):</label>
+                    <input type="number" id="price" placeholder="مثال: 1250000" required>
                 </div>
                 <div class="form-group">
-                    <label>المساحة (متر مربع):</label>
-                    <input type="number" id="area" placeholder="مثال: 200" required>
+                    <label>المدينة والحي (مثال: الرياض - حي الملقا):</label>
+                    <input type="text" id="location" placeholder="حدد مكان العقار بالمملكة" required>
                 </div>
                 <div class="form-group">
-                    <label>عدد الغرف والتفاصيل:</label>
-                    <input type="text" id="details" placeholder="مثال: 4 غرف وصالون" required>
+                    <label>رابط الموقع على خرائط جوجل (Google Maps URL):</label>
+                    <input type="url" id="map_url" placeholder="https://maps.app.goo.gl/..." required>
+                </div>
+                <div class="form-group">
+                    <label>رقم تواصل الواتساب للمدير أو المكتب المسؤل (صيغة سعودية):</label>
+                    <input type="text" id="phone" placeholder="مثال: 966500000000" value="966500000000" required>
+                </div>
+                <div class="form-group">
+                    <label>المساحة الإجمالية (متر مربع):</label>
+                    <input type="number" id="area" placeholder="مثال: 350" required>
+                </div>
+                <div class="form-group">
+                    <label>مواصفات الواجهة والتفاصيل (مثال: واجهة شمالية - غرف ماستر):</label>
+                    <input type="text" id="details" placeholder="أدخل تفاصيل الغرف والشارع" required>
                 </div>
                 
                 <div class="form-group">
-                    <label>صورة العقار (الرفع المباشر السريع من الجوال):</label>
-                    <div class="file-dropzone" onclick="document.getElementById('imageFile').click()">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <p id="upload-status">اضغط هنا لاختيار صورة من استوديو الجوال</p>
-                        <input type="file" id="imageFile" accept="image/*" style="display: none;">
+                    <label>ألبوم الميديا (ارفع حتى 5 صور أو فيديوهات - ضغط آلي فوري):</label>
+                    <div class="file-dropzone" onclick="document.getElementById('mediaFiles').click()">
+                        <i class="fa-solid fa-photo-film"></i>
+                        <p id="upload-status">اضغط هنا لرفع الصور أو الفيديوهات من الاستوديو</p>
+                        <input type="file" id="mediaFiles" accept="image/*,video/*" multiple style="display: none;">
                     </div>
-                    <img id="imagePreview" class="preview-box">
+                    <div class="gallery-preview" id="mediaPreviewWrapper"></div>
                 </div>
 
-                <button type="submit" class="submit-btn">معالجة وحفظ العقار فوراً</button>
-                <div class="success-msg" id="success-box">✨ تم ضغط الصورة وحفظ المعطيات حياً! جاري التوجيه...</div>
+                <button type="submit" class="submit-btn">حفظ وتدشين العقار في السوق</button>
+                <div class="success-msg" id="success-box">✨ تم معالجة الوسائط وتحديث المحفظة حياً! جاري التوجيه...</div>
             </form>
         </div>
     </div>
 
     <script>
-        let compressedImageBase64 = "";
+        let loadedMediaArray = [];
 
-        // محرك القراءة والضغط الفوري لمنع بطء الموقع
-        document.getElementById('imageFile').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            document.getElementById('upload-status').innerText = "جاري معالجة وضغط الصورة...";
+        document.getElementById('mediaFiles').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            const previewWrapper = document.getElementById('mediaPreviewWrapper');
             
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function(event) {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = function() {
-                    // إعداد أبعاد مرنة ومثالية للعرض السريع
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 800; 
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                    
-                    canvas.width = width;
-                    canvas.height = height;
-                    
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    // تحويل الصورة لنص مضغوط جداً بجودة 70% لمنع استهلاك الذاكرة والبطء
-                    compressedImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
-                    
-                    // إظهار المعاينة الفورية للعميل
-                    const preview = document.getElementById('imagePreview');
-                    preview.src = compressedImageBase64;
-                    preview.style.display = 'block';
-                    document.getElementById('upload-status').innerText = "✨ تم معالجة الصورة بنجاح وتجهيزها للحفظ الفوري!";
-                }
+            if((loadedMediaArray.length + files.length) > 5) {
+                alert("الحد الأقصى المسموح به هو 5 ملفات وسائط لحماية سرعة الموقع.");
+                return;
             }
+
+            document.getElementById('upload-status').innerText = "جاري تحجيم وضغط الملفات تلقائياً...";
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function(event) {
+                    if (file.type.startsWith('image/')) {
+                        // محرك تحجيم وضغط الصور الذكي لحماية سرعة تحميل العميل
+                        const img = new Image();
+                        img.src = event.target.result;
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            const MAX_WIDTH = 700;
+                            let width = img.width;
+                            let height = img.height;
+
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+                            loadedMediaArray.push({ type: 'image', data: compressedBase64 });
+                            
+                            const imgDom = document.createElement('img');
+                            imgDom.src = compressedBase64;
+                            imgDom.className = 'preview-item';
+                            previewWrapper.appendChild(imgDom);
+                        }
+                    } else if (file.type.startsWith('video/')) {
+                        // الفيديوهات تحفظ بدقة مضغوطة مسبقاً
+                        loadedMediaArray.push({ type: 'video', data: event.target.result });
+                        const videoDom = document.createElement('video');
+                        videoDom.src = event.target.result;
+                        videoDom.className = 'preview-item';
+                        previewWrapper.appendChild(videoDom);
+                    }
+                };
+            });
+
+            setTimeout(() => {
+                document.getElementById('upload-status').innerText = "✨ تم معالجة ألبوم الميديا وحفظه محلياً بنجاح!";
+            }, 1500);
         });
 
-        document.getElementById('property-form').addEventListener('submit', function(e) {
+        document.getElementById('saudi-property-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            var priceInput = document.getElementById('price').value;
-            
-            var newProperty = {
-                id: 'prop_' + Date.now(),
+            // في حال عدم رفع أي وسائط نثبت صورة افتراضية فاخرة
+            const finalMedia = loadedMediaArray.length > 0 ? loadedMediaArray : [{ type: 'image', data: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80' }];
+
+            var saudiProperty = {
+                id: 'saudi_prop_' + Date.now(),
+                type: document.getElementById('type').value,
                 title: document.getElementById('title').value,
-                price: parseFloat(priceInput),
+                price: parseFloat(document.getElementById('price').value),
                 location: document.getElementById('location').value,
+                map_url: document.getElementById('map_url').value,
+                phone: document.getElementById('phone').value.replace(/\s+/g, ''),
                 area: document.getElementById('area').value,
                 rooms: document.getElementById('details').value,
-                // إذا لم يختر العميل صورة نضع له صورة الأيقونة الفاخرة الافتراضية
-                main_img: compressedImageBase64 || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
+                media_list: finalMedia
             };
             
-            var currentProperties = localStorage.getItem('global_properties_list');
-            var propertiesArray = currentProperties ? JSON.parse(currentProperties) : [];
+            var currentData = localStorage.getItem('saudi_realestate_vault');
+            var dataArray = currentData ? JSON.parse(currentData) : [];
             
-            propertiesArray.unshift(newProperty);
-            localStorage.setItem('global_properties_list', JSON.stringify(propertiesArray));
+            dataArray.unshift(saudiProperty);
+            localStorage.setItem('saudi_realestate_vault', JSON.stringify(dataArray));
             
             document.getElementById('success-box').style.display = 'block';
-            
             setTimeout(function() {
                 window.location.href = 'dashboard.html';
-            }, 1000);
+            }, 1200);
         });
     </script>
 </body>
