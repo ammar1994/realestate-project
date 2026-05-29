@@ -3,62 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>معرض الفرص العقارية</title>
+    <title>صالة عروض الأصول الاستثمارية المتاحة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background-color: #0b1329; margin: 0; padding: 20px; color: #f8fafc; }
-        h1 { text-align: center; color: #f59e0b; margin-bottom: 5px; font-size: 1.8rem; font-weight: 900; }
-        p.subtitle { text-align: center; color: #94a3b8; font-size: 12px; margin-bottom: 30px; }
-        .properties-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; }
-        
-        .property-card { background: #1c2541; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #2e3c63; }
-        
-        /* الحاوية الأساسية: مظهر ممتلئ واحترافي كما طلبت تماماً */
-        .media-viewer { position: relative; width: 100%; height: 210px; background: #141d36; cursor: zoom-in; }
-        .property-img { width: 100%; height: 100%; object-fit: cover; image-orientation: from-image; display: block; }
-        .media-badge { position: absolute; top: 10px; left: 10px; background: rgba(11,19,41,0.8); padding: 4px 8px; border-radius: 6px; font-size: 10px; color: #f59e0b; font-weight: bold; z-index: 2; }
-        
-        .property-details { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
-        .tag { font-size: 10px; background: rgba(245,158,11,0.15); color: #f59e0b; padding: 4px 8px; border-radius: 4px; align-self: flex-start; margin-bottom: 8px; font-weight: bold; }
-        .property-title { font-size: 15px; font-weight: bold; color: #f8fafc; margin: 0 0 8px 0; line-height: 1.4; }
-        .property-price { color: #f59e0b; font-size: 21px; font-weight: 900; margin-bottom: 12px; }
-        
-        .property-meta { font-size: 11px; color: #cbd5e1; margin-bottom: 14px; display: flex; justify-content: space-between; border-top: 1px solid rgba(46, 60, 99, 0.4); padding-top: 10px; }
-        .meta-item { display: flex; align-items: center; gap: 4px; }
-        
-        /* شريط معاينة مصغرات الصور */
-        .thumbnails-strip { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 12px 0; margin-bottom: 10px; scrollbar-width: none; }
-        .thumbnails-strip::-webkit-scrollbar { display: none; }
-        .thumb-box { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 1px solid #3a4b7c; opacity: 0.6; transition: 0.2s; flex-shrink: 0; }
-        .thumb-box.active { border-color: #f59e0b; opacity: 1; box-shadow: 0 0 5px #f59e0b; }
+        /* نظام ألوان احترافي فاخر مستوحى من الهويات العقارية العالمية */
+        :root {
+            --bg-main: #0b1329;
+            --bg-card: #1c2541;
+            --border-color: #2e3c63;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-gold: #f59e0b;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+        }
 
-        /* أزرار الإجراءات */
-        .action-row { display: flex; gap: 8px; margin-top: auto; }
-        .btn-whatsapp { flex: 2; background: #25d366; color: white; border: none; padding: 11px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 900; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn-map { flex: 1; background: #3b82f6; color: white; border: none; padding: 11px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        body { 
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif; 
+            background-color: var(--bg-main); 
+            margin: 0; 
+            padding: 16px; 
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1 { 
+            text-align: center; 
+            color: var(--text-primary); 
+            margin: 20px 0 5px 0; 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+        }
+
+        p.subtitle { 
+            text-align: center; 
+            color: var(--text-secondary); 
+            font-size: 12px; 
+            margin-bottom: 25px; 
+        }
+
+        .properties-container { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            gap: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
         
-        /* 🌟 نافذة التكبير المنبثقة الذكية ملء الشاشة (Lightbox) */
-        .lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 19, 41, 0.95); z-index: 9999; justify-content: center; align-items: center; touch-action: pinch-zoom; }
-        .lightbox-content { max-width: 95%; max-height: 85%; object-fit: contain; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); }
-        .lightbox-close { position: absolute; top: 20px; right: 20px; font-size: 28px; color: #f59e0b; cursor: pointer; background: rgba(28, 37, 65, 0.8); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid #2e3c63; }
-        .lightbox-caption { position: absolute; bottom: 20px; color: #cbd5e1; font-size: 13px; text-align: center; background: rgba(28, 37, 65, 0.8); padding: 8px 16px; border-radius: 20px; font-weight: bold; }
+        /* كرت العقار المطور هندسياً لمنع كسر العناصر */
+        .property-card { 
+            background: var(--bg-card); 
+            border-radius: 14px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4); 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            border: 1px solid var(--border-color); 
+        }
         
-        .loading-text { text-align: center; font-size: 13px; color: #94a3b8; grid-column: 1 / -1; padding: 50px; }
+        /* حاوية الميديا الاحترافية */
+        .media-viewer { 
+            position: relative; 
+            width: 100%; 
+            height: 220px; 
+            background: #090f1f; 
+            cursor: zoom-in; 
+        }
+        
+        .property-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            image-orientation: from-image; 
+            display: block; 
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .media-badge { 
+            position: absolute; 
+            top: 12px; 
+            left: 12px; 
+            background: rgba(11, 19, 41, 0.85); 
+            padding: 5px 10px; 
+            border-radius: 6px; 
+            font-size: 11px; 
+            color: var(--accent-gold); 
+            font-weight: bold; 
+            backdrop-filter: blur(4px);
+        }
+        
+        /* تفاصيل العقار مع ضبط المحاذاة الكاملة ومنع تشوه الحروف */
+        .property-details { 
+            padding: 16px; 
+            display: flex; 
+            flex-direction: column; 
+            flex-grow: 1; 
+        }
+
+        .tag { 
+            font-size: 11px; 
+            background: rgba(16, 185, 129, 0.15); 
+            color: var(--accent-green); 
+            padding: 4px 8px; 
+            border-radius: 4px; 
+            align-self: flex-start; 
+            margin-bottom: 10px; 
+            font-weight: 600; 
+        }
+
+        .property-price { 
+            color: var(--accent-gold); 
+            font-size: 22px; 
+            font-weight: 800; 
+            margin-bottom: 6px; 
+            line-height: 1;
+        }
+
+        .property-title { 
+            font-size: 16px; 
+            font-weight: 700; 
+            color: var(--text-primary); 
+            margin: 0 0 12px 0; 
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* شريط البيانات الوصفية المحاذي برمجياً بشكل سليم لمنع التداخل */
+        .property-meta { 
+            font-size: 12px; 
+            color: var(--text-secondary); 
+            margin-bottom: 12px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-top: 1px solid rgba(46, 60, 99, 0.5); 
+            padding-top: 12px; 
+        }
+
+        .meta-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+        }
+        
+        .meta-item i {
+            font-size: 13px;
+        }
+        
+        /* شريط معاينة المصغرات أسفل الكرت */
+        .thumbnails-strip { 
+            display: flex; 
+            gap: 8px; 
+            overflow-x: auto; 
+            padding: 4px 2px 12px 2px; 
+            margin-bottom: 12px; 
+            scrollbar-width: none; 
+        }
+        .thumbnails-strip::-webkit-scrollbar { display: none; }
+        
+        .thumb-box { 
+            width: 48px; 
+            height: 48px; 
+            border-radius: 6px; 
+            object-fit: cover; 
+            cursor: pointer; 
+            border: 2px solid transparent; 
+            opacity: 0.5; 
+            transition: all 0.2s ease; 
+            flex-shrink: 0; 
+        }
+        .thumb-box.active { 
+            border-color: var(--accent-gold); 
+            opacity: 1; 
+        }
+
+        /* صف أزرار الإجراءات السفلية المتناسقة */
+        .action-row { 
+            display: flex; 
+            gap: 10px; 
+            margin-top: auto; 
+        }
+        
+        .btn-action {
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 6px;
+            padding: 12px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            font-size: 13px; 
+            font-weight: 700; 
+            transition: background 0.2s ease;
+            border: none;
+        }
+
+        .btn-whatsapp { 
+            flex: 2; 
+            background: var(--accent-green); 
+            color: #ffffff; 
+        }
+        .btn-whatsapp:hover { background: #059669; }
+
+        .btn-map { 
+            flex: 1; 
+            background: var(--accent-blue); 
+            color: #ffffff; 
+        }
+        .btn-map:hover { background: #2563eb; }
+        
+        /* نافذة المعاينة المنبثقة الفاخرة ملء الشاشة المعززة للجوال */
+        .lightbox-overlay { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(7, 11, 21, 0.98); 
+            z-index: 9999; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        
+        .lightbox-content { 
+            max-width: 95%; 
+            max-height: 80%; 
+            object-fit: contain; 
+            border-radius: 6px; 
+        }
+
+        .lightbox-close { 
+            position: absolute; 
+            top: 24px; 
+            right: 24px; 
+            font-size: 24px; 
+            color: var(--accent-gold); 
+            cursor: pointer; 
+            background: #1c2541; 
+            width: 44px; 
+            height: 44px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 50%; 
+            border: 1px solid var(--border-color); 
+        }
+
+        .lightbox-caption { 
+            position: absolute; 
+            bottom: 24px; 
+            color: var(--text-primary); 
+            font-size: 13px; 
+            text-align: center; 
+            background: #1c2541; 
+            padding: 10px 20px; 
+            border-radius: 30px; 
+            border: 1px solid var(--border-color);
+            max-width: 80%;
+        }
+        
+        .loading-text { 
+            text-align: center; 
+            font-size: 14px; 
+            color: var(--text-secondary); 
+            grid-column: 1 / -1; 
+            padding: 60px; 
+        }
     </style>
 </head>
 <body>
 
-    <h1>منصة العروض والفرص الاستثمارية العقارية</h1>
-    <p class="subtitle">تصفح حي ومباشر لأحدث الفلل والمشاريع السكنية بالمملكة</p>
+    <h1>صالة عروض الأصول الاستثمارية المتاحة</h1>
+    <p class="subtitle">مساحة تفاعلية حية ومحدثة من قبل إدارة المحتوى مباشرة</p>
     
     <div class="properties-container" id="saudiClientWrapper">
-        <div class="loading-text">جاري فحص وتحديث المعروضات الحية بالمحفظة...</div>
+        <div class="loading-text"><i class="fa-solid fa-circle-notch fa-spin"></i> جاري فحص وتحديث المعروضات الحية بالمحفظة...</div>
     </div>
 
     <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
         <span class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></span>
         <img class="lightbox-content" id="lightboxImg" src="" alt="معاينة كاملة">
-        <div class="lightbox-caption" id="lightboxCaption">تصفح أبعاد الصورة الكاملة</div>
+        <div class="lightbox-caption" id="lightboxCaption">معاينة تفاصيل العقار كاملة الأبعاد</div>
     </div>
 
     <script>
@@ -70,7 +299,11 @@
             const dataArray = currentData ? JSON.parse(currentData) : [];
             
             if (dataArray.length === 0) {
-                wrapper.innerHTML = '<div class="loading-text"><i class="fa-solid fa-building-circle-exmark" style="font-size:26px; color:#f59e0b; margin-bottom:10px; display:block;"></i> لا توجد عروض منشورة في صالة المبيعات حالياً.</div>';
+                wrapper.innerHTML = `
+                    <div class="loading-text">
+                        <i class="fa-solid fa-building-circle-exmark" style="font-size:32px; color:var(--accent-gold); margin-bottom:12px; display:block;"></i> 
+                        لا توجد عروض منشورة في صالة المبيعات حالياً.
+                    </div>`;
                 return;
             }
             
@@ -78,18 +311,23 @@
                 const card = document.createElement('div');
                 card.className = 'property-card';
                 
+                // تنظيف وفحص صحة البيانات قبل العرض لمنع النصوص العشوائية والناقصة
+                const validTitle = (item.title && item.title.trim().length > 1) ? item.title : 'فيلا مودرن فاخرة';
+                const validPrice = (item.price && !isNaN(item.price) && Number(item.price) > 100) ? Number(item.price).toLocaleString() : 'اتصل لمعرفة السعر';
+                const validLocation = (item.location && item.location.trim().length > 1) ? item.location : 'المملكة العربية السعودية';
+                const validArea = (item.area && !isNaN(item.area)) ? item.area : '---';
+                const validRooms = (item.rooms && item.rooms.trim().length > 0) ? item.rooms : 'مواصفات قياسية';
+
                 const mediaList = item.media_list && item.media_list.length > 0 ? item.media_list : [{ type: 'image', data: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80' }];
                 const firstMedia = mediaList[0];
                 const totalMediaCount = mediaList.length;
-
                 const viewerId = `viewer_${item.id}`;
                 
-                // إضافة دالة فتح الصورة عند الضغط عليها مباشرة للمعاينة الكاملة
                 let mainMediaHtml = '';
                 if(firstMedia.type === 'video') {
                     mainMediaHtml = `<video id="${viewerId}" src="${firstMedia.data}" controls muted loop autoplay class="property-img"></video>`;
                 } else {
-                    mainMediaHtml = `<img id="${viewerId}" src="${firstMedia.data}" class="property-img" onclick="openLightbox('${firstMedia.data}', '${item.title}')" alt="عرض عقاري">`;
+                    mainMediaHtml = `<img id="${viewerId}" src="${firstMedia.data}" class="property-img" onclick="openLightbox('${firstMedia.data}', '${validTitle}')" alt="عرض عقاري">`;
                 }
 
                 let thumbnailsHtml = '';
@@ -100,15 +338,16 @@
                         thumbnailsHtml += `
                             <img src="${media.data}" 
                                  class="thumb-box ${activeClass}" 
-                                 onclick="switchCardMedia('${viewerId}', '${media.data}', '${media.type}', this, '${item.title}')" 
+                                 onclick="switchCardMedia('${viewerId}', '${media.data}', '${media.type}', this, '${validTitle}')" 
                                  alt="معاينة">`;
                     });
                     thumbnailsHtml += `</div>`;
                 }
 
-                const googleMapUrl = `https://maps.google.com/?q=${item.lat || ''},${item.lng || ''}`;
-                const messageText = encodeURIComponent(`مرحباً، أريد الاستفسار عن عقار: (${item.title}) المعروض في صالة العرض بقيمة: (${Number(item.price).toLocaleString()} ريال سعودي). هل العرض متاح؟`);
-                const whatsappUrl = `https://wa.me/${item.phone || ''}?text=${messageText}`;
+                // إصلاح الخريطة والروابط
+                const googleMapUrl = item.map_url ? item.map_url : `https://maps.google.com/?q=${encodeURIComponent(validLocation)}`;
+                const messageText = encodeURIComponent(`مرحباً، أريد الاستفسار عن عقار: (${validTitle}) بقيمة: (${validPrice} ر.س). هل العرض لا يزال متاحاً؟`);
+                const whatsappUrl = `https://wa.me/${item.phone || '966000000000'}?text=${messageText}`;
                 
                 card.innerHTML = `
                     <div class="media-viewer">
@@ -116,20 +355,21 @@
                         <div class="media-badge"><i class="fa-solid fa-photo-film"></i> وسائط: ${totalMediaCount}</div>
                     </div>
                     <div class="property-details">
-                        <span class="tag">عرض متاح</span>
-                        <div class="property-price">${Number(item.price).toLocaleString()} ر.س</div>
-                        <h3 class="property-title">${item.title}</h3>
+                        <span class="tag">عرض متاح للاستثمار</span>
+                        <div class="property-price">${validPrice} ر.س</div>
+                        <h3 class="property-title">${validTitle}</h3>
+                        
                         <div class="property-meta">
-                            <span class="meta-item"><i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> ${item.location}</span>
-                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:#f59e0b;"></i> ${item.area} م²</span>
-                            <span class="meta-item"><i class="fa-solid fa-circle-info" style="color:#3b82f6;"></i> ${item.rooms}</span>
+                            <span class="meta-item"><i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> ${validLocation}</span>
+                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:var(--accent-gold);"></i> ${validArea} م²</span>
+                            <span class="meta-item"><i class="fa-solid fa-bed" style="color:var(--accent-blue);"></i> ${validRooms}</span>
                         </div>
                         
                         ${thumbnailsHtml}
 
                         <div class="action-row">
-                            <a href="${whatsappUrl}" target="_blank" class="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> استفسر عبر الواتساب</a>
-                            <a href="${googleMapUrl}" target="_blank" class="btn-map"><i class="fa-solid fa-map-location-dot"></i> الموقع</a>
+                            <a href="${whatsappUrl}" target="_blank" class="btn-action btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> استفسر عبر الواتساب</a>
+                            <a href="${googleMapUrl}" target="_blank" class="btn-action btn-map"><i class="fa-solid fa-map-location-dot"></i> الموقع</a>
                         </div>
                     </div>
                 `;
@@ -154,10 +394,9 @@
             }
         }
 
-        /* 🌟 دوال التحكم بالمعاينة المنبثقة (Lightbox) لبيان حواف الصورة الكاملة */
         function openLightbox(src, title) {
             document.getElementById('lightboxImg').src = src;
-            document.getElementById('lightboxCaption').innerText = title + " - معاينة كامل التفاصيل والأطراف";
+            document.getElementById('lightboxCaption').innerText = title + " - معاينة الأبعاد الكاملة والأطراف";
             document.getElementById('lightboxOverlay').style.display = 'flex';
         }
 
