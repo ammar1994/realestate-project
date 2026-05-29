@@ -3,130 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>بوابة المطور العقاري - إضافة مشروع جديد</title>
+    <title>إضافة عقار جديد - الطابع السعودي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
         nav { background: #1c2541; padding: 14px; border-bottom: 1px solid #2a375e; text-align: center; }
         .logo { font-size: 15px; font-weight: 800; margin: 0; color: #f8fafc; }
         .logo span { color: #f59e0b; font-weight: 900; margin-right: 4px; }
         .content { padding: 20px 14px; }
-        .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; background: #141d36; border: 1px solid #3a4b7c; color: #94a3b8; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .tab-btn.active { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-color: #f59e0b; color: #0b1329 !important; font-weight: 900; box-shadow: 0 0 12px rgba(245,158,11,0.3); }
         
         .form-container { background: #1c2541; border-radius: 16px; padding: 20px; border: 1px solid #2e3c63; max-width: 550px; margin: 0 auto; }
         .form-group { margin-bottom: 15px; text-align: right; }
         label { display: block; font-size: 12px; color: #cbd5e1; margin-bottom: 6px; font-weight: bold; }
-        input, select { width: 100%; padding: 12px; background: #0b1329; border: 1px solid #2e3c63; border-radius: 8px; color: white; box-sizing: border-box; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 12px; background: #0b1329; border: 1px solid #2e3c63; border-radius: 8px; color: white; box-sizing: border-box; font-size: 14px; }
         input:focus, select:focus { border-color: #f59e0b; outline: none; }
         
-        .file-dropzone { border: 2px dashed #3a4b7c; padding: 18px; border-radius: 8px; text-align: center; background: #0b1329; cursor: pointer; transition: 0.2s; }
-        .file-dropzone:hover { border-color: #f59e0b; }
+        /* تصميم الخريطة المدمجة */
+        #map { width: 100%; height: 250px; border-radius: 8px; margin-top: 8px; border: 1px solid #3a4b7c; z-index: 1; }
+        .geo-btn { background: #3b82f6; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; margin-bottom: 5px; display: inline-flex; align-items: center; gap: 4px; }
+        
+        .file-dropzone { border: 2px dashed #3a4b7c; padding: 18px; border-radius: 8px; text-align: center; background: #0b1329; cursor: pointer; }
         .file-dropzone i { font-size: 24px; color: #f59e0b; margin-bottom: 6px; }
         .file-dropzone p { margin: 0; font-size: 11px; color: #94a3b8; }
         
         .gallery-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 10px; }
         .preview-item { width: 100%; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #f59e0b; background: #141d36; }
         
-        .submit-btn { width: 100%; padding: 14px; background: #f59e0b; border: none; border-radius: 8px; color: #0b1329; font-size: 14px; font-weight: 900; cursor: pointer; margin-top: 15px; transition: 0.2s; }
-        .submit-btn:hover { background: #d97706; }
+        .submit-btn { width: 100%; padding: 14px; background: #f59e0b; border: none; border-radius: 8px; color: #0b1329; font-size: 14px; font-weight: 900; cursor: pointer; margin-top: 15px; }
         .success-msg { display: none; color: #10b981; font-size: 12px; font-weight: bold; margin-top: 10px; text-align: center; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-file-invoice-dollar"></i> المنصة العقارية <span>الرؤية السعودية</span></div>
+        <div class="logo"><i class="fa-solid fa-building"></i> لوحة التحكم الفاخرة <span>PREMIUM</span></div>
     </nav>
 
     <div class="content">
-        <div class="nav-tabs">
-            <a href="dashboard.html" class="tab-btn"><i class="fa-solid fa-chart-pie"></i> لوحة الإحصائيات الحية</a>
-            <a href="add.html" class="tab-btn active"><i class="fa-solid fa-plus-circle"></i> إضافة عقار جديد</a>
-        </div>
-
         <div class="form-container">
+            <h2 style="font-size: 16px; color:#f59e0b; text-align:center; margin-top:0;">إضافة عقار جديد للمحفظة السعودية</h2>
             <form id="saudi-property-form">
+                
                 <div class="form-group">
-                    <label>نوع ونوعية العقار المعروض:</label>
-                    <select id="type" required>
-                        <option value="فيلا مودرن فاخرة">فيلا مودرن فاخرة</option>
-                        <option value="شقة تمليك سكنية">شقة تمليك سكنية</option>
-                        <option value="أرض تجارية / استثمارية">أرض تجارية / استثمارية</option>
-                        <option value="دور سكني مستقل">دور سكني مستقل</option>
-                    </select>
+                    <label>عنوان العقار (مثال: فيلا مودرن درج صالة):</label>
+                    <input type="text" id="title" placeholder="أدخل عنوان العقار بدقة" required>
                 </div>
+
                 <div class="form-group">
-                    <label>عنوان العرض (مثال: فيلا درج صالة مستقلة للبيع):</label>
-                    <input type="text" id="title" placeholder="أدخل عنواناً جذاباً للعقار" required>
+                    <label>السعر المطلوب (بالريال السعودي ر.س):</label>
+                    <input type="number" id="price" placeholder="مثال: 1500000" required>
                 </div>
-                <div class="form-group">
-                    <label>القيمة المطلوبة (بالريال السعودي ر.س):</label>
-                    <input type="number" id="price" placeholder="مثال: 1250000" required>
-                </div>
+
                 <div class="form-group">
                     <label>المدينة والحي (مثال: الرياض - حي الملقا):</label>
-                    <input type="text" id="location" placeholder="حدد مكان العقار بالمملكة" required>
+                    <input type="text" id="location" placeholder="حدد اسم المدينة والحي" required>
                 </div>
+
                 <div class="form-group">
-                    <label>رابط الموقع على خرائط جوجل (Google Maps URL):</label>
-                    <input type="url" id="map_url" placeholder="https://maps.app.goo.gl/..." required>
+                    <label>موقع العقار الجغرافي:</label>
+                    <button type="button" class="geo-btn" onclick="locateMe()"><i class="fa-solid fa-location-crosshairs"></i> تحديد موقعي الحالي تلقائياً</button>
+                    <span style="font-size:10px; color:#94a3b8; display:block; margin-bottom:5px;">أو قم بتحريك الخريطة والضغط على موقع العقار مباشرة لتثبيت الدبوس:</span>
+                    
+                    <div id="map"></div>
+                    
+                    <input type="hidden" id="lat" name="lat" value="24.7136">
+                    <input type="hidden" id="lng" name="lng" value="46.6753">
                 </div>
+
                 <div class="form-group">
-                    <label>رقم تواصل الواتساب للمدير أو المكتب المسؤل (صيغة سعودية):</label>
-                    <input type="text" id="phone" placeholder="مثال: 966500000000" value="966500000000" required>
+                    <label>رقم تواصل الواتساب (صيغة دولية بدون مفتاح مضاف مثال: 966500000000):</label>
+                    <input type="text" id="phone" placeholder="9665xxxxxxxx" required>
                 </div>
+
                 <div class="form-group">
                     <label>المساحة الإجمالية (متر مربع):</label>
                     <input type="number" id="area" placeholder="مثال: 350" required>
                 </div>
+
                 <div class="form-group">
-                    <label>مواصفات الواجهة والتفاصيل (مثال: واجهة شمالية - غرف ماستر):</label>
-                    <input type="text" id="details" placeholder="أدخل تفاصيل الغرف والشارع" required>
+                    <label>عدد الغرف والتفاصيل الداخلية:</label>
+                    <input type="text" id="details" placeholder="مثال: 5 غرف - 4 حمامات - مسبح" required>
                 </div>
                 
                 <div class="form-group">
-                    <label>ألبوم الميديا (ارفع حتى 5 صور أو فيديوهات - ضغط آلي فوري):</label>
+                    <label>ألبوم ميديا العقار (ارفع صور أو فيديوهات متعددة):</label>
                     <div class="file-dropzone" onclick="document.getElementById('mediaFiles').click()">
-                        <i class="fa-solid fa-photo-film"></i>
-                        <p id="upload-status">اضغط هنا لرفع الصور أو الفيديوهات من الاستوديو</p>
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p id="upload-status">اضغط لرفع حتى 5 صور أو مقاطع فيديو من الاستوديو</p>
                         <input type="file" id="mediaFiles" accept="image/*,video/*" multiple style="display: none;">
                     </div>
                     <div class="gallery-preview" id="mediaPreviewWrapper"></div>
                 </div>
 
-                <button type="submit" class="submit-btn">حفظ وتدشين العقار في السوق</button>
-                <div class="success-msg" id="success-box">✨ تم معالجة الوسائط وتحديث المحفظة حياً! جاري التوجيه...</div>
+                <button type="submit" class="submit-btn">حفظ العقار ونشره فوراً</button>
+                <div class="success-msg" id="success-box">✨ تم حفظ العقار وتحديث المحفظة بنجاح! جاري التوجيه...</div>
             </form>
         </div>
     </div>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        let loadedMediaArray = [];
+        // إعداد الخريطة الافتراضية متمركزة فوق الرياض كخيار أساسي للطابع السعودي
+        var map = L.map('map').setView([24.7136, 46.6753], 11);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
 
+        var marker = L.marker([24.7136, 46.6753], {draggable: true}).addTo(map);
+
+        // تحديث الحقول عند تحريك الدبوس باليد
+        marker.on('dragend', function(e) {
+            var position = marker.getLatLng();
+            document.getElementById('lat').value = position.lat;
+            document.getElementById('lng').value = position.lng;
+        });
+
+        // وضع دبوس عند الضغط في أي مكان على الخريطة
+        map.on('click', function(e) {
+            marker.setLatLng(e.latlng);
+            document.getElementById('lat').value = e.latlng.lat;
+            document.getElementById('lng').value = e.latlng.lng;
+        });
+
+        // دالة التقاط موقع المستخدم الفعلي عبر GPS الجوال
+        function locateMe() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    document.getElementById('lat').value = lat;
+                    document.getElementById('lng').value = lng;
+                    map.setView([lat, lng], 15);
+                    marker.setLatLng([lat, lng]);
+                }, function() {
+                    alert("تعذر الوصول لموقعك الحالي، يرجى تحديد الموقع يدوياً على الخريطة.");
+                });
+            } else {
+                alert("متصفحك لا يدعم تحديد الموقع التلقائي.");
+            }
+        }
+
+        // محرك رفع وضغط الصور ومقاطع الفيديو المتعددة لحماية مساحة التخزين وسرعة الموقع
+        let loadedMediaArray = [];
         document.getElementById('mediaFiles').addEventListener('change', function(e) {
             const files = Array.from(e.target.files);
             const previewWrapper = document.getElementById('mediaPreviewWrapper');
             
             if((loadedMediaArray.length + files.length) > 5) {
-                alert("الحد الأقصى المسموح به هو 5 ملفات وسائط لحماية سرعة الموقع.");
+                alert("الحد الأقصى المسموح به هو 5 ملفات وسائط.");
                 return;
             }
 
-            document.getElementById('upload-status').innerText = "جاري تحجيم وضغط الملفات تلقائياً...";
+            document.getElementById('upload-status').innerText = "جاري معالجة وتجهيز الميديا...";
 
             files.forEach(file => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = function(event) {
                     if (file.type.startsWith('image/')) {
-                        // محرك تحجيم وضغط الصور الذكي لحماية سرعة تحميل العميل
+                        // محرك ضغط الصور الذكي لتصغير الحجم تلقائياً
                         const img = new Image();
                         img.src = event.target.result;
                         img.onload = function() {
                             const canvas = document.createElement('canvas');
-                            const MAX_WIDTH = 700;
+                            const MAX_WIDTH = 600;
                             let width = img.width;
                             let height = img.height;
 
@@ -139,7 +182,7 @@
                             const ctx = canvas.getContext('2d');
                             ctx.drawImage(img, 0, 0, width, height);
                             
-                            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+                            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
                             loadedMediaArray.push({ type: 'image', data: compressedBase64 });
                             
                             const imgDom = document.createElement('img');
@@ -148,7 +191,6 @@
                             previewWrapper.appendChild(imgDom);
                         }
                     } else if (file.type.startsWith('video/')) {
-                        // الفيديوهات تحفظ بدقة مضغوطة مسبقاً
                         loadedMediaArray.push({ type: 'video', data: event.target.result });
                         const videoDom = document.createElement('video');
                         videoDom.src = event.target.result;
@@ -157,41 +199,35 @@
                     }
                 };
             });
-
-            setTimeout(() => {
-                document.getElementById('upload-status').innerText = "✨ تم معالجة ألبوم الميديا وحفظه محلياً بنجاح!";
-            }, 1500);
+            setTimeout(() => { document.getElementById('upload-status').innerText = "✨ تم إضافة الميديا بنجاح!"; }, 1200);
         });
 
+        // حفظ البيانات في خزنة التخزين المحلي الآمنة للعمل دون مشاكل اتصال
         document.getElementById('saudi-property-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // في حال عدم رفع أي وسائط نثبت صورة افتراضية فاخرة
             const finalMedia = loadedMediaArray.length > 0 ? loadedMediaArray : [{ type: 'image', data: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80' }];
 
-            var saudiProperty = {
-                id: 'saudi_prop_' + Date.now(),
-                type: document.getElementById('type').value,
+            var propertyObj = {
+                id: 'prop_' + Date.now(),
                 title: document.getElementById('title').value,
                 price: parseFloat(document.getElementById('price').value),
                 location: document.getElementById('location').value,
-                map_url: document.getElementById('map_url').value,
+                lat: document.getElementById('lat').value,
+                lng: document.getElementById('lng').value,
                 phone: document.getElementById('phone').value.replace(/\s+/g, ''),
                 area: document.getElementById('area').value,
                 rooms: document.getElementById('details').value,
                 media_list: finalMedia
             };
             
-            var currentData = localStorage.getItem('saudi_realestate_vault');
+            var currentData = localStorage.getItem('saudi_property_vault');
             var dataArray = currentData ? JSON.parse(currentData) : [];
-            
-            dataArray.unshift(saudiProperty);
-            localStorage.setItem('saudi_realestate_vault', JSON.stringify(dataArray));
+            dataArray.unshift(propertyObj);
+            localStorage.setItem('saudi_property_vault', JSON.stringify(dataArray));
             
             document.getElementById('success-box').style.display = 'block';
-            setTimeout(function() {
-                window.location.href = 'dashboard.html';
-            }, 1200);
+            setTimeout(function() { window.location.href = 'dashboard.html'; }, 1000);
         });
     </script>
 </body>
