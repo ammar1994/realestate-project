@@ -15,23 +15,21 @@
         .tab-btn { flex: 1; background: #141d36; border: 1px solid #3a4b7c; color: #94a3b8; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; }
         .tab-btn.active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: #10b981; color: #0b1329 !important; font-weight: 900; box-shadow: 0 0 12px rgba(16,185,129,0.3); }
         
-        .analytics-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
-        .analytics-card { color: white; padding: 14px; border-radius: 12px; text-align: center; flex: 1; min-width: 95px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
         .stat-card { background: #1c2541; border-radius: 14px; padding: 14px; border: 1px solid #2e3c63; display: flex; align-items: center; justify-content: space-between; }
         .stat-val { font-size: 16px; font-weight: 900; color: white; margin-top: 4px; }
         .stat-card i { font-size: 20px; color: #10b981; }
         
-        .chart-box, .table-box { background: #1c2541; border-radius: 16px; padding: 16px; border: 1px solid #2e3c63; margin-bottom: 20px; }
-        .chart-box h3, .table-box h3 { margin: 0 0 14px 0; font-size: 13px; color: #10b981; font-weight: 800; }
+        .table-box { background: #1c2541; border-radius: 16px; padding: 16px; border: 1px solid #2e3c63; margin-bottom: 20px; }
+        .table-box h3 { margin: 0 0 14px 0; font-size: 13px; color: #10b981; font-weight: 800; }
         
         table { width: 100%; border-collapse: collapse; text-align: right; font-size: 11px; }
         th { color: #94a3b8; padding-bottom: 10px; border-bottom: 1px solid #2e3c63; }
         td { padding: 12px 0; border-bottom: 1px solid rgba(46, 60, 99, 0.4); }
         
-        .delete-btn { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 10px; transition: 0.2s; }
+        .delete-btn { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 10px; transition: 0.2s; }
         .delete-btn:hover { background: #ef4444; color: white; }
+        .view-link { display: block; text-align: center; background: #f59e0b; color: #0b1329; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 12px; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -76,6 +74,8 @@
                 <tbody id="management-table-body">
                     </tbody>
             </table>
+            
+            <a href="customer.html" target="_blank" class="view-link">👁️ فتح واجهة عرض الزبائن وتفقد الترابط</a>
         </div>
     </div>
 
@@ -88,7 +88,7 @@
             tableBody.innerHTML = '';
             
             if(propertiesArray.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:15px;">لا توجد عقارات مضافة بيدك حالياً.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:15px;">لا توجد عقارات مضافة مخصصة حالياً.</td></tr>';
                 return;
             }
             
@@ -97,41 +97,41 @@
                 row.innerHTML = `
                     <td style="font-weight:bold; color:white;">${item.title}</td>
                     <td style="color:#f59e0b;">$${Number(item.price).toLocaleString()}</td>
-                    <td><button class="delete-btn" onclick="deleteProperty('${item.id}')"><i class="fa-solid fa-trash"></i> حذف ونزع فوراً</button></td>
+                    <td><button class="delete-btn" onclick="deleteProperty('${item.id}')"><i class="fa-solid fa-trash"></i> حذف فوري</button></td>
                 `;
                 tableBody.appendChild(row);
             });
         }
 
         function deleteProperty(propertyId) {
-            if(confirm("هل أنت متأكد من رغبتك في حذف هذا العقار ونزعه نهائياً من واجهة الزبائن؟")) {
+            if(confirm("هل تريد حذف هذا العقار نهائياً من واجهة الزبائن ومزامنة التغيير؟")) {
                 var currentProperties = localStorage.getItem('global_properties_list');
                 var propertiesArray = currentProperties ? JSON.parse(currentProperties) : [];
                 
-                // تصفية المصفوفة واستثناء العنصر المحذوف
                 var updatedArray = propertiesArray.filter(function(item) {
                     return item.id !== propertyId;
                 });
                 
                 localStorage.setItem('global_properties_list', JSON.stringify(updatedArray));
-                
-                // إعادة التوليد فوراً على الشاشة لتحديث العرض للعميل
                 renderManagementTable();
                 updateCounters();
             }
         }
 
         function updateCounters() {
-            var addedPrice = localStorage.getItem('last_added_price');
-            if (addedPrice) {
-                var priceNum = parseFloat(addedPrice);
-                if(!isNaN(priceNum)) {
-                    var currentAssets = 4850000 + priceNum;
-                    document.getElementById('total-assets').innerText = '$' + currentAssets.toLocaleString();
-                    var currentProfit = 342000 + (priceNum * 0.10);
-                    document.getElementById('total-profit').innerText = '$' + currentProfit.toLocaleString();
-                }
-            }
+            var currentProperties = localStorage.getItem('global_properties_list');
+            var propertiesArray = currentProperties ? JSON.parse(currentProperties) : [];
+            
+            var baseAssets = 4850000;
+            var baseProfit = 342000;
+            
+            propertiesArray.forEach(function(item) {
+                baseAssets += parseFloat(item.price || 0);
+                baseProfit += parseFloat(item.price || 0) * 0.10;
+            });
+            
+            document.getElementById('total-assets').innerText = '$' + baseAssets.toLocaleString();
+            document.getElementById('total-profit').innerText = '$' + baseProfit.toLocaleString();
         }
 
         window.onload = function() {
