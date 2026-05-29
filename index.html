@@ -2,104 +2,206 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرض العقارات الفاخرة PREMIUM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>منصة العروض والفرص الاستثمارية العقارية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; background-color: #0b1329; margin: 0; padding: 15px; color: #f8fafc; }
-        h1 { text-align: center; color: #f59e0b; margin-top: 20px; font-size: 1.6rem; font-weight: 900; }
-        p.subtitle { text-align: center; color: #94a3b8; font-size: 11px; margin-bottom: 25px; }
+        /* التنسيق المتوافق تماماً مع الهوية البصرية الداكنة المستقرة لديك */
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #0b1329;
+            margin: 0;
+            padding: 20px;
+            color: #f8fafc;
+        }
+        h1 {
+            text-align: center;
+            color: #f59e0b;
+            margin-bottom: 5px;
+            font-size: 1.8rem;
+            font-weight: 900;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+            margin-bottom: 30px;
+        }
         
-        .properties-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
-        .property-card { background: #1c2541; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid #2e3c63; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .nav-buttons {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .add-btn {
+            display: inline-block;
+            padding: 11px 20px;
+            background-color: #10b981;
+            color: #0b1329;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+        .add-btn:hover {
+            background-color: #059669;
+        }
         
-        .media-container { position: relative; width: 100%; height: 210px; background: #141d36; }
-        .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; }
-        .media-counter { position: absolute; top: 10px; left: 10px; background: rgba(11,19,41,0.8); padding: 4px 8px; border-radius: 6px; font-size: 10px; color: #f59e0b; font-weight: bold; }
+        /* شبكة العرض المرنة المتوافقة مع أجهزة الجوال والشاشات المختلفة */
+        .properties-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
         
-        .property-details { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; }
-        .property-title { font-size: 14px; font-weight: bold; color: #f8fafc; margin: 0 0 8px 0; }
-        .property-price { color: #f59e0b; font-size: 20px; font-weight: 900; margin-bottom: 10px; }
+        /* كرت العقار التفاعلي */
+        .property-card {
+            background: #1c2541;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid #2e3c63;
+        }
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
         
-        .property-meta { font-size: 11px; color: #cbd5e1; margin-bottom: 12px; display: flex; justify-content: space-between; border-top: 1px solid rgba(46, 60, 99, 0.4); padding-top: 8px; }
-        .meta-item { display: flex; align-items: center; gap: 4px; }
+        /* الحاوية المصلحة للميديا لحل مشكلة التدوير والتمطيط تلقائياً */
+        .media-viewer {
+            position: relative;
+            width: 100%;
+            height: 210px;
+            background: #141d36;
+            overflow: hidden;
+        }
+        .property-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* حل مشكلة الدوران المقلوب للصور الملت قطة بالجوال عبر قراءة بيانات EXIF */
+            image-orientation: from-image;
+            display: block;
+        }
         
-        /* تصميم أزرار الإجراءات والمواقع الحية */
-        .action-buttons { display: flex; gap: 8px; margin-top: auto; }
-        .btn-whatsapp { flex: 2; background: #25d366; color: white; border: none; padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 900; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn-map { flex: 1; background: #3b82f6; color: white; border: none; padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .property-details {
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .property-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #f8fafc;
+            margin: 0 0 8px 0;
+            line-height: 1.4;
+        }
+        .property-price {
+            color: #f59e0b;
+            font-size: 21px;
+            font-weight: 900;
+            margin-bottom: 12px;
+        }
         
-        .empty-text { text-align: center; font-size: 12px; color: #94a3b8; padding: 40px; grid-column: 1 / -1; }
-        .nav-link { display: block; text-align: center; margin-bottom: 20px; color: #f59e0b; text-decoration: none; font-size: 12px; font-weight: bold; }
+        .property-meta {
+            font-size: 11px;
+            color: #cbd5e1;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(46, 60, 99, 0.4);
+            padding-top: 10px;
+        }
+        
+        .loading-text {
+            text-align: center;
+            font-size: 13px;
+            color: #94a3b8;
+            grid-column: 1 / -1;
+            padding: 50px;
+        }
     </style>
 </head>
 <body>
 
-    <h1>صالة العروض العقارية الحصرية</h1>
-    <p class="subtitle">تصفح حي ومباشر لأحدث العقارات الفاخرة بالمملكة العربية السعودية</p>
-    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i> الدخول للوحة التحكم الحية</a>
+    <h1>منصة العروض والفرص الاستثمارية العقارية</h1>
+    <p class="subtitle">تصفح حي ومباشر لأحدث الفلل والمشاريع السكنية بالمملكة</p>
     
+    <div class="nav-buttons">
+        <a href="add.html" class="add-btn"><i class="fa-solid fa-plus"></i> إضافة عقار جديد</a>
+    </div>
+
     <div class="properties-container" id="propertiesWrapper">
-        </div>
+        <div class="loading-text">جاري جلب العقارات الحية من السيرفر السحابي...</div>
+    </div>
 
     <script>
-        function renderClientProperties() {
-            const wrapper = document.getElementById('propertiesWrapper');
-            wrapper.innerHTML = '';
-            
-            const currentData = localStorage.getItem('saudi_property_vault');
-            const dataArray = currentData ? JSON.parse(currentData) : [];
-            
-            if (dataArray.length === 0) {
-                wrapper.innerHTML = '<div class="empty-text"><i class="fa-solid fa-folder-open" style="font-size:24px; color:#f59e0b; display:block; margin-bottom:8px;"></i> لا توجد عروض عقارية منشورة حالياً بالمنصة.</div>';
-                return;
-            }
-            
-            dataArray.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'property-card';
-                
-                // جلب العنصر الأول للألبوم (سواء صورة أو فيديو)
-                const firstMedia = item.media_list && item.media_list[0] ? item.media_list[0] : { type: 'image', data: '' };
-                let mediaHtml = '';
-                if(firstMedia.type === 'video') {
-                    mediaHtml = `<video src="${firstMedia.data}" controls muted loop autoplay></video>`;
-                } else {
-                    mediaHtml = `<img src="${firstMedia.data}" alt="صورة العقار">`;
-                }
+        // إعدادات الاتصال المباشر بسيرفر Supabase الخاص بك
+        const SUPABASE_URL = "https://plfibajexgugqhunmepv.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmliYWpleGd1Z3FodW5tZXB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Mjk0MTcsImV4cCI6MjA2NDAwNTQxN30.0b_XbQhVz8v0w7XhWhS8xJ4367bB_m7G8P6N2C1mZ20"; 
 
-                // إعداد نص رسالة الواتساب المتضمنة تفاصيل العقار لفتحها بجوال العميل تلقائياً
-                const message = encodeURIComponent(`مرحباً يا مدير المنصة، أريد الاستفسار عن العقار المعروض: (${item.title}) بقيمة (${Number(item.price).toLocaleString()} ر.س) في موقع (${item.location}). هل العرض لا يزال متاحاً؟`);
-                const whatsappLink = `https://wa.me/${item.phone}?text=${message}`;
+        async function fetchProperties() {
+            const wrapper = document.getElementById('propertiesWrapper');
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/properties`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
                 
-                // توجيه إحداثيات الخريطة لتفتح فوراً داخل خرائط جوجل الرسمية بجوال الزبون
-                const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}`;
+                if (!response.ok) throw new Error('خطأ في الاتصال بالسيرفر');
                 
-                card.innerHTML = `
-                    <div class="media-container">
-                        ${mediaHtml}
-                        <div class="media-counter"><i class="fa-solid fa-photo-film"></i> وسائط: ${item.media_list.length}</div>
-                    </div>
-                    <div class="property-details">
-                        <div class="property-price">${Number(item.price).toLocaleString()} ر.س</div>
-                        <h3 class="property-title">${item.title}</h3>
-                        <div class="property-meta">
-                            <span class="meta-item"><i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> ${item.location}</span>
-                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:#f59e0b;"></i> ${item.area} م²</span>
+                const properties = await response.json();
+                wrapper.innerHTML = ''; 
+                
+                if (properties.length === 0) {
+                    wrapper.innerHTML = '<div class="loading-text"><i class="fa-solid fa-building-circle-exmark" style="font-size:26px; color:#f59e0b; margin-bottom:10px; display:block;"></i> لا توجد عقارات مضافة حالياً. اذهب للوحة التحكم وأضف أول عقار!</div>';
+                    return;
+                }
+                
+                properties.forEach(item => {
+                    const card = document.createElement('a');
+                    card.href = `details.html?id=${item.id}`; 
+                    card.className = 'property-card';
+                    
+                    // استخدام الصورة المرفوعة أو صورة احتياطية في حال تعذر التحميل
+                    const displayImg = item.main_img ? item.main_img : 'villa.jpg';
+                    
+                    card.innerHTML = `
+                        <div class="media-viewer">
+                            <img src="${displayImg}" class="property-img" alt="${item.title}">
                         </div>
-                        <div class="property-meta" style="border:none; padding:0; margin-bottom:15px;">
-                            <span class="meta-item"><i class="fa-solid fa-bed" style="color:#3b82f6;"></i> ${item.rooms}</span>
+                        <div class="property-details">
+                            <div class="property-price">${Number(item.price).toLocaleString()} ر.س</div>
+                            <h3 class="property-title">${item.title}</h3>
+                            <div class="property-meta">
+                                <span><i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> 📍 ${item.location}</span>
+                                <span><i class="fa-solid fa-maximize" style="color:#f59e0b;"></i> 📐 ${item.area} م²</span>
+                                <span><i class="fa-solid fa-circle-info" style="color:#3b82f6;"></i> 🚪 التفاصيل: ${item.rooms}</span>
+                            </div>
                         </div>
-                        <div class="action-buttons">
-                            <a href="${whatsappLink}" target="_blank" class="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> تواصل مع المدير</a>
-                            <a href="${googleMapsLink}" target="_blank" class="btn-map"><i class="fa-solid fa-map-location-dot"></i> الخريطة</a>
-                        </div>
-                    </div>
-                `;
-                wrapper.appendChild(card);
-            });
+                    `;
+                    wrapper.appendChild(card);
+                });
+                
+            } catch (error) {
+                console.error(error);
+                wrapper.innerHTML = '<div class="loading-text" style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation" style="font-size:22px; display:block; margin-bottom:8px;"></i> حدث خطأ أثناء تحميل العقارات. تأكد من اتصال الإنترنت السريع.</div>';
+            }
         }
-        document.addEventListener('DOMContentLoaded', renderClientProperties);
+
+        document.addEventListener('DOMContentLoaded', fetchProperties);
     </script>
 </body>
 </html>
