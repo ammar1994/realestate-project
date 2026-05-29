@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>لوحة التحكم الاستثمارية الحية</title>
+    <title>لوحة التحكم الاستثمارية الشاملة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,32 +15,29 @@
         .tab-btn { flex: 1; background: #141d36; border: 1px solid #3a4b7c; color: #94a3b8; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; }
         .tab-btn.active { background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: #10b981; color: #0b1329 !important; font-weight: 900; box-shadow: 0 0 12px rgba(16,185,129,0.3); }
         
-        /* تصميم قسم البطاقات التحليلية الإضافية للعميل */
-        .analytics-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; direction: rtl; }
+        .analytics-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
         .analytics-card { color: white; padding: 14px; border-radius: 12px; text-align: center; flex: 1; min-width: 95px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
         .stat-card { background: #1c2541; border-radius: 14px; padding: 14px; border: 1px solid #2e3c63; display: flex; align-items: center; justify-content: space-between; }
-        .stat-val { font-size: 18px; font-weight: 900; color: white; margin-top: 4px; }
+        .stat-val { font-size: 16px; font-weight: 900; color: white; margin-top: 4px; }
         .stat-card i { font-size: 20px; color: #10b981; }
-        .chart-box { background: #1c2541; border-radius: 16px; padding: 16px; border: 1px solid #2e3c63; margin-bottom: 20px; }
-        .chart-box h3 { margin: 0 0 14px 0; font-size: 13px; color: #10b981; font-weight: 800; }
-        .chart-bars { display: flex; justify-content: space-between; align-items: flex-end; height: 100px; border-bottom: 2px solid #2e3c63; padding-bottom: 4px; }
-        .bar-container { display: flex; flex-direction: column; align-items: center; width: 15%; }
-        .bar { width: 14px; background: linear-gradient(to top, #3b82f6, #10b981); border-radius: 4px 4px 0 0; height: 40px; transition: height 1s ease-out; }
-        .bar-label { font-size: 9px; color: #94a3b8; margin-top: 5px; }
-        .table-box { background: #1c2541; border-radius: 16px; padding: 16px; border: 1px solid #2e3c63; }
-        .table-box h3 { margin: 0 0 14px 0; font-size: 13px; color: #10b981; font-weight: 800; }
+        
+        .chart-box, .table-box { background: #1c2541; border-radius: 16px; padding: 16px; border: 1px solid #2e3c63; margin-bottom: 20px; }
+        .chart-box h3, .table-box h3 { margin: 0 0 14px 0; font-size: 13px; color: #10b981; font-weight: 800; }
+        
         table { width: 100%; border-collapse: collapse; text-align: right; font-size: 11px; }
         th { color: #94a3b8; padding-bottom: 10px; border-bottom: 1px solid #2e3c63; }
         td { padding: 12px 0; border-bottom: 1px solid rgba(46, 60, 99, 0.4); }
-        .status { padding: 3px 6px; border-radius: 20px; font-size: 10px; font-weight: bold; background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        
+        .delete-btn { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 10px; transition: 0.2s; }
+        .delete-btn:hover { background: #ef4444; color: white; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-gauge-high"></i> لوحة <span>التحليلات الحية للعمليات</span></div>
+        <div class="logo"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم <span>العقارية الشاملة</span></div>
     </nav>
 
     <div class="content">
@@ -49,27 +46,11 @@
             <a href="add.html" class="tab-btn" style="border-color: #10b981; color: #10b981;"><i class="fa-solid fa-circle-plus"></i> إضافة عقار جديد</a>
         </div>
 
-        <div class="analytics-grid">
-            <div class="analytics-card" style="background: linear-gradient(135deg, #1e3c72, #2a5298); border: 1px solid #2e3c63;">
-                <h4 style="margin: 0; font-size: 10px; opacity: 0.8;">الزيارات النشطة</h4>
-                <p style="margin: 5px 0 0 0; font-size: 18px; font-weight: bold; color: #10b981;">+1,420</p>
-            </div>
-            <div class="analytics-card" style="background: linear-gradient(135deg, #141d36, #2e3c63); border: 1px solid #ff9f43;">
-                <h4 style="margin: 0; font-size: 10px; opacity: 0.8;">طلبات المعاينة</h4>
-                <p style="margin: 5px 0 0 0; font-size: 18px; font-weight: bold; color: #ff9f43;">45 طلب</p>
-            </div>
-            <div class="analytics-card" style="background: linear-gradient(135deg, #ff9f43, #ff5252); border: 1px solid #ff5252;">
-                <h4 style="margin: 0; font-size: 10px; opacity: 0.8;">معدل التحويل</h4>
-                <p style="margin: 5px 0 0 0; font-size: 18px; font-weight: bold; color: white;">12.4%</p>
-            </div>
-        </div>
-
         <div class="dashboard-grid">
             <div class="stat-card">
                 <div>
                     <span style="color: #94a3b8; font-size: 10px;">صافي الأرباح الاستثمارية</span>
                     <div class="stat-val" id="total-profit">$342,000</div>
-                    <span style="color:#10b981; font-size:9px;"><i class="fa-solid fa-arrow-trend-up"></i> متصل حي</span>
                 </div>
                 <i class="fa-solid fa-chart-line"></i>
             </div>
@@ -77,77 +58,85 @@
                 <div>
                     <span style="color: #94a3b8; font-size: 10px;">إجمالي الاستثمارات المعروضة</span>
                     <div class="stat-val" id="total-assets">$4,850,000</div>
-                    <span style="color:#94a3b8; font-size:9px;" id="assets-count">3 مشاريع كبرى</span>
                 </div>
                 <i class="fa-solid fa-wallet"></i>
             </div>
         </div>
 
-        <div class="chart-box">
-            <h3><i class="fa-solid fa-chart-column"></i> مؤشر مبيعات الأصول الحقيقي (يتأثر فور النشر)</h3>
-            <div class="chart-bars">
-                <div class="bar-container"><div class="bar" style="height: 45px;"></div><span class="bar-label">أحد</span></div>
-                <div class="bar-container"><div class="bar" style="height: 60px;"></div><span class="bar-label">اثنين</span></div>
-                <div class="bar-container"><div class="bar" style="height: 35px;"></div><span class="bar-label">ثلاثاء</span></div>
-                <div class="bar-container"><div class="bar" style="height: 55px;"></div><span class="bar-label">أربعاء</span></div>
-                <div class="bar-container"><div class="bar" id="live-bar" style="height: 70px; background: linear-gradient(to top, #f59e0b, #10b981);"></div><span class="bar-label" style="color:#10b981; font-weight:bold;">اليوم ✨</span></div>
-            </div>
-        </div>
-
         <div class="table-box">
-            <h3><i class="fa-solid fa-list-check"></i> الفواتير وسجل طلبات التعاقد الواردة حياً</h3>
+            <h3><i class="fa-solid fa-building-circle-xmark"></i> العقارات المنشورة حياً (تحكم العميل المباشر بالحذف)</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>المستثمر</th>
-                        <th>الأصل العقاري</th>
-                        <th>الحالة التعاقدية</th>
+                        <th>اسم العقار المعروض</th>
+                        <th>السعر المدرج</th>
+                        <th>الإجراء</th>
                     </tr>
                 </thead>
-                <tbody id="invoice-table-body">
-                    <tr>
-                        <td>أحمد الرميحي</td>
-                        <td>أيقونة المعمار الملكي</td>
-                        <td><span class="status">تم التعاقد والبيع</span></td>
-                    </tr>
-                </tbody>
+                <tbody id="management-table-body">
+                    </tbody>
             </table>
         </div>
     </div>
 
     <script>
-        window.onload = function() {
-            // فحص كلا المفتاحين لضمان التقاط السعر بشكل سليم تماماً
-            var addedPrice = localStorage.getItem('last_added_price') || localStorage.getItem('last_property_price');
+        function renderManagementTable() {
+            var tableBody = document.getElementById('management-table-body');
+            var currentProperties = localStorage.getItem('global_properties_list');
+            var propertiesArray = currentProperties ? JSON.parse(currentProperties) : [];
             
+            tableBody.innerHTML = '';
+            
+            if(propertiesArray.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:15px;">لا توجد عقارات مضافة بيدك حالياً.</td></tr>';
+                return;
+            }
+            
+            propertiesArray.forEach(function(item) {
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight:bold; color:white;">${item.title}</td>
+                    <td style="color:#f59e0b;">$${Number(item.price).toLocaleString()}</td>
+                    <td><button class="delete-btn" onclick="deleteProperty('${item.id}')"><i class="fa-solid fa-trash"></i> حذف ونزع فوراً</button></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function deleteProperty(propertyId) {
+            if(confirm("هل أنت متأكد من رغبتك في حذف هذا العقار ونزعه نهائياً من واجهة الزبائن؟")) {
+                var currentProperties = localStorage.getItem('global_properties_list');
+                var propertiesArray = currentProperties ? JSON.parse(currentProperties) : [];
+                
+                // تصفية المصفوفة واستثناء العنصر المحذوف
+                var updatedArray = propertiesArray.filter(function(item) {
+                    return item.id !== propertyId;
+                });
+                
+                localStorage.setItem('global_properties_list', JSON.stringify(updatedArray));
+                
+                // إعادة التوليد فوراً على الشاشة لتحديث العرض للعميل
+                renderManagementTable();
+                updateCounters();
+            }
+        }
+
+        function updateCounters() {
+            var addedPrice = localStorage.getItem('last_added_price');
             if (addedPrice) {
                 var priceNum = parseFloat(addedPrice);
                 if(!isNaN(priceNum)) {
-                    // 1. زيادة إجمالي الاستثمارات المعروضة
                     var currentAssets = 4850000 + priceNum;
                     document.getElementById('total-assets').innerText = '$' + currentAssets.toLocaleString();
-                    document.getElementById('assets-count').innerText = '4 مشاريع (محدث حي)';
-
-                    // 2. زيادة صافي الأرباح الاستثمارية
                     var currentProfit = 342000 + (priceNum * 0.10);
                     document.getElementById('total-profit').innerText = '$' + currentProfit.toLocaleString();
-
-                    // 3. تحديث ارتفاع شريط البيانات التفاعلي
-                    document.getElementById('live-bar').style.height = '98px';
-
-                    // 4. حقن سجل العمليات الجديد تلقائياً
-                    var tableBody = document.getElementById('invoice-table-body');
-                    var newRow = '<tr>' +
-                        '<td>مستثمر افتراضي جديد</td>' +
-                        '<td>العقار المدرج حديثاً</td>' +
-                        '<td><span class="status" style="background:rgba(245,158,11,0.1); color:#f59e0b;">قيد المعالجة الحية</span></td>' +
-                        '</tr>';
-                    tableBody.insertAdjacentHTML('afterbegin', newRow);
                 }
-                // تنظيف الذاكرة لضمان ثبات الأداء
-                localStorage.removeItem('last_added_price');
-                localStorage.removeItem('last_property_price');
             }
+        }
+
+        window.onload = function() {
+            renderManagementTable();
+            updateCounters();
         };
     </script>
 </body>
