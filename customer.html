@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرض العقارات الفاخرة - واجهة الزبائن</title>
+    <title>معرض العقارات الفاخرة - صالة كبار المستثمرين</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
@@ -16,15 +16,15 @@
         h1 {
             text-align: center;
             color: #f59e0b;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             font-size: 1.8rem;
             font-weight: 900;
         }
         p.subtitle {
             text-align: center;
             color: #94a3b8;
-            font-size: 13px;
-            margin-bottom: 30px;
+            font-size: 12px;
+            margin-bottom: 25px;
         }
         .properties-container {
             display: grid;
@@ -36,18 +36,16 @@
         .property-card {
             background: #1c2541;
             border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
-            text-decoration: none;
-            color: inherit;
             border: 1px solid #2e3c63;
         }
         .property-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
         }
         .property-img {
             width: 100%;
@@ -62,7 +60,7 @@
             flex-grow: 1;
         }
         .property-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             color: #f8fafc;
             margin: 0 0 10px 0;
@@ -95,11 +93,11 @@
 </head>
 <body>
 
-    <h1>صالة عروض الأصول الاستثمارية المتاحة</h1>
-    <p class="subtitle">مساحة تفاعلية حية ومحدثة من قبل إدارة المحتوى مباشرة</p>
+    <h1>صالة العروض الحصرية لكبار المستثمرين</h1>
+    <p class="subtitle">مساحة رقمية تفاعلية حية ومحدثة بالكامل من لوحة التحكم مباشرة</p>
     
     <div class="properties-container" id="propertiesWrapper">
-        <div class="loading-text">جاري جلب قائمة المعروضات الاستثمارية...</div>
+        <div class="loading-text">جاري مزامنة وبناء صالة العرض الفاخرة...</div>
     </div>
 
     <script>
@@ -107,16 +105,14 @@
             const wrapper = document.getElementById('propertiesWrapper');
             wrapper.innerHTML = '';
             
-            // جلب مصفوفة العقارات المتكاملة والمحدثة من قبل العميل
             const currentProperties = localStorage.getItem('global_properties_list');
             const propertiesArray = currentProperties ? JSON.parse(currentProperties) : [];
             
             if (propertiesArray.length === 0) {
-                wrapper.innerHTML = '<div class="loading-text"><i class="fa-solid fa-building-circle-exmark" style="font-size:24px; color:#f59e0b; margin-bottom:10px; display:block;"></i> لا توجد عقارات منشورة في الصالة حالياً. أضف عقاراً من لوحة التحكم لتراه حياً هنا.</div>';
+                wrapper.innerHTML = '<div class="loading-text"><i class="fa-solid fa-building-circle-exmark" style="font-size:24px; color:#f59e0b; margin-bottom:10px; display:block;"></i> لا توجد عقارات منشورة في الصالة حالياً. أضف عقاراً وارفع صورته من لوحة التحكم لتراه حياً هنا.</div>';
                 return;
             }
             
-            // بناء كروت العرض تلقائياً بناءً على محتوى مصفوفة العميل المحدثة
             propertiesArray.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'property-card';
@@ -137,7 +133,6 @@
             });
         }
 
-        // تشغيل البناء الديناميكي فور تحميل الشاشة
         document.addEventListener('DOMContentLoaded', loadProperties);
     </script>
 </body>
