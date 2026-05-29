@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>منصة عقاراتي - بوابة المستثمرين</title>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* هيدر فاخر ونقي ومخصص بالكامل لهوية المنصة دون أي أزرار صلاحيات */
+        nav { background: #1c2541; padding: 16px 14px; border-bottom: 2px solid #2a375e; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .logo { font-size: 22px; font-weight: 900; letter-spacing: 0.5px; } .logo span { color: #f59e0b; }
+        
+        .hero { padding: 35px 14px; text-align: center; background: radial-gradient(circle at top, #1e294b 0%, #0b1329 100%); }
+        .hero h1 { font-size: 24px; font-weight: 900; margin: 0 0 10px 0; background: linear-gradient(to left, #ffffff, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+        .hero p { color: #94a3b8; font-size: 13px; margin: 0 0 20px 0; line-height: 1.5; }
+        
+        .search-container { background: #1c2541; padding: 5px; border-radius: 12px; display: flex; border: 1px solid #3a4b7c; box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+        .search-container input { flex: 1; background: transparent; border: none; padding: 8px; color: white; text-align: right; outline: none; font-size: 13px; }
+        .search-container button { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #0b1329; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 900; font-size: 12px; }
+        
+        .section-title { font-size: 16px; font-weight: 800; margin: 25px 14px 15px 14px; color: #f59e0b; display: flex; align-items: center; gap: 6px; }
+        .grid-container { display: flex; flex-direction: column; gap: 18px; padding: 0 14px; }
+        .card { background: #1c2541; border-radius: 16px; border: 1px solid #2e3c63; overflow: hidden; text-decoration: none; color: inherit; display: block; box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+        .card img { width: 100%; height: 170px; object-fit: cover; }
+        .card-content { padding: 14px; }
+        .card-price { font-size: 20px; font-weight: 900; color: #f59e0b; }
+        .card-title { font-size: 14px; font-weight: 700; margin: 5px 0; line-height: 1.4; }
+        .card-meta { display: flex; justify-content: space-between; margin-top: 12px; padding-top: 8px; border-top: 1px solid #2e3c63; color: #94a3b8; font-size: 11px; }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر النقي والمغلق تماماً للمشتري والزبون -->
+    <nav>
+        <div class="logo">عقاراتي <span>PREMIUM</span></div>
+    </nav>
+
+    <!-- الواجهة التسويقية الاحترافية -->
+    <div class="hero">
+        <h1>صالة العروض الحصرية لكبار المستثمرين</h1>
+        <p>مساحة رقمية مخصصة ومحمية تمنحك إمكانية المعاينة الافتراضية وتقديم طلبات الشراء المباشرة لأفخم الأصول العقارية.</p>
+        
+        <div class="search-container">
+            <input type="text" placeholder="ابحث بالنطاق السعري، المدينة، أو رقم الصك...">
+            <button><i class="fa-solid fa-magnifying-glass"></i> بحث ذكي</button>
+        </div>
+    </div>
+
+    <div class="section-title"><i class="fa-solid fa-gem"></i> الأصول العقارية المتاحة للمعاينة والشراء</div>
+    
+    <div class="grid-container">
+        <!-- كرت 1 -->
+        <a href="details.html" class="card">
+            <img src="villa.jpg" alt="فيلا">
+            <div class="card-content">
+                <span class="card-price">$750,000</span>
+                <h3 class="card-title">أيقونة المعمار الحديث: ملاذ ساحلي ذكي بنظام بيئي ومسبح أولمبي</h3>
+                <p style="color:#94a3b8; font-size:12px; margin:0;">📍 دبي، نخلة جميرا</p>
+                <div class="card-meta"><span>📐 380 م²</span><span>🛁 4 حمام</span><span>🛏️ 5 غرف</span></div>
+            </div>
+        </a>
+
+        <!-- كرت 2 -->
+        <a href="details.html" class="card">
+            <img src="interior.jpg" alt="شقة">
+            <div class="card-content">
+                <span class="card-price">$420,000</span>
+                <h3 class="card-title">أفق الفخامة: جناح علوي معاصر بهوية مستوحاة من الأجنحة الملكية</h3>
+                <p style="color:#94a3b8; font-size:12px; margin:0;">📍 الرياض، برج رافال</p>
+                <div class="card-meta"><span>📐 210 م²</span><span>🛁 3 حمام</span><span>🛏️ 3 غرف</span></div>
+            </div>
+        </a>
+
+        <!-- كرت 3 -->
+        <a href="details.html" class="card">
+            <img src="palace.jpg" alt="قصر">
+            <div class="card-content">
+                <span class="card-price">$2,850,000</span>
+                <h3 class="card-title">التحفة الكريستالية: قصر هندسي مستقبلي بواجهات زجاجية ذكية</h3>
+                <p style="color:#94a3b8; font-size:12px; margin:0;">📍 جدة، حي الشاطئ</p>
+                <div class="card-meta"><span>📐 850 م²</span><span>🛁 6 حمام</span><span>🛏️ 6 غرف</span></div>
+            </div>
+        </a>
+    </div>
+
+</body>
+</html>

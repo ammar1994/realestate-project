@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معرض العقارات الاحترافي</title>
+    <style>
+        /* تنسيقات مرنة وحديثة متوافقة مع جميع الشاشات */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+        
+        /* شبكة عرض مرنة: تتشكل وتترتب تلقائياً حسب حجم الشاشة */
+        .properties-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* كرت العقار: أصبح رابطاً بالكامل ليفتح التفاصيل عند الضغط عليه */
+        .property-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+        }
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .property-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+        .property-details {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .property-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0 0 10px 0;
+        }
+        .property-price {
+            color: #e74c3c;
+            font-size: 1.15rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .property-meta {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .loading-text {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            grid-column: 1 / -1;
+            padding: 40px;
+        }
+        .nav-buttons {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .add-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .add-btn:hover {
+            background-color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>معرض العقارات المتاحة</h1>
+    
+    <div class="nav-buttons">
+        <a href="add.html" class="add-btn">➕ إضافة عقار جديد</a>
+    </div>
+
+    <div class="properties-container" id="propertiesWrapper">
+        <div class="loading-text">جاري جلب العقارات الحية من السيرفر السحابي...</div>
+    </div>
+
+    <script>
+        // إعدادات الاتصال الآمن والمباشر بسيرفر Supabase الخاص بـ عمار
+        const SUPABASE_URL = "https://plfibajexgugqhunmepv.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmliYWpleGd1Z3FodW5tZXB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Mjk0MTcsImV4cCI6MjA2NDAwNTQxN30.0b_XbQhVz8v0w7XhWhS8xJ4367bB_m7G8P6N2C1mZ20"; 
+
+        async function fetchProperties() {
+            const wrapper = document.getElementById('propertiesWrapper');
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/properties`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) throw new Error('خطأ في الاتصال بالسيرفر');
+                
+                const properties = await response.json();
+                wrapper.innerHTML = ''; // إزالة جملة التحميل
+                
+                if (properties.length === 0) {
+                    wrapper.innerHTML = '<div class="loading-text">لا توجد عقارات مضافة حالياً. اذهب للوحة التحكم وأضف أول عقار!</div>';
+                    return;
+                }
+                
+                // دالة بناء كروت العقارات وربطها بصفحة التفاصيل ذكياً عبر الـ ID
+                properties.forEach(item => {
+                    const card = document.createElement('a');
+                    card.href = `details.html?id=${item.id}`; // توجيه ذكي لصفحة التفاصيل الموحدة
+                    card.className = 'property-card';
+                    
+                    card.innerHTML = `
+                        <img src="${item.main_img || 'villa.jpg'}" class="property-img" alt="${item.title}">
+                        <div class="property-details">
+                            <h3 class="property-title">${item.title}</h3>
+                            <div class="property-price">${Number(item.price).toLocaleString()} ل.س</div>
+                            <div class="property-meta">
+                                <span>📍 ${item.location}</span>
+                                <span>📐 ${item.area} م²</span>
+                            </div>
+                            <div class="property-meta">
+                                <span>🚪 التفاصيل: ${item.rooms}</span>
+                            </div>
+                        </div>
+                    `;
+                    wrapper.appendChild(card);
+                });
+                
+            } catch (error) {
+                console.error(error);
+                wrapper.innerHTML = '<div class="loading-text" style="color:red;">حدث خطأ أثناء تحميل العقارات. تأكد من اتصال الإنترنت.</div>';
+            }
+        }
+
+        // تشغيل الجلب التلقائي فور فتح الموقع
+        document.addEventListener('DOMContentLoaded', fetchProperties);
+    </script>
+</body>
+</html>

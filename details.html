@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل العقار</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .details-container {
+            background: #fff;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .main-img {
+            width: 100%;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 8px;
+            background-color: #ddd;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+        .price {
+            font-size: 1.4rem;
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .info-item {
+            font-size: 1.1rem;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .back-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="details-container" id="detailsWrapper">
+        <p style="text-align:center;">جاري تحميل تفاصيل العقار من السيرفر السحابي...</p>
+    </div>
+
+    <script>
+        const SUPABASE_URL = "https://plfibajexgugqhunmepv.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmliYWpleGd1Z3FodW5tZXB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Mjk0MTcsImV4cCI6MjA2NDAwNTQxN30.0b_XbQhVz8v0w7XhWhS8xJ4367bB_m7G8P6N2C1mZ20";
+
+        // دالة ذكية لقراءة معرف العقار (ID) من رابط الصفحة
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = urlParams.get('id');
+
+        async function fetchPropertyDetails() {
+            const wrapper = document.getElementById('detailsWrapper');
+            if (!propertyId) {
+                wrapper.innerHTML = '<p style="color:red; text-align:center;">عذراً، لم يتم تحديد العقار بشكل صحيح.</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/properties?id=eq.${propertyId}`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+                if (data.length === 0) {
+                    wrapper.innerHTML = '<p style="text-align:center;">العقار غير موجود أو تم حذفه.</p>';
+                    return;
+                }
+
+                const item = data[0];
+                
+                // بناء صفحة التفاصيل ديناميكياً لتناسب الجوال والكمبيوتر
+                wrapper.innerHTML = `
+                    <img src="${item.main_img || 'villa.jpg'}" class="main-img" alt="${item.title}">
+                    <h2>${item.title}</h2>
+                    <div class="price">${item.price} ل.س</div>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">📍 <strong>الموقع:</strong> ${item.location}</div>
+                        <div class="info-item">📐 <strong>المساحة:</strong> ${item.area} م²</div>
+                        <div class="info-item">🚪 <strong>التفاصيل والغرف:</strong> ${item.rooms}</div>
+                    </div>
+                    
+                    <a href="index.html" class="back-btn">⬅️ العودة للرئيسية</a>
+                `;
+
+            } catch (error) {
+                console.error(error);
+                wrapper.innerHTML = '<p style="color:red; text-align:center;">حدث خطأ في الاتصال بالسيرفر السحابي.</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchPropertyDetails);
+    </script>
+</body>
+</html>
