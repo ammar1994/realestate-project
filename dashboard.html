@@ -12,6 +12,10 @@
         .logo span { color: #f59e0b; font-weight: 900; margin-right: 4px; }
         .content { padding: 20px 14px; }
         
+        /* التعديل المطلوب 1: تنسيق أزرار التنقل العلوية */
+        .top-actions { display: flex; gap: 10px; margin-bottom: 15px; }
+        .add-btn-nav { flex: 1; text-align: center; background: #f59e0b; color: #0b1329; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; border: none; }
+        
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
         .stat-card { background: #1c2541; border-radius: 14px; padding: 14px; border: 1px solid #2e3c63; display: flex; align-items: center; justify-content: space-between; }
         .stat-val { font-size: 15px; font-weight: 900; color: #f59e0b; margin-top: 4px; }
@@ -35,6 +39,10 @@
     </nav>
 
     <div class="content">
+        <div class="top-actions">
+            <a href="add.html" class="add-btn-nav"><i class="fa-solid fa-plus"></i> إضافة عقار جديد للمحفظة</a>
+        </div>
+
         <div class="dashboard-grid">
             <div class="stat-card">
                 <div>
@@ -63,10 +71,10 @@
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    </tbody>
+                </tbody>
             </table>
             
-            <a href="index.html" class="view-link">👁️ فتح واجهة صالة العروض العقارية للزبائن</a>
+            <a href="customer.html" class="view-link">👁️ فتح واجهة صالة العروض العقارية للزبائن</a>
         </div>
     </div>
 
