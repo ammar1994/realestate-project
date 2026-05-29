@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرض العقارات</title>
+    <title>صالة العروض الحصرية - عقارات PREMIUM</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -16,125 +16,110 @@
             text-align: center;
             color: #f59e0b;
             margin-bottom: 5px;
-            font-size: 1.8rem;
+            font-size: 2rem;
+            font-weight: 800;
         }
         p.subtitle {
             text-align: center;
             color: #94a3b8;
-            font-size: 12px;
+            font-size: 14px;
             margin-bottom: 30px;
+        }
+        .nav-buttons {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .add-btn {
+            display: inline-block;
+            padding: 10px 24px;
+            background-color: #10b981;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+        .add-btn:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
         }
         .properties-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
             max-width: 1200px;
             margin: 0 auto;
         }
         .property-card {
             background: #1c2541;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             border: 1px solid #2e3c63;
-            position: relative;
+            transition: transform 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .property-card:hover {
+            transform: translateY(-5px);
         }
         .property-img {
             width: 100%;
-            height: 210px;
+            height: 230px;
             object-fit: cover;
             background-color: #141d36;
         }
         .property-details {
-            padding: 16px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
-        .type-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(245, 158, 11, 0.9);
-            color: #0b1329;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-        }
-        .property-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #f8fafc;
-            margin: 0 0 8px 0;
-        }
         .property-price {
             color: #f59e0b;
-            font-size: 18px;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
-        .property-desc {
-            font-size: 12px;
-            color: #cbd5e1;
-            margin-bottom: 12px;
-            line-height: 1.5;
+        .property-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #f8fafc;
+            margin: 0 0 12px 0;
+            line-height: 1.4;
         }
         .property-meta {
-            font-size: 11px;
-            color: #94a3b8;
-            margin-bottom: 12px;
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             border-top: 1px solid rgba(46, 60, 99, 0.4);
-            padding-top: 8px;
+            padding-top: 10px;
         }
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-            margin-top: auto;
-        }
-        .btn-action {
-            flex: 1;
-            padding: 10px;
-            border-radius: 6px;
-            text-decoration: none;
-            text-align: center;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-        }
-        .btn-whatsapp { background-color: #25d366; }
-        .btn-media { background-color: #3b82f6; }
-        .btn-map { background-color: #4b5563; }
         .loading-text {
             text-align: center;
-            font-size: 13px;
+            font-size: 14px;
             color: #94a3b8;
             grid-column: 1 / -1;
-            padding: 40px;
-        }
-        .nav-link {
-            display: block;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #f59e0b;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: bold;
+            padding: 50px;
         }
     </style>
 </head>
 <body>
 
-    <h1>معرض العقارات</h1>
-    <p class="subtitle">عرض مباشر للعقارات والمشاريع السكنية الحالية</p>
-    <a href="dashboard.html" class="nav-link">الدخول إلى لوحة التحكم</a>
+    <h1>عقاراتي PREMIUM</h1>
+    <p class="subtitle">صالة العروض الحصرية للاستثمار العقاري المباشر</p>
     
+    <div class="nav-buttons">
+        <a href="dashboard.html" class="add-btn">💼 لوحة التحكم الشاملة</a>
+    </div>
+
     <div class="properties-container" id="propertiesWrapper">
-        <div class="loading-text">جاري جلب البيانات الحية...</div>
+        <div class="loading-text">جاري الاتصال الآمن بالسيرفر وجلب الأصول...</div>
     </div>
 
     <script>
@@ -153,7 +138,7 @@
                     }
                 });
                 
-                if (!response.ok) throw new Error('خطأ في الاتصال بالسيرفر');
+                if (!response.ok) throw new Error('Network error');
                 
                 const properties = await response.json();
                 wrapper.innerHTML = '';
@@ -164,47 +149,30 @@
                 }
                 
                 properties.forEach(item => {
-                    const card = document.createElement('div');
+                    const card = document.createElement('a');
+                    card.href = `details.html?id=${item.id}`;
                     card.className = 'property-card';
                     
-                    const pType = item.property_type || "شقة";
-                    const pDesc = item.description || "لا يوجد وصف إضافي متوفر.";
-                    
-                    // استخراج أول صورة من المصفوفة المرفوعة إن وجدت، وإلا نستخدم صورة افتراضية
                     let mainImage = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80';
+                    
                     if (item.media_list && item.media_list.length > 0) {
                         const firstMedia = item.media_list[0];
-                        if (firstMedia.type === 'image') {
-                            mainImage = firstMedia.data;
-                        }
+                        if (firstMedia && firstMedia.data) mainImage = firstMedia.data;
                     } else if (item.main_img) {
                         mainImage = item.main_img;
                     }
                     
-                    // الترحيب التلقائي في الواتساب فقط
-                    const messageText = encodeURIComponent(`السلام عليكم، أريد الاستفسار عن عقار: (${item.title}) المعروض بسعر (${Number(item.price).toLocaleString()} ريال). هل هو متاح؟`);
-                    const whatsappUrl = `https://wa.me/${item.phone || '966500000000'}?text=${messageText}`;
-                    
-                    const mapUrl = (item.lat && item.lng) ? `https://maps.google.com/?q=${item.lat},${item.lng}` : '#';
-
                     card.innerHTML = `
-                        <span class="type-badge">${pType}</span>
                         <img src="${mainImage}" class="property-img" alt="${item.title}">
                         <div class="property-details">
                             <div class="property-price">${Number(item.price).toLocaleString()} ر.س</div>
                             <h3 class="property-title">${item.title}</h3>
-                            <p class="property-desc">${pDesc}</p>
                             <div class="property-meta">
-                                <span>📍 ${item.location}</span>
-                                <span>📐 ${item.area} م²</span>
+                                <span>📍 ${item.location || 'دمشق'}</span>
+                                <span>📐 ${item.area || '0'} م²</span>
                             </div>
-                            <div class="property-meta" style="border:none; padding:0; margin-bottom:12px;">
-                                <span>🚪 التفاصيل: ${item.rooms}</span>
-                            </div>
-                            <div class="action-buttons">
-                                <a href="${whatsappUrl}" target="_blank" class="btn-action btn-whatsapp">تواصل واتساب</a>
-                                <a href="details.html?id=${item.id}" class="btn-action btn-media">معاينة الوسائط</a>
-                                <a href="${mapUrl}" target="_blank" class="btn-action btn-map">الموقع</a>
+                            <div class="property-meta" style="border:none; padding:0;">
+                                <span>🚪 التفاصيل: ${item.rooms || 'غير محدد'}</span>
                             </div>
                         </div>
                     `;
@@ -213,7 +181,7 @@
                 
             } catch (error) {
                 console.error(error);
-                wrapper.innerHTML = '<div class="loading-text" style="color:#ef4444;">حدث خطأ أثناء تحميل البيانات. يرجى التأكد من اتصال الإنترنت.</div>';
+                wrapper.innerHTML = '<div class="loading-text" style="color:#ef4444;">حدث خطأ أثناء تحميل البيانات الحية من الخادم.</div>';
             }
         }
 
