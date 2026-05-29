@@ -131,27 +131,51 @@
                     }
                 });
                 
-                if (!response.ok) throw new Error('خطأ في الاتصال بالسيرفر');
+                let properties = [];
+                if (response.ok) {
+                    properties = await response.json();
+                }
                 
-                const properties = await response.json();
                 wrapper.innerHTML = ''; // إزالة جملة التحميل
                 
+                // --- هندسة الربط المحلي المطور (عمار) ---
+                // جلب العقار الإضافي المخزن محلياً في ذاكرة المتصفح
+                const savedProperty = localStorage.getItem('new_client_property');
+                if (savedProperty) {
+                    const localData = JSON.parse(savedProperty);
+                    
+                    // تحويل البيانات لتطابق تركيبة بيانات السيرفر وحقنها في بداية المصفوفة
+                    const localItem = {
+                        id: 'local_' + Date.now(),
+                        title: localData.title,
+                        price: localData.price.replace(/,/g, ''), // تنظيف الفواصل للحسابات
+                        location: localData.location,
+                        area: localData.area,
+                        rooms: localData.details,
+                        main_img: localData.image
+                    };
+                    
+                    // وضع العقار الجديد كأول عنصر ليظهر في بداية المعرض فوراً
+                    properties.unshift(localItem);
+                }
+                // ----------------------------------------
+
                 if (properties.length === 0) {
                     wrapper.innerHTML = '<div class="loading-text">لا توجد عقارات مضافة حالياً. اذهب للوحة التحكم وأضف أول عقار!</div>';
                     return;
                 }
                 
-                // دالة بناء كروت العقارات وربطها بصفحة التفاصيل ذكياً عبر الـ ID
+                // دالة بناء كروت العقارات المدمجة
                 properties.forEach(item => {
                     const card = document.createElement('a');
-                    card.href = `details.html?id=${item.id}`; // توجيه ذكي لصفحة التفاصيل الموحدة
+                    card.href = `details.html?id=${item.id}`; 
                     card.className = 'property-card';
                     
                     card.innerHTML = `
                         <img src="${item.main_img || 'villa.jpg'}" class="property-img" alt="${item.title}">
                         <div class="property-details">
                             <h3 class="property-title">${item.title}</h3>
-                            <div class="property-price">${Number(item.price).toLocaleString()} ل.س</div>
+                            <div class="property-price">${Number(item.price).toLocaleString()} $</div>
                             <div class="property-meta">
                                 <span>📍 ${item.location}</span>
                                 <span>📐 ${item.area} م²</span>
@@ -166,7 +190,33 @@
                 
             } catch (error) {
                 console.error(error);
-                wrapper.innerHTML = '<div class="loading-text" style="color:red;">حدث خطأ أثناء تحميل العقارات. تأكد من اتصال الإنترنت.</div>';
+                
+                // حتى لو انقطع الإنترنت أو حدث خطأ في السيرفر، سنعرض العقار المخزن محلياً لكي يرى العميل النتيجة!
+                const savedProperty = localStorage.getItem('new_client_property');
+                if (savedProperty) {
+                    wrapper.innerHTML = ''; 
+                    const localData = JSON.parse(savedProperty);
+                    const card = document.createElement('a');
+                    card.href = `#`;
+                    card.className = 'property-card';
+                    card.innerHTML = `
+                        <img src="${localData.image}" class="property-img" alt="${localData.title}">
+                        <div class="property-details">
+                            <h3 class="property-title">${localData.title}</h3>
+                            <div class="property-price">${parseFloat(localData.price.replace(/,/g, '')).toLocaleString()} $</div>
+                            <div class="property-meta">
+                                <span>📍 ${localData.location}</span>
+                                <span>📐 ${localData.area} م²</span>
+                            </div>
+                            <div class="property-meta">
+                                <span>🚪 التفاصيل: ${localData.details}</span>
+                            </div>
+                        </div>
+                    `;
+                    wrapper.appendChild(card);
+                } else {
+                    wrapper.innerHTML = '<div class="loading-text" style="color:red;">حدث خطأ أثناء تحميل العقارات. تأكد من اتصال الإنترنت.</div>';
+                }
             }
         }
 
