@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>إضافة عقار جديد</title>
+    <title>إضافة عقار جديد - السيرفر السحابي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,13 +22,13 @@
         input:focus { border-color: #10b981; outline: none; }
         .submit-btn { width: 100%; padding: 14px; background: #10b981; border: none; border-radius: 8px; color: #0b1329; font-size: 14px; font-weight: 900; cursor: pointer; margin-top: 10px; transition: 0.2s; }
         .submit-btn:hover { background: #059669; }
-        .success-msg { display: none; color: #10b981; font-size: 12px; font-weight: bold; margin-top: 10px; text-align: center; }
+        .msg { display: none; font-size: 12px; font-weight: bold; margin-top: 10px; text-align: center; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-circle-plus"></i> إدارة المحتوى <span>العقاري</span></div>
+        <div class="logo"><i class="fa-solid fa-circle-plus"></i> إدارة المحتوى <span>العقاري السحابي</span></div>
     </nav>
 
     <div class="content">
@@ -44,12 +44,12 @@
                     <input type="text" id="title" placeholder="مثال: فيلا ملكية فاخرة" required>
                 </div>
                 <div class="form-group">
-                    <label>السعر (بالدولار $):</label>
+                    <label>السعر:</label>
                     <input type="number" id="price" placeholder="مثال: 500000" required>
                 </div>
                 <div class="form-group">
                     <label>الموقع / المدينة:</label>
-                    <input type="text" id="location" placeholder="مثال: دبي - نخلة جميرا" required>
+                    <input type="text" id="location" placeholder="مثال: دمشق - يعفور" required>
                 </div>
                 <div class="form-group">
                     <label>المساحة (متر مربع):</label>
@@ -64,38 +64,73 @@
                     <input type="url" id="image" placeholder="https://example.com/image.jpg">
                 </div>
 
-                <button type="submit" class="submit-btn">حفظ العقار ونشره فوراً</button>
-                <div class="success-msg" id="success-box">✨ تم الحفظ بنجاح! جاري تحويلك للوحة التحكم...</div>
+                <button type="submit" class="submit-btn" id="btnText">حفظ العقار ونشره سحابياً</button>
+                <div class="msg" id="msg-box"></div>
             </form>
         </div>
     </div>
 
     <script>
-        document.getElementById('property-form').addEventListener('submit', function(e) {
+        // مفاتيح الاتصال بسيرفر Supabase الخاص بك
+        const SUPABASE_URL = "https://plfibajexgugqhunmepv.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmliYWpleGd1Z3FodW5tZXB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Mjk0MTcsImV4cCI6MjA2NDAwNTQxN30.0b_XbQhVz8v0w7XhWhS8xJ4367bB_m7G8P6N2C1mZ20";
+
+        document.getElementById('property-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // تجميع كل المدخلات في كائن واحد (Object) لصفحة الزبون
-            var propertyData = {
+            const btn = document.getElementById('btnText');
+            const msgBox = document.getElementById('msg-box');
+            
+            btn.innerText = "جاري الرفع والنشر سحابياً...";
+            btn.disabled = true;
+
+            // تجهيز البيانات لتطابق تركيبة قاعدة البيانات بدقة
+            const priceVal = document.getElementById('price').value;
+            const propertyData = {
                 title: document.getElementById('title').value,
-                price: parseFloat(document.getElementById('price').value).toLocaleString(),
+                price: parseFloat(priceVal),
                 location: document.getElementById('location').value,
-                area: document.getElementById('area').value,
-                details: document.getElementById('details').value,
-                // إذا لم يضع صورة نضع صورة افتراضية فاخرة
-                image: document.getElementById('image').value || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
+                area: parseInt(document.getElementById('area').value),
+                rooms: document.getElementById('details').value,
+                main_img: document.getElementById('image').value || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
             };
-            
-            // حفظ الكائن كامل لصفحة الزبون
-            localStorage.setItem('new_client_property', JSON.stringify(propertyData));
-            
-            // حفظ السعر منفصلاً للوحة التحكم كما كان سابقاً
-            localStorage.setItem('last_added_price', document.getElementById('price').value);
-            
-            document.getElementById('success-box').style.display = 'block';
-            
-            setTimeout(function() {
-                window.location.href = 'dashboard.html';
-            }, 1200);
+
+            try {
+                // إرسال طلب نَشر (POST) إلى سيرفر سوبابيس
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/properties`, {
+                    method: 'POST',
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=representation'
+                    },
+                    body: JSON.stringify(propertyData)
+                });
+
+                if (response.ok) {
+                    // حفظ السعر محلياً فقط لتحديث العدادات في لوحة التحكم بشكل تفاعلي
+                    localStorage.setItem('last_added_price', priceVal);
+                    localStorage.setItem('last_property_price', priceVal);
+
+                    msgBox.style.color = "#10b981";
+                    msgBox.innerText = "✨ عظيم! تم الحفظ في السيرفر بنجاح وجاري تحويلك للوحة التحكم...";
+                    msgBox.style.display = "block";
+
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    throw new Error("فشل الرفع");
+                }
+
+            } catch (error) {
+                msgBox.style.color = "#ff5252";
+                msgBox.innerText = "❌ حدث خطأ أثناء الاتصال بالسيرفر. تأكد من الإنترنت.";
+                msgBox.style.display = "block";
+                btn.innerText = "حفظ العقار ونشره سحابياً";
+                btn.disabled = false;
+            }
         });
     </script>
 </body>
