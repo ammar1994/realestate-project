@@ -74,17 +74,25 @@
         document.getElementById('property-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // جلب القيمة المدخلة للسعر
-            var priceValue = document.getElementById('price').value;
+            // تجميع كل المدخلات في كائن واحد (Object) لصفحة الزبون
+            var propertyData = {
+                title: document.getElementById('title').value,
+                price: parseFloat(document.getElementById('price').value).toLocaleString(),
+                location: document.getElementById('location').value,
+                area: document.getElementById('area').value,
+                details: document.getElementById('details').value,
+                // إذا لم يضع صورة نضع صورة افتراضية فاخرة
+                image: document.getElementById('image').value || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
+            };
             
-            // تخزين السعر في المفتاحين لضمان التقاط لوحة التحكم له بشكل سليم
-            localStorage.setItem('last_added_price', priceValue);
-            localStorage.setItem('last_property_price', priceValue);
+            // حفظ الكائن كامل لصفحة الزبون
+            localStorage.setItem('new_client_property', JSON.stringify(propertyData));
             
-            // إظهار رسالة النجاح وتأكيد العملية
+            // حفظ السعر منفصلاً للوحة التحكم كما كان سابقاً
+            localStorage.setItem('last_added_price', document.getElementById('price').value);
+            
             document.getElementById('success-box').style.display = 'block';
             
-            // تحويل المستخدم تلقائياً بعد ثانية واحدة إلى لوحة التحكم لمشاهدة التحديث الحي!
             setTimeout(function() {
                 window.location.href = 'dashboard.html';
             }, 1200);
