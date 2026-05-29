@@ -3,129 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرض العقارات الفاخرة - صالة كبار المستثمرين</title>
+    <title>معرض الفرص العقارية الفاخرة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b1329;
-            margin: 0;
-            padding: 20px;
-            color: #f8fafc;
-        }
-        h1 {
-            text-align: center;
-            color: #f59e0b;
-            margin-bottom: 5px;
-            font-size: 1.8rem;
-            font-weight: 900;
-        }
-        p.subtitle {
-            text-align: center;
-            color: #94a3b8;
-            font-size: 12px;
-            margin-bottom: 25px;
-        }
-        .properties-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .property-card {
-            background: #1c2541;
-            border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #2e3c63;
-        }
-        .property-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
-        }
-        .property-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background-color: #141d36;
-        }
-        .property-details {
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-        .property-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #f8fafc;
-            margin: 0 0 10px 0;
-            line-height: 1.4;
-        }
-        .property-price {
-            color: #f59e0b;
-            font-size: 20px;
-            font-weight: 900;
-            margin-bottom: 12px;
-        }
-        .property-meta {
-            font-size: 11px;
-            color: #cbd5e1;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid rgba(46, 60, 99, 0.4);
-            padding-top: 10px;
-        }
+        body { font-family: system-ui, -apple-system, sans-serif; background-color: #0b1329; margin: 0; padding: 20px; color: #f8fafc; }
+        h1 { text-align: center; color: #f59e0b; margin-bottom: 5px; font-size: 1.8rem; font-weight: 900; }
+        p.subtitle { text-align: center; color: #94a3b8; font-size: 12px; margin-bottom: 30px; }
+        .properties-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; }
+        
+        .property-card { background: #1c2541; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #2e3c63; }
+        
+        /* حاوية العرض المتعددة للصور والفيديوهات */
+        .media-viewer { position: relative; width: 100%; height: 210px; background: #141d36; }
+        .media-viewer img, .media-viewer video { width: 100%; height: 100%; object-fit: cover; }
+        .media-badge { position: absolute; top: 10px; left: 10px; background: rgba(11,19,41,0.8); padding: 4px 8px; border-radius: 6px; font-size: 10px; color: #f59e0b; font-weight: bold; }
+        
+        .property-details { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
+        .tag { font-size: 10px; background: rgba(245,158,11,0.15); color: #f59e0b; padding: 4px 8px; border-radius: 4px; align-self: flex-start; margin-bottom: 8px; font-weight: bold; }
+        .property-title { font-size: 15px; font-weight: bold; color: #f8fafc; margin: 0 0 8px 0; line-height: 1.4; }
+        .property-price { color: #f59e0b; font-size: 21px; font-weight: 900; margin-bottom: 12px; }
+        
+        .property-meta { font-size: 11px; color: #cbd5e1; margin-bottom: 14px; display: flex; justify-content: space-between; border-top: 1px solid rgba(46, 60, 99, 0.4); padding-top: 10px; }
         .meta-item { display: flex; align-items: center; gap: 4px; }
-        .loading-text {
-            text-align: center;
-            font-size: 13px;
-            color: #94a3b8;
-            grid-column: 1 / -1;
-            padding: 40px;
-        }
+        
+        /* أزرار الإجراءات التفاعلية للزبائن */
+        .action-row { display: flex; gap: 8px; margin-top: auto; }
+        .btn-whatsapp { flex: 2; background: #25d366; color: white; border: none; padding: 11px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 900; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
+        .btn-whatsapp:hover { background: #1cbd55; }
+        .btn-map { flex: 1; background: #3b82f6; color: white; border: none; padding: 11px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        
+        .loading-text { text-align: center; font-size: 13px; color: #94a3b8; grid-column: 1 / -1; padding: 50px; }
     </style>
 </head>
 <body>
 
-    <h1>صالة العروض الحصرية لكبار المستثمرين</h1>
-    <p class="subtitle">مساحة رقمية تفاعلية حية ومحدثة بالكامل من لوحة التحكم مباشرة</p>
+    <h1>منصة العروض والفرص الاستثمارية العقارية</h1>
+    <p class="subtitle">تصفح حي ومباشر لأحدث الفلل والمشاريع السكنية الفاخرة بالمملكة</p>
     
-    <div class="properties-container" id="propertiesWrapper">
-        <div class="loading-text">جاري مزامنة وبناء صالة العرض الفاخرة...</div>
+    <div class="properties-container" id="saudiClientWrapper">
+        <div class="loading-text">جاري فحص وتحديث المعروضات الحية بالمحفظة...</div>
     </div>
 
     <script>
-        function loadProperties() {
-            const wrapper = document.getElementById('propertiesWrapper');
+        function loadSaudiProperties() {
+            const wrapper = document.getElementById('saudiClientWrapper');
             wrapper.innerHTML = '';
             
-            const currentProperties = localStorage.getItem('global_properties_list');
-            const propertiesArray = currentProperties ? JSON.parse(currentProperties) : [];
+            const currentData = localStorage.getItem('saudi_realestate_vault');
+            const dataArray = currentData ? JSON.parse(currentData) : [];
             
-            if (propertiesArray.length === 0) {
-                wrapper.innerHTML = '<div class="loading-text"><i class="fa-solid fa-building-circle-exmark" style="font-size:24px; color:#f59e0b; margin-bottom:10px; display:block;"></i> لا توجد عقارات منشورة في الصالة حالياً. أضف عقاراً وارفع صورته من لوحة التحكم لتراه حياً هنا.</div>';
+            if (dataArray.length === 0) {
+                wrapper.innerHTML = '<div class="loading-text"><i class="fa-solid fa-building-circle-exmark" style="font-size:26px; color:#f59e0b; margin-bottom:10px; display:block;"></i> لا توجد عروض منشورة في صالة المبيعات حالياً.</div>';
                 return;
             }
             
-            propertiesArray.forEach(item => {
+            dataArray.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'property-card';
                 
+                // تحديد الوسيطة الأولى للعرض الرئيسي (صورة أو فيديو)
+                const firstMedia = item.media_list && item.media_list[0] ? item.media_list[0] : { type: 'image', data: '' };
+                let mediaElementHtml = '';
+                
+                if(firstMedia.type === 'video') {
+                    mediaElementHtml = `<video src="${firstMedia.data}" controls muted loop autoplay class="property-img"></video>`;
+                } else {
+                    mediaElementHtml = `<img src="${firstMedia.data}" class="property-img" alt="عرض عقاري">`;
+                }
+
+                const totalMediaCount = item.media_list ? item.media_list.length : 1;
+
+                // إعداد نص رسالة الواتساب الاحترافية والمشفرة لفتح تطبيق الجوال تلقائياً
+                const messageText = encodeURIComponent(`مرحباً، أريد الاستفسار عن عقار: (${item.title}) المعروض في صالة العرض بقيمة: (${Number(item.price).toLocaleString()} ريال سعودي). هل العرض متاح؟`);
+                const whatsappUrl = `https://wa.me/${item.phone}?text=${messageText}`;
+                
                 card.innerHTML = `
-                    <img src="${item.main_img}" class="property-img" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'" alt="${item.title}">
+                    <div class="media-viewer">
+                        ${mediaElementHtml}
+                        <div class="media-badge"><i class="fa-solid fa-photo-film"></i> وسائط: ${totalMediaCount}</div>
+                    </div>
                     <div class="property-details">
-                        <div class="property-price">$${Number(item.price).toLocaleString()}</div>
+                        <span class="tag">${item.type}</span>
+                        <div class="property-price">${Number(item.price).toLocaleString()} ر.س</div>
                         <h3 class="property-title">${item.title}</h3>
                         <div class="property-meta">
                             <span class="meta-item"><i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> ${item.location}</span>
-                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:#3b82f6;"></i> ${item.area} م²</span>
-                            <span class="meta-item"><i class="fa-solid fa-bed" style="color:#3b82f6;"></i> ${item.rooms}</span>
+                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:#f59e0b;"></i> ${item.area} م²</span>
+                            <span class="meta-item"><i class="fa-solid fa-circle-info" style="color:#3b82f6;"></i> ${item.rooms}</span>
+                        </div>
+                        <div class="action-row">
+                            <a href="${whatsappUrl}" target="_blank" class="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> استفسر عبر الواتساب</a>
+                            <a href="${item.map_url}" target="_blank" class="btn-map"><i class="fa-solid fa-map-location-dot"></i> الموقع</a>
                         </div>
                     </div>
                 `;
@@ -133,7 +101,7 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', loadProperties);
+        document.addEventListener('DOMContentLoaded', loadSaudiProperties);
     </script>
 </body>
 </html>
