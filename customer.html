@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>معرض الفرص العقارية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -13,27 +13,9 @@
         
         .property-card { background: #1c2541; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #2e3c63; }
         
-        /* 🌟 تحديث حاوية الميديا: ضبط الخلفية لتناسب كافة أبعاد الصور */
-        .media-viewer { 
-            position: relative; 
-            width: 100%; 
-            height: 210px; 
-            background: #0f172a; /* خلفية أغمق لتبدو احترافية عند ظهور الفراغات الجانبية */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        
-        /* 🌟 حل المشكلة: contain تضمن عدم قص أي جزء من حواف الصورة مهما كانت أبعادها */
-        .property-img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain; 
-            image-orientation: from-image;
-            display: block;
-        }
-        
+        /* الحاوية الأساسية: مظهر ممتلئ واحترافي كما طلبت تماماً */
+        .media-viewer { position: relative; width: 100%; height: 210px; background: #141d36; cursor: zoom-in; }
+        .property-img { width: 100%; height: 100%; object-fit: cover; image-orientation: from-image; display: block; }
         .media-badge { position: absolute; top: 10px; left: 10px; background: rgba(11,19,41,0.8); padding: 4px 8px; border-radius: 6px; font-size: 10px; color: #f59e0b; font-weight: bold; z-index: 2; }
         
         .property-details { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
@@ -44,19 +26,22 @@
         .property-meta { font-size: 11px; color: #cbd5e1; margin-bottom: 14px; display: flex; justify-content: space-between; border-top: 1px solid rgba(46, 60, 99, 0.4); padding-top: 10px; }
         .meta-item { display: flex; align-items: center; gap: 4px; }
         
-        /* شريط معاينة مصغرات الصور المتبقية أسفل العقار */
+        /* شريط معاينة مصغرات الصور */
         .thumbnails-strip { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 12px 0; margin-bottom: 10px; scrollbar-width: none; }
         .thumbnails-strip::-webkit-scrollbar { display: none; }
-        
-        /* ضبط المصغرات لتظهر كاملة أيضاً بدون تشويه */
         .thumb-box { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 1px solid #3a4b7c; opacity: 0.6; transition: 0.2s; flex-shrink: 0; }
         .thumb-box.active { border-color: #f59e0b; opacity: 1; box-shadow: 0 0 5px #f59e0b; }
 
-        /* أزرار الإجراءات التفاعلية للزبائن */
+        /* أزرار الإجراءات */
         .action-row { display: flex; gap: 8px; margin-top: auto; }
-        .btn-whatsapp { flex: 2; background: #25d366; color: white; border: none; padding: 11px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 900; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
-        .btn-whatsapp:hover { background: #1cbd55; }
+        .btn-whatsapp { flex: 2; background: #25d366; color: white; border: none; padding: 11px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 900; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-map { flex: 1; background: #3b82f6; color: white; border: none; padding: 11px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        
+        /* 🌟 نافذة التكبير المنبثقة الذكية ملء الشاشة (Lightbox) */
+        .lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 19, 41, 0.95); z-index: 9999; justify-content: center; align-items: center; touch-action: pinch-zoom; }
+        .lightbox-content { max-width: 95%; max-height: 85%; object-fit: contain; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); }
+        .lightbox-close { position: absolute; top: 20px; right: 20px; font-size: 28px; color: #f59e0b; cursor: pointer; background: rgba(28, 37, 65, 0.8); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid #2e3c63; }
+        .lightbox-caption { position: absolute; bottom: 20px; color: #cbd5e1; font-size: 13px; text-align: center; background: rgba(28, 37, 65, 0.8); padding: 8px 16px; border-radius: 20px; font-weight: bold; }
         
         .loading-text { text-align: center; font-size: 13px; color: #94a3b8; grid-column: 1 / -1; padding: 50px; }
     </style>
@@ -68,6 +53,12 @@
     
     <div class="properties-container" id="saudiClientWrapper">
         <div class="loading-text">جاري فحص وتحديث المعروضات الحية بالمحفظة...</div>
+    </div>
+
+    <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+        <span class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></span>
+        <img class="lightbox-content" id="lightboxImg" src="" alt="معاينة كاملة">
+        <div class="lightbox-caption" id="lightboxCaption">تصفح أبعاد الصورة الكاملة</div>
     </div>
 
     <script>
@@ -93,11 +84,12 @@
 
                 const viewerId = `viewer_${item.id}`;
                 
+                // إضافة دالة فتح الصورة عند الضغط عليها مباشرة للمعاينة الكاملة
                 let mainMediaHtml = '';
                 if(firstMedia.type === 'video') {
                     mainMediaHtml = `<video id="${viewerId}" src="${firstMedia.data}" controls muted loop autoplay class="property-img"></video>`;
                 } else {
-                    mainMediaHtml = `<img id="${viewerId}" src="${firstMedia.data}" class="property-img" alt="عرض عقاري">`;
+                    mainMediaHtml = `<img id="${viewerId}" src="${firstMedia.data}" class="property-img" onclick="openLightbox('${firstMedia.data}', '${item.title}')" alt="عرض عقاري">`;
                 }
 
                 let thumbnailsHtml = '';
@@ -108,7 +100,7 @@
                         thumbnailsHtml += `
                             <img src="${media.data}" 
                                  class="thumb-box ${activeClass}" 
-                                 onclick="switchCardMedia('${viewerId}', '${media.data}', '${media.type}', this)" 
+                                 onclick="switchCardMedia('${viewerId}', '${media.data}', '${media.type}', this, '${item.title}')" 
                                  alt="معاينة">`;
                     });
                     thumbnailsHtml += `</div>`;
@@ -145,7 +137,7 @@
             });
         }
 
-        function switchCardMedia(viewerId, mediaData, mediaType, thumbElement) {
+        function switchCardMedia(viewerId, mediaData, mediaType, thumbElement, title) {
             const mediaViewer = document.getElementById(viewerId);
             const parentContainer = mediaViewer.parentElement;
             
@@ -158,8 +150,19 @@
             if(mediaType === 'video') {
                 parentContainer.innerHTML = `<video id="${viewerId}" src="${mediaData}" controls muted loop autoplay class="property-img"></video><div class="media-badge"><i class="fa-solid fa-photo-film"></i> فيديو</div>`;
             } else {
-                parentContainer.innerHTML = `<img id="${viewerId}" src="${mediaData}" class="property-img" alt="عرض عقاري"><div class="media-badge"><i class="fa-solid fa-photo-film"></i> صورة</div>`;
+                parentContainer.innerHTML = `<img id="${viewerId}" src="${mediaData}" class="property-img" onclick="openLightbox('${mediaData}', '${title}')" alt="عرض عقاري"><div class="media-badge"><i class="fa-solid fa-photo-film"></i> صورة</div>`;
             }
+        }
+
+        /* 🌟 دوال التحكم بالمعاينة المنبثقة (Lightbox) لبيان حواف الصورة الكاملة */
+        function openLightbox(src, title) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxCaption').innerText = title + " - معاينة كامل التفاصيل والأطراف";
+            document.getElementById('lightboxOverlay').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxOverlay').style.display = 'none';
         }
 
         document.addEventListener('DOMContentLoaded', loadSaudiProperties);
