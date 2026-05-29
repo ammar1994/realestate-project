@@ -115,13 +115,16 @@
     </div>
 
     <script>
-        // إعدادات الاتصال الآمن والمباشر بسيرفر Supabase الخاص بـ عمار
+        // إعدادات الاتصال بالسيرفر
         const SUPABASE_URL = "https://plfibajexgugqhunmepv.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmliYWpleGd1Z3FodW5tZXB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Mjk0MTcsImV4cCI6MjA2NDAwNTQxN30.0b_XbQhVz8v0w7XhWhS8xJ4367bB_m7G8P6N2C1mZ20"; 
 
         async function fetchProperties() {
             const wrapper = document.getElementById('propertiesWrapper');
+            let properties = [];
+
             try {
+                // محاولة جلب البيانات من السيرفر أولاً
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/properties`, {
                     method: 'GET',
                     headers: {
@@ -131,96 +134,75 @@
                     }
                 });
                 
-                let properties = [];
                 if (response.ok) {
                     properties = await response.json();
                 }
-                
-                wrapper.innerHTML = ''; // إزالة جملة التحميل
-                
-                // --- هندسة الربط المحلي المطور (عمار) ---
-                // جلب العقار الإضافي المخزن محلياً في ذاكرة المتصفح
-                const savedProperty = localStorage.getItem('new_client_property');
-                if (savedProperty) {
+            } catch (error) {
+                console.log("السيرفر غير متاح حالياً، سيتم الاعتماد على الذاكرة المحلية فقط.");
+            }
+
+            // تصفير الحاوية لبدء بناء العروض
+            wrapper.innerHTML = ''; 
+
+            // --- 💡 هندسة الدمج الذكي لعقار عمار الجديد من الذاكرة المحلية 💡 ---
+            const savedProperty = localStorage.getItem('new_client_property');
+            if (savedProperty) {
+                try {
                     const localData = JSON.parse(savedProperty);
                     
-                    // تحويل البيانات لتطابق تركيبة بيانات السيرفر وحقنها في بداية المصفوفة
+                    // تحويل وتجهيز البيانات لتتطابق تماماً مع تركيبة جداول الموقع الأصلي
                     const localItem = {
                         id: 'local_' + Date.now(),
-                        title: localData.title,
-                        price: localData.price.replace(/,/g, ''), // تنظيف الفواصل للحسابات
-                        location: localData.location,
-                        area: localData.area,
-                        rooms: localData.details,
-                        main_img: localData.image
+                        title: localData.title || 'عقار جديد مضاف',
+                        price: (localData.price || '0').replace(/[^0-9]/g, ''), // تنظيف السعر ليكون رقماً نقياً
+                        location: localData.location || 'غير محدد',
+                        area: localData.area || '--',
+                        rooms: localData.details || '--',
+                        main_img: localData.image || 'villa.jpg'
                     };
                     
-                    // وضع العقار الجديد كأول عنصر ليظهر في بداية المعرض فوراً
+                    // حقن العقار الجديد في أول المصفوفة (الأولوية القصوى للعرض في البداية)
                     properties.unshift(localItem);
-                }
-                // ----------------------------------------
-
-                if (properties.length === 0) {
-                    wrapper.innerHTML = '<div class="loading-text">لا توجد عقارات مضافة حالياً. اذهب للوحة التحكم وأضف أول عقار!</div>';
-                    return;
-                }
-                
-                // دالة بناء كروت العقارات المدمجة
-                properties.forEach(item => {
-                    const card = document.createElement('a');
-                    card.href = `details.html?id=${item.id}`; 
-                    card.className = 'property-card';
-                    
-                    card.innerHTML = `
-                        <img src="${item.main_img || 'villa.jpg'}" class="property-img" alt="${item.title}">
-                        <div class="property-details">
-                            <h3 class="property-title">${item.title}</h3>
-                            <div class="property-price">${Number(item.price).toLocaleString()} $</div>
-                            <div class="property-meta">
-                                <span>📍 ${item.location}</span>
-                                <span>📐 ${item.area} م²</span>
-                            </div>
-                            <div class="property-meta">
-                                <span>🚪 التفاصيل: ${item.rooms}</span>
-                            </div>
-                        </div>
-                    `;
-                    wrapper.appendChild(card);
-                });
-                
-            } catch (error) {
-                console.error(error);
-                
-                // حتى لو انقطع الإنترنت أو حدث خطأ في السيرفر، سنعرض العقار المخزن محلياً لكي يرى العميل النتيجة!
-                const savedProperty = localStorage.getItem('new_client_property');
-                if (savedProperty) {
-                    wrapper.innerHTML = ''; 
-                    const localData = JSON.parse(savedProperty);
-                    const card = document.createElement('a');
-                    card.href = `#`;
-                    card.className = 'property-card';
-                    card.innerHTML = `
-                        <img src="${localData.image}" class="property-img" alt="${localData.title}">
-                        <div class="property-details">
-                            <h3 class="property-title">${localData.title}</h3>
-                            <div class="property-price">${parseFloat(localData.price.replace(/,/g, '')).toLocaleString()} $</div>
-                            <div class="property-meta">
-                                <span>📍 ${localData.location}</span>
-                                <span>📐 ${localData.area} م²</span>
-                            </div>
-                            <div class="property-meta">
-                                <span>🚪 التفاصيل: ${localData.details}</span>
-                            </div>
-                        </div>
-                    `;
-                    wrapper.appendChild(card);
-                } else {
-                    wrapper.innerHTML = '<div class="loading-text" style="color:red;">حدث خطأ أثناء تحميل العقارات. تأكد من اتصال الإنترنت.</div>';
+                } catch (e) {
+                    console.error("خطأ في قراءة بيانات العقار المحلي:", e);
                 }
             }
+
+            // إذا كانت المصفوفة فارغة تماماً ولم يجد أي عقار
+            if (properties.length === 0) {
+                wrapper.innerHTML = '<div class="loading-text">لا توجد عقارات مضافة حالياً. اذهب للوحة التحكم وأضف أول عقار!</div>';
+                return;
+            }
+            
+            // حلقة بناء الكروت وعرضها على الشاشة
+            properties.forEach(item => {
+                const card = document.createElement('a');
+                // إذا كان العقار محلياً يربطه بصفحة وهمية أو تفاصيل، وإذا كان من السيرفر يوجهه لصفحته المعتادة
+                card.href = item.id.toString().startsWith('local_') ? '#' : `details.html?id=${item.id}`; 
+                card.className = 'property-card';
+                
+                // تنسيق وعرض السعر بالعملة المعتمدة في كودك الأصلي
+                const formattedPrice = Number(item.price).toLocaleString();
+
+                card.innerHTML = `
+                    <img src="${item.main_img}" class="property-img" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'" alt="${item.title}">
+                    <div class="property-details">
+                        <h3 class="property-title">${item.title}</h3>
+                        <div class="property-price">${formattedPrice} ل.س</div>
+                        <div class="property-meta">
+                            <span>📍 ${item.location}</span>
+                            <span>📐 ${item.area} م²</span>
+                        </div>
+                        <div class="property-meta">
+                            <span>🚪 ${item.rooms}</span>
+                        </div>
+                    </div>
+                `;
+                wrapper.appendChild(card);
+            });
         }
 
-        // تشغيل الجلب التلقائي فور فتح الموقع
+        // تشغيل الدالة تلقائياً بمجرد تحميل الصفحة
         document.addEventListener('DOMContentLoaded', fetchProperties);
     </script>
 </body>
