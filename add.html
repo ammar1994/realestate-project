@@ -3,115 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>إضافة عقار جديد - الطابع السعودي</title>
+    <title>إضافة عقار جديد - المحفظة الفاخرة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
-        nav { background: #1c2541; padding: 14px; border-bottom: 1px solid #2a375e; text-align: center; }
-        .logo { font-size: 15px; font-weight: 800; margin: 0; color: #f8fafc; }
-        .logo span { color: #f59e0b; font-weight: 900; margin-right: 4px; }
-        .content { padding: 20px 14px; }
+        :root {
+            --bg-main: #0b1329;
+            --bg-card: #1c2541;
+            --border-color: #2e3c63;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-gold: #f59e0b;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+        }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-primary); 
+            font-family: system-ui, -apple-system, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        nav { 
+            background: var(--bg-card); 
+            padding: 16px; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: center; 
+        }
+
+        .logo { 
+            font-size: 16px; 
+            font-weight: 800; 
+            margin: 0; 
+            color: var(--text-primary); 
+            letter-spacing: 0.5px;
+        }
+        .logo span { 
+            color: var(--accent-gold); 
+            font-weight: 900; 
+            margin-right: 4px; 
+        }
+
+        .content { 
+            padding: 24px 14px; 
+        }
         
-        .form-container { background: #1c2541; border-radius: 16px; padding: 20px; border: 1px solid #2e3c63; max-width: 550px; margin: 0 auto; }
-        .form-group { margin-bottom: 15px; text-align: right; }
-        label { display: block; font-size: 12px; color: #cbd5e1; margin-bottom: 6px; font-weight: bold; }
-        input, select, textarea { width: 100%; padding: 12px; background: #0b1329; border: 1px solid #2e3c63; border-radius: 8px; color: white; box-sizing: border-box; font-size: 14px; }
-        input:focus, select:focus { border-color: #f59e0b; outline: none; }
+        .form-container { 
+            background: var(--bg-card); 
+            border-radius: 16px; 
+            padding: 24px; 
+            border: 1px solid var(--border-color); 
+            max-width: 580px; 
+            margin: 0 auto; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .form-group { 
+            margin-bottom: 18px; 
+            text-align: right; 
+        }
+
+        label { 
+            display: block; 
+            font-size: 12px; 
+            color: var(--text-secondary); 
+            margin-bottom: 8px; 
+            font-weight: 700; 
+        }
+
+        input, select, textarea { 
+            width: 100%; 
+            padding: 14px; 
+            background: var(--bg-main); 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            color: white; 
+            box-sizing: border-box; 
+            font-size: 14px; 
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus, textarea:focus { 
+            border-color: var(--accent-gold); 
+            outline: none; 
+        }
         
-        /* تصميم الخريطة المدمجة */
-        #map { width: 100%; height: 250px; border-radius: 8px; margin-top: 8px; border: 1px solid #3a4b7c; z-index: 1; }
-        .geo-btn { background: #3b82f6; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; font-weight: bold; margin-bottom: 5px; display: inline-flex; align-items: center; gap: 4px; }
+        /* تصميم الخريطة الاحترافي الداكن المدمج الشبيه بـ MapBox */
+        .map-wrapper {
+            position: relative;
+            margin-top: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
         
-        .file-dropzone { border: 2px dashed #3a4b7c; padding: 18px; border-radius: 8px; text-align: center; background: #0b1329; cursor: pointer; }
-        .file-dropzone i { font-size: 24px; color: #f59e0b; margin-bottom: 6px; }
-        .file-dropzone p { margin: 0; font-size: 11px; color: #94a3b8; }
+        #map { 
+            width: 100%; 
+            height: 280px; 
+            z-index: 1; 
+            background: #141926;
+        }
+
+        .geo-btn { 
+            background: var(--accent-blue); 
+            color: white; 
+            border: none; 
+            padding: 10px 14px; 
+            border-radius: 6px; 
+            font-size: 12px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin-bottom: 8px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            transition: background 0.2s;
+        }
+        .geo-btn:hover {
+            background: #2563eb;
+        }
         
-        .gallery-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 10px; }
-        .preview-item { width: 100%; height: 80px; object-fit: cover; border-radius: 6px; border: 1px solid #f59e0b; background: #141d36; }
+        .file-dropzone { 
+            border: 2px dashed #3a4b7c; 
+            padding: 24px; 
+            border-radius: 10px; 
+            text-align: center; 
+            background: var(--bg-main); 
+            cursor: pointer; 
+            transition: border-color 0.2s;
+        }
+        .file-dropzone:hover {
+            border-color: var(--accent-gold);
+        }
+        .file-dropzone i { 
+            font-size: 28px; 
+            color: var(--accent-gold); 
+            margin-bottom: 8px; 
+        }
+        .file-dropzone p { 
+            margin: 0; 
+            font-size: 12px; 
+            color: var(--text-secondary); 
+        }
         
-        .submit-btn { width: 100%; padding: 14px; background: #f59e0b; border: none; border-radius: 8px; color: #0b1329; font-size: 14px; font-weight: 900; cursor: pointer; margin-top: 15px; }
-        .success-msg { display: none; color: #10b981; font-size: 12px; font-weight: bold; margin-top: 10px; text-align: center; }
+        .gallery-preview { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); 
+            gap: 10px; 
+            margin-top: 12px; 
+        }
+        .preview-item { 
+            width: 100%; 
+            height: 85px; 
+            object-fit: cover; 
+            border-radius: 6px; 
+            border: 1px solid var(--accent-gold); 
+            background: #141d36; 
+            image-orientation: from-image;
+        }
+        
+        .submit-btn { 
+            width: 100%; 
+            padding: 15px; 
+            background: var(--accent-gold); 
+            border: none; 
+            border-radius: 8px; 
+            color: var(--bg-main); 
+            font-size: 15px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            margin-top: 20px; 
+            transition: opacity 0.2s;
+        }
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+        .success-msg { 
+            display: none; 
+            color: var(--accent-green); 
+            font-size: 13px; 
+            font-weight: bold; 
+            margin-top: 15px; 
+            text-align: center; 
+        }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-building"></i> لوحة التحكم <span>PREMIUM</span></div>
+        <div class="logo"><i class="fa-solid fa-layer-group"></i> غطاء وإدارة المحتوى العقاري <span>PREMIUM</span></div>
     </nav>
 
     <div class="content">
         <div class="form-container">
-            <h2 style="font-size: 16px; color:#f59e0b; text-align:center; margin-top:0;">إضافة عقار جديد للمحفظة السعودية</h2>
+            <h2 style="font-size: 17px; color:var(--accent-gold); text-align:center; margin-top:0; margin-bottom:20px;">تغذية صالة عروض الأصول الاستثمارية</h2>
             <form id="saudi-property-form">
                 
                 <div class="form-group">
-                    <label>عنوان العقار (مثال: فيلا مودرن درج صالة):</label>
-                    <input type="text" id="title" placeholder="أدخل عنوان العقار بدقة" required>
+                    <label>عنوان العرض الاستثماري (مثال: فيلا مودرن فاخرة بحي الملقا):</label>
+                    <input type="text" id="title" placeholder="أدخل عنواناً جذاباً واحترافياً" required>
                 </div>
 
                 <div class="form-group">
-                    <label>السعر المطلوب (بالريال السعودي ر.س):</label>
-                    <input type="number" id="price" placeholder="مثال: 1500000" required>
+                    <label>القيمة المالية المستهدفة (بالريال السعودي ر.س):</label>
+                    <input type="number" id="price" placeholder="مثال: 3800000" required>
                 </div>
 
                 <div class="form-group">
-                    <label>المدينة والحي (مثال: الرياض - حي الملقا):</label>
-                    <input type="text" id="location" placeholder="حدد اسم المدينة والحي" required>
+                    <label>المنطقة والحي الجغرافي (مثال: الرياض - حطين):</label>
+                    <input type="text" id="location" placeholder="حدد المدينة والحي السكني" required>
                 </div>
 
                 <div class="form-group">
-                    <label>موقع العقار الجغرافي:</label>
-                    <button type="button" class="geo-btn" onclick="locateMe()"><i class="fa-solid fa-location-crosshairs"></i> تحديد موقعي الحالي تلقائياً</button>
-                    <span style="font-size:10px; color:#94a3b8; display:block; margin-bottom:5px;">أو قم بتحريك الخريطة والضغط على موقع العقار مباشرة لتثبيت الدبوس:</span>
+                    <label>تحديد الإحداثيات الجغرافية التفاعلية للأصل:</label>
+                    <button type="button" class="geo-btn" onclick="locateMe()"><i class="fa-solid fa-location-crosshairs"></i> رصد موقعي الحالي تلقائياً</button>
+                    <span style="font-size:11px; color:var(--text-secondary); display:block; margin-bottom:5px;">انقر على أي نقطة بالخريطة لتعديل وتثبيت إحداثيات العقار بدقة:</span>
                     
-                    <div id="map"></div>
+                    <div class="map-wrapper">
+                        <div id="map"></div>
+                    </div>
                     
                     <input type="hidden" id="lat" name="lat" value="24.7136">
                     <input type="hidden" id="lng" name="lng" value="46.6753">
                 </div>
 
                 <div class="form-group">
-                    <label>رقم تواصل الواتساب (صيغة دولية بدون مفتاح مضاف مثال: 966500000000):</label>
+                    <label>قناة تواصل الواتساب الرسمية (صيغة دولية كاملة مثال: 966500000000):</label>
                     <input type="text" id="phone" placeholder="9665xxxxxxxx" required>
                 </div>
 
                 <div class="form-group">
-                    <label>المساحة الإجمالية (متر مربع):</label>
-                    <input type="number" id="area" placeholder="مثال: 350" required>
+                    <label>المساحة الهندسية الإجمالية (م²):</label>
+                    <input type="number" id="area" placeholder="مثال: 420" required>
                 </div>
 
                 <div class="form-group">
-                    <label>عدد الغرف والتفاصيل الداخلية:</label>
-                    <input type="text" id="details" placeholder="مثال: 5 غرف - 4 حمامات - مسبح" required>
+                    <label>توزيع الفراغات المعمارية والتفاصيل الداخلية:</label>
+                    <input type="text" id="details" placeholder="مثال: 6 أجنحة - 5 دورات مياه - ملحق خارجي" required>
                 </div>
                 
                 <div class="form-group">
-                    <label>ألبوم ميديا العقار (ارفع صور أو فيديوهات متعددة):</label>
+                    <label>المحفظة المرئية للعقار (ألبوم الميديا عالي الجودة):</label>
                     <div class="file-dropzone" onclick="document.getElementById('mediaFiles').click()">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <p id="upload-status">اضغط لرفع حتى 5 صور أو مقاطع فيديو من الاستوديو</p>
+                        <i class="fa-solid fa-folder-plus"></i>
+                        <p id="upload-status">اضغط لإدراج حتى 5 صور أو مأثورات مرئية من الجهاز</p>
                         <input type="file" id="mediaFiles" accept="image/*,video/*" multiple style="display: none;">
                     </div>
                     <div class="gallery-preview" id="mediaPreviewWrapper"></div>
                 </div>
 
-                <button type="submit" class="submit-btn">حفظ العقار ونشره فوراً</button>
-                <div class="success-msg" id="success-box">✨ تم حفظ العقار وتحديث المحفظة بنجاح! جاري التوجيه...</div>
+                <button type="submit" class="submit-btn">تأكيد الأرشفة ونشر العرض الحي</button>
+                <div class="success-msg" id="success-box"><i class="fa-solid fa-circle-check"></i> تم تأمين وحفظ البيانات وبثها في صالة العرض الاستثمارية! جاري التحويل...</div>
             </form>
         </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        var map = L.map('map').setView([24.7136, 46.6753], 11);
+        // إعداد الخريطة في نطاق المملكة
+        var map = L.map('map', { zoomControl: false }).setView([24.7136, 46.6753], 11);
+        L.control.zoom({ position: 'topright' }).addTo(map);
         
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap'
+        // 🌟 دمج ستايل التبليط الداكن الخرافي الفاخر البديل لخرائط ماب بوكس بدون فيزا
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 20,
+            attribution: '© OpenStreetMap © CARTO'
         }).addTo(map);
 
-        var marker = L.marker([24.7136, 46.6753], {draggable: true}).addTo(map);
+        // تخصيص الأيقونة برمجياً لتطابق ألوان كرت العقار
+        var goldIcon = L.divIcon({
+            html: '<i class="fa-solid fa-location-pin" style="color: #f59e0b; font-size: 32px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></i>',
+            iconSize: [30, 42],
+            iconAnchor: [15, 35],
+            className: 'custom-marker-icon'
+        });
+
+        var marker = L.marker([24.7136, 46.6753], {draggable: true, icon: goldIcon}).addTo(map);
 
         marker.on('dragend', function(e) {
             var position = marker.getLatLng();
@@ -135,10 +305,10 @@
                     map.setView([lat, lng], 15);
                     marker.setLatLng([lat, lng]);
                 }, function() {
-                    alert("تعذر الوصول لموقعك الحالي، يرجى تحديد الموقع يدوياً على الخريطة.");
+                    alert("نظام تحديد المواقع GPS معطل بالجهاز الحالي، يرجى تعيين الدبوس يدوياً.");
                 });
             } else {
-                alert("متصفحك لا يدعم تحديد الموقع التلقائي.");
+                alert("المتصفح لا يدعم رصد الإحداثيات تلقائياً.");
             }
         }
 
@@ -148,11 +318,11 @@
             const previewWrapper = document.getElementById('mediaPreviewWrapper');
             
             if((loadedMediaArray.length + files.length) > 5) {
-                alert("الحد الأقصى المسموح به هو 5 ملفات وسائط.");
+                alert("الحد الأقصى المسموح برصده هو 5 ملفات وسائط فقط.");
                 return;
             }
 
-            document.getElementById('upload-status').innerText = "جاري معالجة وتجهيز الميديا...";
+            document.getElementById('upload-status').innerText = "جاري تجميع وتهيئة الميديا برمجياً...";
 
             files.forEach(file => {
                 const reader = new FileReader();
@@ -163,7 +333,7 @@
                         img.src = event.target.result;
                         img.onload = function() {
                             const canvas = document.createElement('canvas');
-                            const MAX_WIDTH = 600;
+                            const MAX_WIDTH = 700;
                             let width = img.width;
                             let height = img.height;
 
@@ -176,7 +346,7 @@
                             const ctx = canvas.getContext('2d');
                             ctx.drawImage(img, 0, 0, width, height);
                             
-                            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
                             loadedMediaArray.push({ type: 'image', data: compressedBase64 });
                             
                             const imgDom = document.createElement('img');
@@ -193,7 +363,7 @@
                     }
                 };
             });
-            setTimeout(() => { document.getElementById('upload-status').innerText = "✨ تم إضافة الميديا بنجاح!"; }, 1200);
+            setTimeout(() => { document.getElementById('upload-status').innerText = "✨ تم ربط وتأمين وسائط الألبوم!"; }, 1200);
         });
 
         document.getElementById('saudi-property-form').addEventListener('submit', function(e) {
@@ -201,6 +371,7 @@
             
             const finalMedia = loadedMediaArray.length > 0 ? loadedMediaArray : [{ type: 'image', data: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80' }];
 
+            // دمج الإحداثيات الجغرافية الحية لتسليمها لصفحة الزبائن
             var propertyObj = {
                 id: 'prop_' + Date.now(),
                 title: document.getElementById('title').value,
