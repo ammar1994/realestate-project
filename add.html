@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>إضافة عقار جديد - السيرفر السحابي</title>
+    <title>إضافة عقار جديد</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,7 +28,7 @@
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-circle-plus"></i> إدارة المحتوى <span>العقاري السحابي</span></div>
+        <div class="logo"><i class="fa-solid fa-circle-plus"></i> إدارة المحتوى <span>العقاري الذكي</span></div>
     </nav>
 
     <div class="content">
@@ -41,19 +41,19 @@
             <form id="property-form">
                 <div class="form-group">
                     <label>عنوان العقار:</label>
-                    <input type="text" id="title" placeholder="مثال: فيلا ملكية فاخرة" required>
+                    <input type="text" id="title" placeholder="مثال: قصر فاخر بدمشق" required>
                 </div>
                 <div class="form-group">
-                    <label>السعر:</label>
-                    <input type="number" id="price" placeholder="مثال: 500000" required>
+                    <label>السعر ($):</label>
+                    <input type="number" id="price" placeholder="مثال: 750000" required>
                 </div>
                 <div class="form-group">
                     <label>الموقع / المدينة:</label>
-                    <input type="text" id="location" placeholder="مثال: دمشق - يعفور" required>
+                    <input type="text" id="location" placeholder="مثال: دمشق - تنظيم كفرسوسة" required>
                 </div>
                 <div class="form-group">
                     <label>المساحة (متر مربع):</label>
-                    <input type="number" id="area" placeholder="مثال: 250" required>
+                    <input type="number" id="area" placeholder="مثال: 380" required>
                 </div>
                 <div class="form-group">
                     <label>عدد الغرف والتفاصيل:</label>
@@ -61,17 +61,16 @@
                 </div>
                 <div class="form-group">
                     <label>رابط الصورة الرئيسية للعقار:</label>
-                    <input type="url" id="image" placeholder="https://example.com/image.jpg">
+                    <input type="url" id="image" placeholder="أدخل رابط الصورة أو اتركه فارغاً للصورة الافتراضية">
                 </div>
 
-                <button type="submit" class="submit-btn" id="btnText">حفظ العقار ونشره سحابياً</button>
+                <button type="submit" class="submit-btn" id="btnText">حفظ العقار ونشره فوراً</button>
                 <div class="msg" id="msg-box"></div>
             </form>
         </div>
     </div>
 
     <script>
-        // مفاتيح الاتصال بسيرفر Supabase الخاص بك
         const SUPABASE_URL = "https://plfibajexgugqhunmepv.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmliYWpleGd1Z3FodW5tZXB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Mjk0MTcsImV4cCI6MjA2NDAwNTQxN30.0b_XbQhVz8v0w7XhWhS8xJ4367bB_m7G8P6N2C1mZ20";
 
@@ -81,10 +80,9 @@
             const btn = document.getElementById('btnText');
             const msgBox = document.getElementById('msg-box');
             
-            btn.innerText = "جاري الرفع والنشر سحابياً...";
+            btn.innerText = "جاري النشر المعزز...";
             btn.disabled = true;
 
-            // تجهيز البيانات لتطابق تركيبة قاعدة البيانات بدقة
             const priceVal = document.getElementById('price').value;
             const propertyData = {
                 title: document.getElementById('title').value,
@@ -95,8 +93,14 @@
                 main_img: document.getElementById('image').value || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
             };
 
+            // إنشاء نسخة محلية احتياطية تحسباً لفشل شبكة الـ VPN
+            const offlineItem = {
+                id: 'offline_' + Date.now(),
+                ...propertyData
+            };
+
             try {
-                // إرسال طلب نَشر (POST) إلى سيرفر سوبابيس
+                // محاولة الرفع للسيرفر السحابي
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/properties`, {
                     method: 'POST',
                     headers: {
@@ -109,28 +113,33 @@
                 });
 
                 if (response.ok) {
-                    // حفظ السعر محلياً فقط لتحديث العدادات في لوحة التحكم بشكل تفاعلي
                     localStorage.setItem('last_added_price', priceVal);
-                    localStorage.setItem('last_property_price', priceVal);
-
                     msgBox.style.color = "#10b981";
-                    msgBox.innerText = "✨ عظيم! تم الحفظ في السيرفر بنجاح وجاري تحويلك للوحة التحكم...";
-                    msgBox.style.display = "block";
-
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
+                    msgBox.innerText = "✨ رائع! تم النشر السحابي، جاري التحويل لوحة التحكم...";
                 } else {
-                    throw new Error("فشل الرفع");
+                    throw new Error("حجب الشبكة");
                 }
 
             } catch (error) {
-                msgBox.style.color = "#ff5252";
-                msgBox.innerText = "❌ حدث خطأ أثناء الاتصال بالسيرفر. تأكد من الإنترنت.";
-                msgBox.style.display = "block";
-                btn.innerText = "حفظ العقار ونشره سحابياً";
-                btn.disabled = false;
+                // تفعيل وضع التخزين الهجين عند حدوث خطأ الشبكة لضمان ظهور العقار فوراً للعميل
+                let currentLocal = localStorage.getItem('backup_property_data');
+                let localArray = currentLocal ? JSON.parse(currentLocal) : [];
+                if (!Array.isArray(localArray)) localArray = [];
+                
+                localArray.unshift(offlineItem);
+                localStorage.setItem('backup_property_data', JSON.stringify(localArray));
+                
+                // حفظ السعر لتحديث لوحة التحكم أيضاً حياً
+                localStorage.setItem('last_added_price', priceVal);
+
+                msgBox.style.color = "#f59e0b";
+                msgBox.innerText = "⚡ تم الحفظ في الوضع المحلي الاحتياطي بنجاح بسبب قيود الشبكة!";
             }
+
+            msgBox.style.display = "block";
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
         });
     </script>
 </body>
