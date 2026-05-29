@@ -3,78 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>لوحة التحكم العقارية الحية</title>
+    <title>لوحة التحكم العقارية الحية - المحفظة الفاخرة</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
-        nav { background: #1c2541; padding: 14px; border-bottom: 1px solid #2a375e; text-align: center; }
-        .logo { font-size: 15px; font-weight: 800; margin: 0; color: #f8fafc; }
-        .logo span { color: #f59e0b; font-weight: 900; margin-right: 4px; }
-        .content { padding: 20px 14px; }
+        :root {
+            --bg-main: #0b1329;
+            --bg-card: #1c2541;
+            --border-color: #2e3c63;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-gold: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+        }
+
+        body { 
+            background-color: var(--bg-main); 
+            color: var(--text-primary); 
+            font-family: system-ui, -apple-system, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-font-smoothing: antialiased;
+        }
+
+        nav { 
+            background: var(--bg-card); 
+            padding: 16px; 
+            border-bottom: 1px solid var(--border-color); 
+            text-align: center; 
+        }
+
+        .logo { 
+            font-size: 16px; 
+            font-weight: 800; 
+            margin: 0; 
+            color: var(--text-primary); 
+        }
+        .logo span { 
+            color: var(--accent-gold); 
+            font-weight: 900; 
+            margin-right: 4px; 
+        }
+
+        .content { 
+            padding: 20px 14px; 
+            max-width: 600px;
+            margin: 0 auto;
+        }
         
-        /* التعديل المطلوب 1: تنسيق أزرار التنقل العلوية */
-        .top-actions { display: flex; gap: 10px; margin-bottom: 15px; }
-        .add-btn-nav { flex: 1; text-align: center; background: #f59e0b; color: #0b1329; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px; border: none; }
+        /* زر إضافة عقار مطور وبشكل فخم */
+        .top-actions { 
+            margin-bottom: 20px; 
+        }
+        .add-btn-nav { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            background: linear-gradient(135deg, var(--accent-gold), #d97706); 
+            color: var(--bg-main); 
+            padding: 14px; 
+            border-radius: 10px; 
+            text-decoration: none; 
+            font-weight: 800; 
+            font-size: 14px; 
+            border: none; 
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);
+            transition: opacity 0.2s;
+        }
+        .add-btn-nav:hover {
+            opacity: 0.95;
+        }
         
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-        .stat-card { background: #1c2541; border-radius: 14px; padding: 14px; border: 1px solid #2e3c63; display: flex; align-items: center; justify-content: space-between; }
-        .stat-val { font-size: 15px; font-weight: 900; color: #f59e0b; margin-top: 4px; }
-        .stat-card i { font-size: 18px; color: #cbd5e1; }
+        /* كروت الإحصائيات الحية الفاخرة */
+        .dashboard-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+            margin-bottom: 20px; 
+        }
+        .stat-card { 
+            background: var(--bg-card); 
+            border-radius: 12px; 
+            padding: 16px; 
+            border: 1px solid var(--border-color); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .stat-title {
+            color: var(--text-secondary); 
+            font-size: 11px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .stat-val { 
+            font-size: 14px; 
+            font-weight: 800; 
+            color: var(--accent-gold); 
+        }
+        .stat-card i { 
+            font-size: 20px; 
+            color: var(--text-secondary); 
+        }
         
-        .table-box { background: #1c2541; border-radius: 16px; padding: 16px; border: 1px solid #2e3c63; }
-        .table-box h3 { margin: 0 0 14px 0; font-size: 13px; color: #f59e0b; font-weight: 800; }
+        /* حاوية العروض والأصول العقارية */
+        .table-box { 
+            background: var(--bg-card); 
+            border-radius: 16px; 
+            padding: 20px; 
+            border: 1px solid var(--border-color); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .table-box h3 { 
+            margin: 0 0 16px 0; 
+            font-size: 14px; 
+            color: var(--accent-gold); 
+            font-weight: 800; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
         
-        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 11px; }
-        th { color: #94a3b8; padding-bottom: 10px; border-bottom: 1px solid #2e3c63; }
-        td { padding: 12px 0; border-bottom: 1px solid rgba(46, 60, 99, 0.4); }
+        /* تحويل صفوف الجدول التقليدي إلى بطاقات مرنة ومريحة للعين على الجوال */
+        .property-list-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
         
-        .delete-btn { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; padding: 5px 8px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 10px; }
-        .view-link { display: block; text-align: center; background: #10b981; color: #0b1329; padding: 11px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 15px; }
+        .live-row-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .prop-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: right;
+            max-width: 70%;
+        }
+        .prop-title-text {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .prop-loc-text {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        .prop-price-text {
+            color: var(--accent-gold);
+            font-size: 13px;
+            font-weight: 800;
+            margin-top: 2px;
+        }
+        
+        .delete-btn { 
+            background: rgba(239, 68, 68, 0.1); 
+            color: var(--accent-red); 
+            border: 1px solid rgba(239, 68, 68, 0.4); 
+            padding: 8px 12px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 12px; 
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        .delete-btn:hover {
+            background: var(--accent-red);
+            color: white;
+        }
+        
+        .view-link { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 6px;
+            background: var(--accent-green); 
+            color: #0b1329; 
+            padding: 14px; 
+            border-radius: 10px; 
+            text-decoration: none; 
+            font-weight: 800; 
+            font-size: 14px; 
+            margin-top: 20px; 
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+        
+        .no-data-msg {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 30px 10px;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-chart-line"></i> لوحة تحكم المحفظة <span>الذكية</span></div>
+        <div class="logo"><i class="fa-solid fa-chart-pie"></i> لوحة تحكم المحفظة <span>الذكية</span></div>
     </nav>
 
     <div class="content">
         <div class="top-actions">
-            <a href="add.html" class="add-btn-nav"><i class="fa-solid fa-plus"></i> إضافة عقار جديد للمحفظة</a>
+            <a href="add.html" class="add-btn-nav"><i class="fa-solid fa-square-plus"></i> إضافة عقار جديد للمحفظة السعودية</a>
         </div>
 
         <div class="dashboard-grid">
             <div class="stat-card">
                 <div>
-                    <span style="color: #94a3b8; font-size: 10px;">إجمالي حجم الاستثمار</span>
+                    <span class="stat-title">إجمالي الاستثمار</span>
                     <div class="stat-val" id="assets-sum">0 ر.س</div>
                 </div>
-                <i class="fa-solid fa-vault"></i>
+                <i class="fa-solid fa-vault" style="color: var(--accent-gold);"></i>
             </div>
             <div class="stat-card">
                 <div>
-                    <span style="color: #94a3b8; font-size: 10px;">عدد العروض النشطة</span>
+                    <span class="stat-title">العروض النشطة</span>
                     <div class="stat-val" id="assets-count">0 عقار</div>
                 </div>
-                <i class="fa-solid fa-building"></i>
+                <i class="fa-solid fa-building-circle-check" style="color: var(--accent-blue);"></i>
             </div>
         </div>
 
         <div class="table-box">
-            <h3><i class="fa-solid fa-list-check"></i> إدارة عقارات السوق الحالية</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>العقار المعروض</th>
-                        <th>السعر الحالي</th>
-                        <th>الإجراء</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                </tbody>
-            </table>
+            <h3><i class="fa-solid fa-sliders"></i> إدارة عقارات السوق الحالية</h3>
             
-            <a href="customer.html" class="view-link">👁️ فتح واجهة صالة العروض العقارية للزبائن</a>
+            <div class="property-list-wrapper" id="livePropertiesContainer">
+                <div class="no-data-msg">جاري فحص وتحديث الحسابات الحية بالمحفظة...</div>
+            </div>
+            
+            <a href="customer.html" class="view-link"><i class="fa-solid fa-store"></i> فتح واجهة صالة العروض العقارية للزبائن</a>
         </div>
     </div>
 
@@ -84,28 +263,41 @@
             var dataArray = currentData ? JSON.parse(currentData) : [];
             
             var totalSum = 0;
-            var tbody = document.getElementById('table-body');
-            tbody.innerHTML = '';
+            var container = document.getElementById('livePropertiesContainer');
+            container.innerHTML = '';
             
             if(dataArray.length === 0) {
                 document.getElementById('assets-sum').innerText = "0 ر.س";
                 document.getElementById('assets-count').innerText = "0 عقار";
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:20px;">المحفظة خالية، يرجى إضافة عقارات جديدة لتبدأ الحسابات الحية.</td></tr>';
+                container.innerHTML = '<div class="no-data-msg"><i class="fa-solid fa-briefcase" style="font-size: 24px; color: var(--text-secondary); margin-bottom: 6px; display: block;"></i> المحفظة خالية حالياً، يرجى إضافة عقارات جديدة لتبدأ الحسابات الحية.</div>';
                 return;
             }
 
             dataArray.forEach(function(item) {
                 totalSum += parseFloat(item.price || 0);
                 
-                var row = document.createElement('tr');
-                row.innerHTML = `
-                    <td style="font-weight:bold; color:white;">${item.title}<br><small style="color:#94a3b8;">📍 ${item.location}</small></td>
-                    <td style="color:#f59e0b; font-weight:900;">${Number(item.price).toLocaleString()} ر.س</td>
-                    <td><button class="delete-btn" onclick="deleteProperty('${item.id}')"><i class="fa-solid fa-trash"></i> حذف</button></td>
+                // صياغة وعرض كرت الصف بشكل فخم جداً محمي من تداخل الحروف والعشوائية
+                var cardRow = document.createElement('div');
+                cardRow.className = 'live-row-card';
+                
+                var validTitle = (item.title && item.title.trim().length > 1) ? item.title : 'عرض عقاري غير مسمى';
+                var validLocation = (item.location && item.location.trim().length > 1) ? item.location : 'المملكة العربية السعودية';
+                var validPrice = item.price ? Number(item.price).toLocaleString() : '0';
+
+                cardRow.innerHTML = `
+                    <div class="prop-info">
+                        <h4 class="prop-title-text">${validTitle}</h4>
+                        <p class="prop-loc-text"><i class="fa-solid fa-location-dot" style="font-size: 10px; color: var(--accent-red);"></i> ${validLocation}</p>
+                        <span class="prop-price-text">${validPrice} ر.س</span>
+                    </div>
+                    <div>
+                        <button class="delete-btn" onclick="deleteProperty('${item.id}')"><i class="fa-solid fa-trash-can"></i> حذف</button>
+                    </div>
                 `;
-                tbody.appendChild(row);
+                container.appendChild(cardRow);
             });
 
+            // تحديث عدادات الإحصائيات بشكل منسق واحترافي
             document.getElementById('assets-sum').innerText = totalSum.toLocaleString() + " ر.س";
             document.getElementById('assets-count').innerText = dataArray.length + " عقار نشط";
         }
@@ -120,7 +312,8 @@
             }
         }
 
-        window.onload = loadLiveStats;
+        // تشغيل فوري وسلس فور تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', loadLiveStats);
     </script>
 </body>
 </html>
