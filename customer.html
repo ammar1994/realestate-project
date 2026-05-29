@@ -72,6 +72,7 @@
             height: 100%; 
             object-fit: cover; 
             display: block; 
+            cursor: pointer;
         }
 
         .media-badge { 
@@ -198,7 +199,7 @@
             background: var(--bg-main);
         }
 
-        /* حاوية أزرار التوجيه المتناسقة تماماً مع الهوية البصرية اللمسية الفخمة */
+        /* حاوية أزرار التوجيه المتناسقة تماماً مع الهوية البصرية */
         .map-external-routing {
             padding: 14px;
             background: var(--bg-main);
@@ -319,6 +320,7 @@
                 const firstMedia = mediaList[0];
                 const viewerId = `viewer_${item.id}`;
                 
+                // إضافة دالة فتح المعاينة الكبيرة بشكل ديناميكي للصورة الأولى المبدئية
                 let mainMediaHtml = `<img id="${viewerId}" src="${firstMedia.data}" class="property-img" onclick="openLightbox('${firstMedia.data}')" alt="عقار">`;
 
                 let thumbnailsHtml = '';
@@ -332,7 +334,6 @@
 
                 const whatsappUrl = `https://wa.me/${item.phone || '96650000000'}?text=${encodeURIComponent('استفسار عن: ' + validTitle)}`;
                 
-                // التركيز برمجياً على إحداثيات افتراضية بوسط الرياض لتجنب التشتت والمسافات الطويلة جداً في التجربة
                 const propertyLat = item.lat ? parseFloat(item.lat) : 24.7136;
                 const propertyLng = item.lng ? parseFloat(item.lng) : 46.6753;
 
@@ -360,8 +361,14 @@
             });
         }
 
+        // دالة التبديل المطورة التي تُحدث رابط المعاينة الكبيرة ديناميكياً لتلافي خطأ تثبيت الصورة الأولى
         function switchCardMedia(viewerId, src, thumb) {
-            document.getElementById(viewerId).src = src;
+            const mainImg = document.getElementById(viewerId);
+            mainImg.src = src;
+            
+            // تحديث حدث الضغط للصورة الكبيرة لتفتح الصورة المحددة حالياً بدقة
+            mainImg.setAttribute('onclick', `openLightbox('${src}')`);
+            
             const sibs = thumb.parentElement.children;
             for(let s of sibs) s.classList.remove('active');
             thumb.classList.add('active');
@@ -377,14 +384,12 @@
             document.getElementById('popupMapTitle').innerText = "موقع: " + title;
             document.getElementById('mapOverlay').style.display = 'flex';
 
-            // توليد الرابط المباشر لخرائط جوجل بدقة عالية
             document.getElementById('lnkGoogleMaps').href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
 
             if (globalPopupMap === null) {
                 globalPopupMap = L.map('popupMap', { zoomControl: false });
                 L.control.zoom({ position: 'topright' }).addTo(globalPopupMap);
 
-                // استخدام خرائط هجينة سريعة جداً ومستقرة عالمياً لمنع ظهور مربعات سوداء نهائياً
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
                     maxZoom: 20
                 }).addTo(globalPopupMap);
