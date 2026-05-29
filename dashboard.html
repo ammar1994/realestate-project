@@ -2,137 +2,117 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم والتحليل المالي العقاري</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>لوحة التحكم العقارية الحية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; }
-        nav { background: #1c2541; padding: 16px; border-bottom: 1px solid #2a375e; text-align: center; font-weight: bold; font-size: 15px; color: #f8fafc; }
+        body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        nav { background: #1c2541; padding: 14px; border-bottom: 1px solid #2a375e; text-align: center; }
+        .logo { font-size: 15px; font-weight: 800; margin: 0; color: #f8fafc; }
+        .logo span { color: #f59e0b; font-weight: 900; margin-right: 4px; }
         .content { padding: 20px 14px; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
-        .stat-card { background: #1c2541; border-radius: 12px; padding: 20px; border: 1px solid #2e3c63; text-align: center; }
-        .stat-val { font-size: 18px; font-weight: bold; color: #10b981; margin-top: 8px; }
-        .table-box { background: #1c2541; border-radius: 12px; padding: 16px; border: 1px solid #2e3c63; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 13px; }
-        th { color: #94a3b8; padding-bottom: 12px; border-bottom: 1px solid #2e3c63; }
-        td { padding: 14px 0; border-bottom: 1px solid rgba(46, 60, 99, 0.3); color: white; }
-        .btn-action { padding: 6px 12px; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; color: white; margin-left: 6px; font-weight: bold; text-decoration: none; display: inline-block; }
-        .btn-edit { background-color: #3b82f6; }
-        .btn-delete { background-color: #ef4444; }
-        .nav-tabs { display: flex; gap: 10px; margin-bottom: 25px; }
-        .tab-btn { flex: 1; background: #141d36; border: 1px solid #3a4b7c; color: #94a3b8; padding: 12px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 13px; font-weight: bold; transition: all 0.2s; }
+        
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+        .stat-card { background: #1c2541; border-radius: 14px; padding: 14px; border: 1px solid #2e3c63; display: flex; align-items: center; justify-content: space-between; }
+        .stat-val { font-size: 15px; font-weight: 900; color: #f59e0b; margin-top: 4px; }
+        .stat-card i { font-size: 18px; color: #cbd5e1; }
+        
+        .table-box { background: #1c2541; border-radius: 16px; padding: 16px; border: 1px solid #2e3c63; }
+        .table-box h3 { margin: 0 0 14px 0; font-size: 13px; color: #f59e0b; font-weight: 800; }
+        
+        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 11px; }
+        th { color: #94a3b8; padding-bottom: 10px; border-bottom: 1px solid #2e3c63; }
+        td { padding: 12px 0; border-bottom: 1px solid rgba(46, 60, 99, 0.4); }
+        
+        .delete-btn { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid #ef4444; padding: 5px 8px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 10px; }
+        .view-link { display: block; text-align: center; background: #10b981; color: #0b1329; padding: 11px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 13px; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <nav>📊 لوحة إدارة المحفظة العقارية الشاملة</nav>
+    <nav>
+        <div class="logo"><i class="fa-solid fa-chart-line"></i> لوحة تحكم المحفظة <span>الذكية</span></div>
+    </nav>
 
     <div class="content">
-        <div class="nav-tabs">
-            <a href="add.html" class="tab-btn" style="border-color: #10b981; color: #10b981;">➕ إضافة عقار جديد</a>
-            <a href="index.html" class="tab-btn" style="border-color: #f59e0b; color: #f59e0b;">🌐 تصفح العروض للزبائن</a>
-        </div>
-
-        <div class="stats-grid">
+        <div class="dashboard-grid">
             <div class="stat-card">
-                <div style="color: #94a3b8; font-size: 12px;">إجمالي الاستثمارات المعروضة</div>
-                <div class="stat-val" id="sumDisplay">0 ر.س</div>
+                <div>
+                    <span style="color: #94a3b8; font-size: 10px;">إجمالي حجم الاستثمار</span>
+                    <div class="stat-val" id="assets-sum">0 ر.س</div>
+                </div>
+                <i class="fa-solid fa-vault"></i>
             </div>
             <div class="stat-card">
-                <div style="color: #94a3b8; font-size: 12px;">العقارات النشطة حياً</div>
-                <div class="stat-val" id="countDisplay" style="color: #f59e0b;">0 مشاريع</div>
+                <div>
+                    <span style="color: #94a3b8; font-size: 10px;">عدد العروض النشطة</span>
+                    <div class="stat-val" id="assets-count">0 عقار</div>
+                </div>
+                <i class="fa-solid fa-building"></i>
             </div>
         </div>
 
         <div class="table-box">
+            <h3><i class="fa-solid fa-list-check"></i> إدارة عقارات السوق الحالية</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>اسم العقار المعروض</th>
-                        <th>السعر المدرج</th>
+                        <th>العقار المعروض</th>
+                        <th>السعر الحالي</th>
                         <th>الإجراء</th>
                     </tr>
                 </thead>
-                <tbody id="tableBody">
-                    <tr><td colspan="3" style="text-align: center; color: #94a3b8;">جاري جلب وتحليل البيانات الحية...</td></tr>
-                </tbody>
+                <tbody id="table-body">
+                    </tbody>
             </table>
+            
+            <a href="index.html" class="view-link">👁️ فتح واجهة صالة العروض العقارية للزبائن</a>
         </div>
     </div>
 
     <script>
-        const SUPABASE_URL = "https://plfibajexgugqhunmepv.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmliYWpleGd1Z3FodW5tZXB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Mjk0MTcsImV4cCI6MjA2NDAwNTQxN30.0b_XbQhVz8v0w7XhWhS8xJ4367bB_m7G8P6N2C1mZ20"; 
+        function loadLiveStats() {
+            var currentData = localStorage.getItem('saudi_property_vault');
+            var dataArray = currentData ? JSON.parse(currentData) : [];
+            
+            var totalSum = 0;
+            var tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            
+            if(dataArray.length === 0) {
+                document.getElementById('assets-sum').innerText = "0 ر.س";
+                document.getElementById('assets-count').innerText = "0 عقار";
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:20px;">المحفظة خالية، يرجى إضافة عقارات جديدة لتبدأ الحسابات الحية.</td></tr>';
+                return;
+            }
 
-        let localData = [];
+            dataArray.forEach(function(item) {
+                totalSum += parseFloat(item.price || 0);
+                
+                var row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight:bold; color:white;">${item.title}<br><small style="color:#94a3b8;">📍 ${item.location}</small></td>
+                    <td style="color:#f59e0b; font-weight:900;">${Number(item.price).toLocaleString()} ر.س</td>
+                    <td><button class="delete-btn" onclick="deleteProperty('${item.id}')"><i class="fa-solid fa-trash"></i> حذف</button></td>
+                `;
+                tbody.appendChild(row);
+            });
 
-        async function fetchDashboardData() {
-            const tbody = document.getElementById('tableBody');
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/properties`, {
-                    method: 'GET',
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
+            document.getElementById('assets-sum').innerText = totalSum.toLocaleString() + " ر.س";
+            document.getElementById('assets-count').innerText = dataArray.length + " عقار نشط";
+        }
 
-                if (!response.ok) throw new Error('Error');
-                localData = await response.json();
-                tbody.innerHTML = '';
-
-                let totalSum = 0;
-                if (localData.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#94a3b8;">المحفظة خالية تماماً حالياً.</td></tr>';
-                    return;
-                }
-
-                localData.forEach((item, index) => {
-                    totalSum += parseFloat(item.price || 0);
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td><strong>${item.title}</strong><br><span style="font-size:11px; color:#94a3b8;">📍 ${item.location || 'دمشق'}</span></td>
-                        <td style="color:#f59e0b; font-weight:bold;">${Number(item.price).toLocaleString()} ر.س</td>
-                        <td>
-                            <button class="btn-action btn-edit" onclick="triggerEdit(${index})">تعديل</button>
-                            <button class="btn-action btn-delete" onclick="triggerDelete('${item.id}')">حذف</button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                document.getElementById('sumDisplay').innerText = totalSum.toLocaleString() + " ر.س";
-                document.getElementById('countDisplay').innerText = localData.length + " عقارات نشطة";
-
-            } catch (error) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#ef4444;">حدث خطأ أثناء تحديث الجدول.</td></tr>';
+        function deleteProperty(id) {
+            if(confirm("هل تريد حذف هذا العقار نهائياً وتحديث الإحصائيات فوراً؟")) {
+                var currentData = localStorage.getItem('saudi_property_vault');
+                var dataArray = currentData ? JSON.parse(currentData) : [];
+                var filtered = dataArray.filter(function(x) { return x.id !== id; });
+                localStorage.setItem('saudi_property_vault', JSON.stringify(filtered));
+                loadLiveStats();
             }
         }
 
-        function triggerEdit(index) {
-            const targetProperty = localData[index];
-            localStorage.setItem('edit_property_data', JSON.stringify(targetProperty));
-            window.location.href = `add.html?edit_id=${targetProperty.id}`;
-        }
-
-        async function triggerDelete(id) {
-            if (!confirm('تأكيد حذف العقار نهائياً من السيرفر السحابي؟')) return;
-            try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/properties?id=eq.${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                    }
-                });
-                if (!response.ok) throw new Error('Failed');
-                fetchDashboardData();
-            } catch (e) {
-                alert('فشل حذف العقار. يرجى التحقق من اتصال الـ VPN.');
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', fetchDashboardData);
+        window.onload = loadLiveStats;
     </script>
 </body>
 </html>
