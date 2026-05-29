@@ -149,56 +149,24 @@
         .thumbnails-strip::-webkit-scrollbar { display: none; }
         
         .thumb-box { 
-            width: 48px; 
-            height: 48px; 
-            border-radius: 6px; 
-            object-fit: cover; 
-            cursor: pointer; 
-            border: 2px solid transparent; 
-            opacity: 0.5; 
-            transition: all 0.2s ease; 
-            flex-shrink: 0; 
+            width: 48px; height: 48px; border-radius: 6px; object-fit: cover; 
+            cursor: pointer; border: 2px solid transparent; opacity: 0.5; transition: all 0.2s ease; flex-shrink: 0; 
         }
-        .thumb-box.active { 
-            border-color: var(--accent-gold); 
-            opacity: 1; 
-        }
+        .thumb-box.active { border-color: var(--accent-gold); opacity: 1; }
 
-        .action-row { 
-            display: flex; 
-            gap: 10px; 
-            margin-top: auto; 
-        }
+        .action-row { display: flex; gap: 10px; margin-top: auto; }
         
         .btn-action {
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 6px;
-            padding: 12px; 
-            border-radius: 8px; 
-            text-decoration: none; 
-            font-size: 13px; 
-            font-weight: 700; 
-            border: none;
-            cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 12px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; border: none; cursor: pointer;
         }
-
         .btn-whatsapp { flex: 2; background: var(--accent-green); color: #ffffff; }
         .btn-map { flex: 1; background: var(--accent-blue); color: #ffffff; }
         
-        /* النوافذ المنبثقة */
+        /* تصميم النوافذ المنبثقة المحسن */
         .lightbox-overlay { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(7, 11, 21, 0.98); 
-            z-index: 9999; 
-            justify-content: center; 
-            align-items: center; 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(7, 11, 21, 0.95); z-index: 9999; justify-content: center; align-items: center; 
         }
         
         .lightbox-content { max-width: 95%; max-height: 80%; object-fit: contain; border-radius: 6px; }
@@ -206,8 +174,8 @@
         .map-popup-container {
             background: var(--bg-card);
             width: 92%;
-            max-width: 480px;
-            height: 460px;
+            max-width: 440px;
+            height: 490px;
             border-radius: 16px;
             border: 1px solid var(--border-color);
             position: relative;
@@ -220,41 +188,47 @@
         #popupMap { width: 100%; flex-grow: 1; background: #141926; }
 
         .popup-map-title {
-            padding: 14px;
+            padding: 16px;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 800;
             color: var(--accent-gold);
             border-bottom: 1px solid var(--border-color);
             margin: 0;
             text-align: center;
+            background: var(--bg-main);
         }
 
-        /* حاوية أزرار التوجيه المضافة حديثاً لخرائط الجوال الخارجية */
+        /* حاوية أزرار التوجيه المتناسقة تماماً مع الهوية البصرية اللمسية الفخمة */
         .map-external-routing {
-            padding: 12px;
-            background: #141926;
+            padding: 14px;
+            background: var(--bg-main);
             border-top: 1px solid var(--border-color);
             display: flex;
-            gap: 10px;
+            flex-direction: column;
         }
 
         .btn-route-external {
-            flex: 1;
-            padding: 10px;
+            padding: 13px;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 800;
             text-align: center;
             text-decoration: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            border: none;
+            gap: 8px;
+            border: 1px solid var(--accent-gold);
             cursor: pointer;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
         }
-        .btn-google-maps { background: #ea4335; color: white; }
-        .btn-apple-maps { background: #ffffff; color: #1c2541; }
+        .btn-route-external:hover {
+            background: var(--accent-gold);
+            color: var(--bg-main);
+        }
 
         .lightbox-close { 
             position: absolute; top: 16px; right: 16px; font-size: 20px; 
@@ -263,7 +237,7 @@
             justify-content: center; border-radius: 50%; border: 1px solid var(--border-color); z-index: 10000;
         }
 
-        /* تأثير النبض الاحترافي المخصص للسهم والدبوس */
+        /* مؤشر الموقع الدائري النابض الفاخر */
         .pulse-marker {
             position: relative;
         }
@@ -277,7 +251,7 @@
             height: 14px;
             background: rgba(245, 158, 11, 0.4);
             border-radius: 50%;
-            animation: mapPulse 1.6s infinite ease-out;
+            animation: mapPulse 1.5s infinite ease-out;
             z-index: -1;
         }
         @keyframes mapPulse {
@@ -305,12 +279,12 @@
     <div class="lightbox-overlay" id="mapOverlay">
         <span class="lightbox-close" onclick="closeMapPopup()"><i class="fa-solid fa-xmark"></i></span>
         <div class="map-popup-container">
-            <h3 class="popup-map-title" id="popupMapTitle">الموقع الجغرافي للأسد العقاري</h3>
+            <h3 class="popup-map-title" id="popupMapTitle">الموقع الجغرافي للعين العقارية</h3>
             <div id="popupMap"></div>
             
             <div class="map-external-routing">
-                <a href="#" target="_blank" id="lnkGoogleMaps" class="btn-route-external btn-google-maps">
-                    <i class="fa-solid fa-map-pin"></i> فتح عبر تطبيق Google Maps
+                <a href="#" target="_blank" id="lnkGoogleMaps" class="btn-route-external">
+                    <i class="fa-solid fa-location-arrow"></i> فتح واشتقاق الاتجاهات عبر Google Maps
                 </a>
             </div>
         </div>
@@ -357,6 +331,8 @@
                 }
 
                 const whatsappUrl = `https://wa.me/${item.phone || '96650000000'}?text=${encodeURIComponent('استفسار عن: ' + validTitle)}`;
+                
+                // التركيز برمجياً على إحداثيات افتراضية بوسط الرياض لتجنب التشتت والمسافات الطويلة جداً في التجربة
                 const propertyLat = item.lat ? parseFloat(item.lat) : 24.7136;
                 const propertyLng = item.lng ? parseFloat(item.lng) : 46.6753;
 
@@ -397,26 +373,26 @@
         }
         function closeLightbox() { document.getElementById('lightboxOverlay').style.display = 'none'; }
 
-        // فتح الخريطة مع تفعيل ستايل ماب بوكس الفاخر وسهم الإشعاع الذكي والتوجيه الخارجي
         function openMapPopup(lat, lng, title) {
             document.getElementById('popupMapTitle').innerText = "موقع: " + title;
             document.getElementById('mapOverlay').style.display = 'flex';
 
-            // ربط روابط التوجيه الخارجي لـ Google Maps بدقة الإحداثيات المرفوعة
-            document.getElementById('lnkGoogleMaps').href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+            // توليد الرابط المباشر لخرائط جوجل بدقة عالية
+            document.getElementById('lnkGoogleMaps').href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
 
             if (globalPopupMap === null) {
                 globalPopupMap = L.map('popupMap', { zoomControl: false });
                 L.control.zoom({ position: 'topright' }).addTo(globalPopupMap);
 
-                // استخدام ستايل داكن فخم جداً يحاكي MapBox بدقة عالية وثبات مجاني
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 20 }).addTo(globalPopupMap);
+                // استخدام خرائط هجينة سريعة جداً ومستقرة عالمياً لمنع ظهور مربعات سوداء نهائياً
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 20
+                }).addTo(globalPopupMap);
 
-                // سهم ذهبي مشع ومميز مع تأثير النبض الدائري Pulsing المطور
                 var customIcon = L.divIcon({
-                    html: '<div class="pulse-marker"><i class="fa-solid fa-location-crosshairs" style="color: #f59e0b; font-size: 28px; text-shadow: 0 0 10px #f59e0b;"></i></div>',
+                    html: '<div class="pulse-marker"><i class="fa-solid fa-location-dot" style="color: #f59e0b; font-size: 26px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></i></div>',
                     iconSize: [30, 30],
-                    iconAnchor: [15, 15]
+                    iconAnchor: [15, 30]
                 });
 
                 globalPopupMarker = L.marker([lat, lng], { icon: customIcon }).addTo(globalPopupMap);
