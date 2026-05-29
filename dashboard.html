@@ -11,16 +11,13 @@
         .logo { font-size: 15px; font-weight: 800; margin: 0; color: #f8fafc; }
         .logo span { color: #f59e0b; font-weight: 900; margin-right: 4px; }
         .content { padding: 20px 14px; }
-        .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; background: #141d36; border: 1px solid #3a4b7c; color: #94a3b8; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .tab-btn.active { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-color: #f59e0b; color: #0b1329 !important; font-weight: 900; box-shadow: 0 0 12px rgba(245,158,11,0.3); }
         
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
         .stat-card { background: #1c2541; border-radius: 14px; padding: 14px; border: 1px solid #2e3c63; display: flex; align-items: center; justify-content: space-between; }
         .stat-val { font-size: 15px; font-weight: 900; color: #f59e0b; margin-top: 4px; }
         .stat-card i { font-size: 18px; color: #cbd5e1; }
         
-        .table-box { background: #1c2541; border-radius: 16px; padding: 16px; border: 1px solid #2e3c63; margin-bottom: 20px; }
+        .table-box { background: #1c2541; border-radius: 16px; padding: 16px; border: 1px solid #2e3c63; }
         .table-box h3 { margin: 0 0 14px 0; font-size: 13px; color: #f59e0b; font-weight: 800; }
         
         table { width: 100%; border-collapse: collapse; text-align: right; font-size: 11px; }
@@ -34,95 +31,88 @@
 <body>
 
     <nav>
-        <div class="logo"><i class="fa-solid fa-chart-line"></i> نظام المتابعة <span>الحي والمباشر</span></div>
+        <div class="logo"><i class="fa-solid fa-chart-line"></i> لوحة تحكم المحفظة <span>الذكية</span></div>
     </nav>
 
     <div class="content">
-        <div class="nav-tabs">
-            <a href="dashboard.html" class="tab-btn active"><i class="fa-solid fa-chart-pie"></i> لوحة الإحصائيات الحية</a>
-            <a href="add.html" class="tab-btn" style="border-color: #f59e0b; color: #f59e0b;"><i class="fa-solid fa-plus-circle"></i> إضافة عقار جديد</a>
-        </div>
-
         <div class="dashboard-grid">
             <div class="stat-card">
                 <div>
-                    <span style="color: #94a3b8; font-size: 10px;">حجم المحفظة المعروضة</span>
-                    <div class="stat-val" id="real-assets-sum">0 ر.س</div>
+                    <span style="color: #94a3b8; font-size: 10px;">إجمالي حجم الاستثمار</span>
+                    <div class="stat-val" id="assets-sum">0 ر.س</div>
                 </div>
                 <i class="fa-solid fa-vault"></i>
             </div>
             <div class="stat-card">
                 <div>
-                    <span style="color: #94a3b8; font-size: 10px;">عدد المشاريع الحية</span>
-                    <div class="stat-val" id="real-assets-count">0 عقار</div>
+                    <span style="color: #94a3b8; font-size: 10px;">عدد العروض النشطة</span>
+                    <div class="stat-val" id="assets-count">0 عقار</div>
                 </div>
                 <i class="fa-solid fa-building"></i>
             </div>
         </div>
 
         <div class="table-box">
-            <h3><i class="fa-solid fa-list-check"></i> لوحة تحكم وإدارة عروض السوق الحالية</h3>
+            <h3><i class="fa-solid fa-list-check"></i> إدارة عقارات السوق الحالية</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>المشروع</th>
-                        <th>القيمة المالية</th>
-                        <th>إجراء الحذف ونزع النشر</th>
+                        <th>العقار المعروض</th>
+                        <th>السعر الحالي</th>
+                        <th>الإجراء</th>
                     </tr>
                 </thead>
-                <tbody id="saudi-table-body">
+                <tbody id="table-body">
                     </tbody>
             </table>
             
-            <a href="customer.html" target="_blank" class="view-link">👁️ فتح العرض العقاري للزبائن واختبار زر الـ WhatsApp</a>
+            <a href="index.html" class="view-link">👁️ فتح واجهة صالة العروض العقارية للزبائن</a>
         </div>
     </div>
 
     <script>
-        function computeRealStats() {
-            var currentData = localStorage.getItem('saudi_realestate_vault');
+        function loadLiveStats() {
+            var currentData = localStorage.getItem('saudi_property_vault');
             var dataArray = currentData ? JSON.parse(currentData) : [];
             
-            var sum = 0;
-            var tableBody = document.getElementById('saudi-table-body');
-            tableBody.innerHTML = '';
+            var totalSum = 0;
+            var tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
             
             if(dataArray.length === 0) {
-                document.getElementById('real-assets-sum').innerText = "0 ر.س";
-                document.getElementById('real-assets-count').innerText = "0 عقار";
-                tableBody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:20px;">المحفظة العقارية فارغة تماماً الآن. أضف مشاريعك لتبدأ الإحصائيات الحية.</td></tr>';
+                document.getElementById('assets-sum').innerText = "0 ر.س";
+                document.getElementById('assets-count').innerText = "0 عقار";
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:20px;">المحفظة خالية، يرجى إضافة عقارات جديدة لتبدأ الحسابات الحية.</td></tr>';
                 return;
             }
 
             dataArray.forEach(function(item) {
-                sum += parseFloat(item.price || 0);
+                totalSum += parseFloat(item.price || 0);
                 
                 var row = document.createElement('tr');
                 row.innerHTML = `
-                    <td style="font-weight:bold; color:white;">${item.title} <br><small style="color:#94a3b8;">📍 ${item.location}</small></td>
+                    <td style="font-weight:bold; color:white;">${item.title}<br><small style="color:#94a3b8;">📍 ${item.location}</small></td>
                     <td style="color:#f59e0b; font-weight:900;">${Number(item.price).toLocaleString()} ر.س</td>
-                    <td><button class="delete-btn" onclick="removeSaudiProperty('${item.id}')"><i class="fa-solid fa-trash-can"></i> حذف نهائي</button></td>
+                    <td><button class="delete-btn" onclick="deleteProperty('${item.id}')"><i class="fa-solid fa-trash"></i> حذف</button></td>
                 `;
-                tableBody.appendChild(row);
+                tbody.appendChild(row);
             });
 
-            document.getElementById('real-assets-sum').innerText = sum.toLocaleString() + " ر.س";
-            document.getElementById('real-assets-count').innerText = dataArray.length + " عقار حقيقي";
+            document.getElementById('assets-sum').innerText = totalSum.toLocaleString() + " ر.س";
+            document.getElementById('assets-count').innerText = dataArray.length + " عقار نشط";
         }
 
-        function removeSaudiProperty(id) {
-            if(confirm("تأكيد إجراء الحذف؟ سيتم إزالة العقار فورا وتحديث لوحة الإحصائيات وواجهة العرض الحية للزبون.")) {
-                var currentData = localStorage.getItem('saudi_realestate_vault');
+        function deleteProperty(id) {
+            if(confirm("هل تريد حذف هذا العقار نهائياً وتحديث الإحصائيات فوراً؟")) {
+                var currentData = localStorage.getItem('saudi_property_vault');
                 var dataArray = currentData ? JSON.parse(currentData) : [];
-                
                 var filtered = dataArray.filter(function(x) { return x.id !== id; });
-                localStorage.setItem('saudi_realestate_vault', JSON.stringify(filtered));
-                
-                computeRealStats();
+                localStorage.setItem('saudi_property_vault', JSON.stringify(filtered));
+                loadLiveStats();
             }
         }
 
-        window.onload = computeRealStats;
+        window.onload = loadLiveStats;
     </script>
 </body>
 </html>
