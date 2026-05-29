@@ -3,43 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم والتحليل</title>
+    <title>لوحة التحكم والتحليل المالي العقاري</title>
     <style>
         body { background-color: #0b1329; color: #f8fafc; font-family: system-ui, sans-serif; margin: 0; padding: 0; }
-        nav { background: #1c2541; padding: 14px; border-bottom: 1px solid #2a375e; text-align: center; font-weight: bold; }
+        nav { background: #1c2541; padding: 16px; border-bottom: 1px solid #2a375e; text-align: center; font-weight: bold; font-size: 15px; color: #f8fafc; }
         .content { padding: 20px 14px; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: #1c2541; border-radius: 8px; padding: 15px; border: 1px solid #2e3c63; text-align: center; }
-        .stat-val { font-size: 16px; font-weight: bold; color: #f59e0b; margin-top: 5px; }
-        .table-box { background: #1c2541; border-radius: 12px; padding: 16px; border: 1px solid #2e3c63; }
-        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 12px; }
-        th { color: #94a3b8; padding-bottom: 10px; border-bottom: 1px solid #2e3c63; }
-        td { padding: 12px 0; border-bottom: 1px solid rgba(46, 60, 99, 0.4); color: white; }
-        .btn-action { padding: 4px 8px; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; color: white; margin-left: 4px; font-weight: bold; text-decoration: none; display: inline-block; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px; }
+        .stat-card { background: #1c2541; border-radius: 12px; padding: 20px; border: 1px solid #2e3c63; text-align: center; }
+        .stat-val { font-size: 18px; font-weight: bold; color: #10b981; margin-top: 8px; }
+        .table-box { background: #1c2541; border-radius: 12px; padding: 16px; border: 1px solid #2e3c63; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 13px; }
+        th { color: #94a3b8; padding-bottom: 12px; border-bottom: 1px solid #2e3c63; }
+        td { padding: 14px 0; border-bottom: 1px solid rgba(46, 60, 99, 0.3); color: white; }
+        .btn-action { padding: 6px 12px; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; color: white; margin-left: 6px; font-weight: bold; text-decoration: none; display: inline-block; }
         .btn-edit { background-color: #3b82f6; }
         .btn-delete { background-color: #ef4444; }
-        .nav-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; background: #141d36; border: 1px solid #3a4b7c; color: #94a3b8; padding: 10px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 12px; font-weight: bold; }
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 25px; }
+        .tab-btn { flex: 1; background: #141d36; border: 1px solid #3a4b7c; color: #94a3b8; padding: 12px; border-radius: 8px; text-align: center; text-decoration: none; font-size: 13px; font-weight: bold; transition: all 0.2s; }
     </style>
 </head>
 <body>
 
-    <nav>لوحة التحكم وإدارة العقارات المنشورة</nav>
+    <nav>📊 لوحة إدارة المحفظة العقارية الشاملة</nav>
 
     <div class="content">
         <div class="nav-tabs">
             <a href="add.html" class="tab-btn" style="border-color: #10b981; color: #10b981;">➕ إضافة عقار جديد</a>
-            <a href="index.html" class="tab-btn" style="border-color: #3b82f6; color: #3b82f6;">🌐 واجهة العرض للزبائن</a>
+            <a href="index.html" class="tab-btn" style="border-color: #f59e0b; color: #f59e0b;">🌐 تصفح العروض للزبائن</a>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card">
-                <div style="color: #94a3b8; font-size: 11px;">إجمالي المبالغ المدرجة</div>
+                <div style="color: #94a3b8; font-size: 12px;">إجمالي الاستثمارات المعروضة</div>
                 <div class="stat-val" id="sumDisplay">0 ر.س</div>
             </div>
             <div class="stat-card">
-                <div style="color: #94a3b8; font-size: 11px;">عدد العقارات الحالية</div>
-                <div class="stat-val" id="countDisplay">0 عقار</div>
+                <div style="color: #94a3b8; font-size: 12px;">العقارات النشطة حياً</div>
+                <div class="stat-val" id="countDisplay" style="color: #f59e0b;">0 مشاريع</div>
             </div>
         </div>
 
@@ -47,13 +47,13 @@
             <table>
                 <thead>
                     <tr>
-                        <th>العقار</th>
+                        <th>اسم العقار المعروض</th>
                         <th>السعر المدرج</th>
-                        <th>العمليات</th>
+                        <th>الإجراء</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
-                    <tr><td colspan="3" style="text-align: center; color: #94a3b8;">جاري جلب البيانات من السيرفر...</td></tr>
+                    <tr><td colspan="3" style="text-align: center; color: #94a3b8;">جاري جلب وتحليل البيانات الحية...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -61,7 +61,7 @@
 
     <script>
         const SUPABASE_URL = "https://plfibajexgugqhunmepv.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmliYWpleGd1Z3FodW5tZXB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Mjk0MTcsImV4cCI6Mjا2NDAwNTQxN30.0b_XbQhVz8v0w7XhWhS8xJ4367bB_m7G8P6N2C1mZ20"; 
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmliYWpleGd1Z3FodW5tZXB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg0Mjk0MTcsImV4cCI6MjA2NDAwNTQxN30.0b_XbQhVz8v0w7XhWhS8xJ4367bB_m7G8P6N2C1mZ20"; 
 
         let localData = [];
 
@@ -77,7 +77,7 @@
                     }
                 });
 
-                if (!response.ok) throw new Error('خطأ');
+                if (!response.ok) throw new Error('Error');
                 localData = await response.json();
                 tbody.innerHTML = '';
 
@@ -91,7 +91,7 @@
                     totalSum += parseFloat(item.price || 0);
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td><strong>[${item.property_type || 'شقة'}]</strong> ${item.title}</td>
+                        <td><strong>${item.title}</strong><br><span style="font-size:11px; color:#94a3b8;">📍 ${item.location || 'دمشق'}</span></td>
                         <td style="color:#f59e0b; font-weight:bold;">${Number(item.price).toLocaleString()} ر.س</td>
                         <td>
                             <button class="btn-action btn-edit" onclick="triggerEdit(${index})">تعديل</button>
@@ -102,10 +102,10 @@
                 });
 
                 document.getElementById('sumDisplay').innerText = totalSum.toLocaleString() + " ر.س";
-                document.getElementById('countDisplay').innerText = localData.length + " عقار";
+                document.getElementById('countDisplay').innerText = localData.length + " عقارات نشطة";
 
             } catch (error) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#ef4444;">حدث خطأ في الاتصال بالشبكة.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#ef4444;">حدث خطأ أثناء تحديث الجدول.</td></tr>';
             }
         }
 
@@ -116,7 +116,7 @@
         }
 
         async function triggerDelete(id) {
-            if (!confirm('تأكيد إزالة هذا العقار بشكل نهائي؟')) return;
+            if (!confirm('تأكيد حذف العقار نهائياً من السيرفر السحابي؟')) return;
             try {
                 const response = await fetch(`${SUPABASE_URL}/rest/v1/properties?id=eq.${id}`, {
                     method: 'DELETE',
@@ -125,10 +125,10 @@
                         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
                     }
                 });
-                if (!response.ok) throw new Error('فشل');
+                if (!response.ok) throw new Error('Failed');
                 fetchDashboardData();
             } catch (e) {
-                alert('عذراً، فشل حذف العقار من السيرفر.');
+                alert('فشل حذف العقار. يرجى التحقق من اتصال الـ VPN.');
             }
         }
 
