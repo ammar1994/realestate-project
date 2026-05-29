@@ -3,142 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرض العقارات الفاخرة</title>
+    <title>معرض العقارات الفاخرة PREMIUM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b1329;
-            margin: 0;
-            padding: 20px;
-            color: #f8fafc;
-        }
-        h1 {
-            text-align: center;
-            color: #f59e0b;
-            margin-bottom: 10px;
-            font-size: 1.8rem;
-            font-weight: 900;
-        }
-        p.subtitle {
-            text-align: center;
-            color: #94a3b8;
-            font-size: 13px;
-            margin-bottom: 30px;
-        }
-        .properties-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .property-card {
-            background: #1c2541;
-            border-radius: 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-            text-decoration: none;
-            color: inherit;
-            border: 1px solid #2e3c63;
-        }
-        .property-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
-        }
-        .property-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background-color: #141d36;
-        }
-        .property-details {
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-        .property-title {
-            font-size: 15px;
-            font-weight: bold;
-            color: #f8fafc;
-            margin: 0 0 10px 0;
-            line-height: 1.4;
-        }
-        .property-price {
-            color: #f59e0b;
-            font-size: 20px;
-            font-weight: 900;
-            margin-bottom: 12px;
-        }
-        .property-meta {
-            font-size: 11px;
-            color: #cbd5e1;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid rgba(46, 60, 99, 0.4);
-            padding-top: 10px;
-        }
+        body { font-family: system-ui, -apple-system, sans-serif; background-color: #0b1329; margin: 0; padding: 15px; color: #f8fafc; }
+        h1 { text-align: center; color: #f59e0b; margin-top: 20px; font-size: 1.6rem; font-weight: 900; }
+        p.subtitle { text-align: center; color: #94a3b8; font-size: 11px; margin-bottom: 25px; }
+        
+        .properties-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .property-card { background: #1c2541; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid #2e3c63; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        
+        .media-container { position: relative; width: 100%; height: 210px; background: #141d36; }
+        .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; }
+        .media-counter { position: absolute; top: 10px; left: 10px; background: rgba(11,19,41,0.8); padding: 4px 8px; border-radius: 6px; font-size: 10px; color: #f59e0b; font-weight: bold; }
+        
+        .property-details { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; }
+        .property-title { font-size: 14px; font-weight: bold; color: #f8fafc; margin: 0 0 8px 0; }
+        .property-price { color: #f59e0b; font-size: 20px; font-weight: 900; margin-bottom: 10px; }
+        
+        .property-meta { font-size: 11px; color: #cbd5e1; margin-bottom: 12px; display: flex; justify-content: space-between; border-top: 1px solid rgba(46, 60, 99, 0.4); padding-top: 8px; }
         .meta-item { display: flex; align-items: center; gap: 4px; }
-        .loading-text {
-            text-align: center;
-            font-size: 13px;
-            color: #94a3b8;
-            grid-column: 1 / -1;
-            padding: 40px;
-        }
+        
+        /* تصميم أزرار الإجراءات والمواقع الحية */
+        .action-buttons { display: flex; gap: 8px; margin-top: auto; }
+        .btn-whatsapp { flex: 2; background: #25d366; color: white; border: none; padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 900; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-map { flex: 1; background: #3b82f6; color: white; border: none; padding: 10px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        
+        .empty-text { text-align: center; font-size: 12px; color: #94a3b8; padding: 40px; grid-column: 1 / -1; }
+        .nav-link { display: block; text-align: center; margin-bottom: 20px; color: #f59e0b; text-decoration: none; font-size: 12px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1>صالة عروض الأصول الاستثمارية المتاحة</h1>
-    <p class="subtitle">مساحة تفاعلية حية ومحدثة من قبل إدارة المحتوى مباشرة</p>
+    <h1>صالة العروض العقارية الحصرية</h1>
+    <p class="subtitle">تصفح حي ومباشر لأحدث العقارات الفاخرة بالمملكة العربية السعودية</p>
+    <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-gauge"></i> الدخول للوحة التحكم الحية</a>
     
     <div class="properties-container" id="propertiesWrapper">
-        <div class="loading-text">جاري جلب قائمة المعروضات الاستثمارية...</div>
-    </div>
+        </div>
 
     <script>
-        function loadProperties() {
+        function renderClientProperties() {
             const wrapper = document.getElementById('propertiesWrapper');
             wrapper.innerHTML = '';
             
-            // جلب مصفوفة العقارات المتكاملة والمحدثة من قبل العميل
-            const currentProperties = localStorage.getItem('global_properties_list');
-            const propertiesArray = currentProperties ? JSON.parse(currentProperties) : [];
+            const currentData = localStorage.getItem('saudi_property_vault');
+            const dataArray = currentData ? JSON.parse(currentData) : [];
             
-            if (propertiesArray.length === 0) {
-                wrapper.innerHTML = '<div class="loading-text"><i class="fa-solid fa-building-circle-exmark" style="font-size:24px; color:#f59e0b; margin-bottom:10px; display:block;"></i> لا توجد عقارات منشورة في الصالة حالياً. أضف عقاراً من لوحة التحكم لتراه حياً هنا.</div>';
+            if (dataArray.length === 0) {
+                wrapper.innerHTML = '<div class="empty-text"><i class="fa-solid fa-folder-open" style="font-size:24px; color:#f59e0b; display:block; margin-bottom:8px;"></i> لا توجد عروض عقارية منشورة حالياً بالمنصة.</div>';
                 return;
             }
             
-            // بناء كروت العرض تلقائياً بناءً على محتوى مصفوفة العميل المحدثة
-            propertiesArray.forEach(item => {
+            dataArray.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'property-card';
                 
+                // جلب العنصر الأول للألبوم (سواء صورة أو فيديو)
+                const firstMedia = item.media_list && item.media_list[0] ? item.media_list[0] : { type: 'image', data: '' };
+                let mediaHtml = '';
+                if(firstMedia.type === 'video') {
+                    mediaHtml = `<video src="${firstMedia.data}" controls muted loop autoplay></video>`;
+                } else {
+                    mediaHtml = `<img src="${firstMedia.data}" alt="صورة العقار">`;
+                }
+
+                // إعداد نص رسالة الواتساب المتضمنة تفاصيل العقار لفتحها بجوال العميل تلقائياً
+                const message = encodeURIComponent(`مرحباً يا مدير المنصة، أريد الاستفسار عن العقار المعروض: (${item.title}) بقيمة (${Number(item.price).toLocaleString()} ر.س) في موقع (${item.location}). هل العرض لا يزال متاحاً؟`);
+                const whatsappLink = `https://wa.me/${item.phone}?text=${message}`;
+                
+                // توجيه إحداثيات الخريطة لتفتح فوراً داخل خرائط جوجل الرسمية بجوال الزبون
+                const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${item.lat},${item.lng}`;
+                
                 card.innerHTML = `
-                    <img src="${item.main_img}" class="property-img" onerror="this.src='https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'" alt="${item.title}">
+                    <div class="media-container">
+                        ${mediaHtml}
+                        <div class="media-counter"><i class="fa-solid fa-photo-film"></i> وسائط: ${item.media_list.length}</div>
+                    </div>
                     <div class="property-details">
-                        <div class="property-price">$${Number(item.price).toLocaleString()}</div>
+                        <div class="property-price">${Number(item.price).toLocaleString()} ر.س</div>
                         <h3 class="property-title">${item.title}</h3>
                         <div class="property-meta">
                             <span class="meta-item"><i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> ${item.location}</span>
-                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:#3b82f6;"></i> ${item.area} م²</span>
+                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:#f59e0b;"></i> ${item.area} م²</span>
+                        </div>
+                        <div class="property-meta" style="border:none; padding:0; margin-bottom:15px;">
                             <span class="meta-item"><i class="fa-solid fa-bed" style="color:#3b82f6;"></i> ${item.rooms}</span>
+                        </div>
+                        <div class="action-buttons">
+                            <a href="${whatsappLink}" target="_blank" class="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> تواصل مع المدير</a>
+                            <a href="${googleMapsLink}" target="_blank" class="btn-map"><i class="fa-solid fa-map-location-dot"></i> الخريطة</a>
                         </div>
                     </div>
                 `;
                 wrapper.appendChild(card);
             });
         }
-
-        // تشغيل البناء الديناميكي فور تحميل الشاشة
-        document.addEventListener('DOMContentLoaded', loadProperties);
+        document.addEventListener('DOMContentLoaded', renderClientProperties);
     </script>
 </body>
 </html>
