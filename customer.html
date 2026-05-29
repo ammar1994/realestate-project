@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرض الفرص العقارية الفاخرة</title>
+    <title>معرض الفرص العقارية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: system-ui, -apple-system, sans-serif; background-color: #0b1329; margin: 0; padding: 20px; color: #f8fafc; }
@@ -26,6 +26,12 @@
         .property-meta { font-size: 11px; color: #cbd5e1; margin-bottom: 14px; display: flex; justify-content: space-between; border-top: 1px solid rgba(46, 60, 99, 0.4); padding-top: 10px; }
         .meta-item { display: flex; align-items: center; gap: 4px; }
         
+        /* التعديل المطلوب: شريط معاينة مصغرات الصور المتبقية أسفل العقار */
+        .thumbnails-strip { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 12px 0; margin-bottom: 10px; scrollbar-width: none; }
+        .thumbnails-strip::-webkit-scrollbar { display: none; }
+        .thumb-box { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 1px solid #3a4b7c; opacity: 0.6; transition: 0.2s; flex-shrink: 0; }
+        .thumb-box.active { border-color: #f59e0b; opacity: 1; box-shadow: 0 0 5px #f59e0b; }
+
         /* أزرار الإجراءات التفاعلية للزبائن */
         .action-row { display: flex; gap: 8px; margin-top: auto; }
         .btn-whatsapp { flex: 2; background: #25d366; color: white; border: none; padding: 11px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: 900; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.2s; }
@@ -38,7 +44,7 @@
 <body>
 
     <h1>منصة العروض والفرص الاستثمارية العقارية</h1>
-    <p class="subtitle">تصفح حي ومباشر لأحدث الفلل والمشاريع السكنية الفاخرة بالمملكة</p>
+    <p class="subtitle">تصفح حي ومباشر لأحدث الفلل والمشاريع السكنية بالمملكة</p>
     
     <div class="properties-container" id="saudiClientWrapper">
         <div class="loading-text">جاري فحص وتحديث المعروضات الحية بالمحفظة...</div>
@@ -49,7 +55,8 @@
             const wrapper = document.getElementById('saudiClientWrapper');
             wrapper.innerHTML = '';
             
-            const currentData = localStorage.getItem('saudi_realestate_vault');
+            // إصلاح المزامنة: تم تعديل المفتاح البرمجي ليطابق جدول البيانات المحفوظ
+            const currentData = localStorage.getItem('saudi_property_vault');
             const dataArray = currentData ? JSON.parse(currentData) : [];
             
             if (dataArray.length === 0) {
@@ -61,29 +68,50 @@
                 const card = document.createElement('div');
                 card.className = 'property-card';
                 
-                // تحديد الوسيطة الأولى للعرض الرئيسي (صورة أو فيديو)
-                const firstMedia = item.media_list && item.media_list[0] ? item.media_list[0] : { type: 'image', data: '' };
-                let mediaElementHtml = '';
+                // التأكد من توفر مصفوفة الصور
+                const mediaList = item.media_list && item.media_list.length > 0 ? item.media_list : [{ type: 'image', data: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80' }];
+                const firstMedia = mediaList[0];
+                const totalMediaCount = mediaList.length;
+
+                // إعداد معرّف فريد لكل كرت للتحكم بالصور من خلال أزرار المعاينة
+                const viewerId = `viewer_${item.id}`;
                 
+                let mainMediaHtml = '';
                 if(firstMedia.type === 'video') {
-                    mediaElementHtml = `<video src="${firstMedia.data}" controls muted loop autoplay class="property-img"></video>`;
+                    mainMediaHtml = `<video id="${viewerId}" src="${firstMedia.data}" controls muted loop autoplay class="property-img"></video>`;
                 } else {
-                    mediaElementHtml = `<img src="${firstMedia.data}" class="property-img" alt="عرض عقاري">`;
+                    mainMediaHtml = `<img id="${viewerId}" src="${firstMedia.data}" class="property-img" alt="عرض عقاري">`;
                 }
 
-                const totalMediaCount = item.media_list ? item.media_list.length : 1;
+                // توليد أزرار ومصغرات المعاينة لبقية الصور (حتى 10 صور أو أكثر) أسفل كل عقار
+                let thumbnailsHtml = '';
+                if(totalMediaCount > 1) {
+                    thumbnailsHtml += `<div class="thumbnails-strip">`;
+                    mediaList.forEach((media, idx) => {
+                        const activeClass = idx === 0 ? 'active' : '';
+                        thumbnailsHtml += `
+                            <img src="${media.data}" 
+                                 class="thumb-box ${activeClass}" 
+                                 onclick="switchCardMedia('${viewerId}', '${media.data}', '${media.type}', this)" 
+                                 alt="معاينة">`;
+                    });
+                    thumbnailsHtml += `</div>`;
+                }
 
-                // إعداد نص رسالة الواتساب الاحترافية والمشفرة لفتح تطبيق الجوال تلقائياً
+                // توليد رابط جوجل ماب بشكل ديناميكي آمن بالاعتماد على الـ Lat والـ Lng الملتقتين من صفحة الرفع
+                const googleMapUrl = `https://www.google.com/maps?q=${item.lat},${item.lng}`;
+
+                // إعداد نص رسالة الواتساب الاحترافية لفتح تطبيق الجوال تلقائياً
                 const messageText = encodeURIComponent(`مرحباً، أريد الاستفسار عن عقار: (${item.title}) المعروض في صالة العرض بقيمة: (${Number(item.price).toLocaleString()} ريال سعودي). هل العرض متاح؟`);
                 const whatsappUrl = `https://wa.me/${item.phone}?text=${messageText}`;
                 
                 card.innerHTML = `
                     <div class="media-viewer">
-                        ${mediaElementHtml}
+                        ${mainMediaHtml}
                         <div class="media-badge"><i class="fa-solid fa-photo-film"></i> وسائط: ${totalMediaCount}</div>
                     </div>
                     <div class="property-details">
-                        <span class="tag">${item.type}</span>
+                        <span class="tag">عرض متاح</span>
                         <div class="property-price">${Number(item.price).toLocaleString()} ر.س</div>
                         <h3 class="property-title">${item.title}</h3>
                         <div class="property-meta">
@@ -91,14 +119,37 @@
                             <span class="meta-item"><i class="fa-solid fa-maximize" style="color:#f59e0b;"></i> ${item.area} م²</span>
                             <span class="meta-item"><i class="fa-solid fa-circle-info" style="color:#3b82f6;"></i> ${item.rooms}</span>
                         </div>
+                        
+                        ${thumbnailsHtml}
+
                         <div class="action-row">
                             <a href="${whatsappUrl}" target="_blank" class="btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> استفسر عبر الواتساب</a>
-                            <a href="${item.map_url}" target="_blank" class="btn-map"><i class="fa-solid fa-map-location-dot"></i> الموقع</a>
+                            <a href="${googleMapUrl}" target="_blank" class="btn-map"><i class="fa-solid fa-map-location-dot"></i> الموقع</a>
                         </div>
                     </div>
                 `;
                 wrapper.appendChild(card);
             });
+        }
+
+        // دالة التنقل التفاعلية الفورية لتغيير الصورة المعروضة في الكرت عند ضغط الزبون على المصغرات
+        function switchCardMedia(viewerId, mediaData, mediaType, thumbElement) {
+            const mediaViewer = document.getElementById(viewerId);
+            const parentContainer = mediaViewer.parentElement;
+            
+            // إزالة الكلاس النشط (active) عن بقية المصغرات في نفس الشريط
+            const siblings = thumbElement.parentElement.children;
+            for(let sib of siblings) {
+                sib.classList.remove('active');
+            }
+            thumbElement.classList.add('active');
+
+            // تبديل العنصر الأساسي حسب نوع الوسيط الجديد (صورة أو فيديو)
+            if(mediaType === 'video') {
+                parentContainer.innerHTML = `<video id="${viewerId}" src="${mediaData}" controls muted loop autoplay class="property-img"></video><div class="media-badge"><i class="fa-solid fa-photo-film"></i> فيديو</div>`;
+            } else {
+                parentContainer.innerHTML = `<img id="${viewerId}" src="${mediaData}" class="property-img" alt="عرض عقاري"><div class="media-badge"><i class="fa-solid fa-photo-film"></i> صورة</div>`;
+            }
         }
 
         document.addEventListener('DOMContentLoaded', loadSaudiProperties);
