@@ -13,10 +13,28 @@
         
         .property-card { background: #1c2541; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); overflow: hidden; display: flex; flex-direction: column; border: 1px solid #2e3c63; }
         
-        /* حاوية العرض المتعددة للصور والفيديوهات */
-        .media-viewer { position: relative; width: 100%; height: 210px; background: #141d36; }
-        .media-viewer img, .media-viewer video { width: 100%; height: 100%; object-fit: cover; }
-        .media-badge { position: absolute; top: 10px; left: 10px; background: rgba(11,19,41,0.8); padding: 4px 8px; border-radius: 6px; font-size: 10px; color: #f59e0b; font-weight: bold; }
+        /* 🌟 تحديث حاوية الميديا: ضبط الخلفية لتناسب كافة أبعاد الصور */
+        .media-viewer { 
+            position: relative; 
+            width: 100%; 
+            height: 210px; 
+            background: #0f172a; /* خلفية أغمق لتبدو احترافية عند ظهور الفراغات الجانبية */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        /* 🌟 حل المشكلة: contain تضمن عدم قص أي جزء من حواف الصورة مهما كانت أبعادها */
+        .property-img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+            image-orientation: from-image;
+            display: block;
+        }
+        
+        .media-badge { position: absolute; top: 10px; left: 10px; background: rgba(11,19,41,0.8); padding: 4px 8px; border-radius: 6px; font-size: 10px; color: #f59e0b; font-weight: bold; z-index: 2; }
         
         .property-details { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
         .tag { font-size: 10px; background: rgba(245,158,11,0.15); color: #f59e0b; padding: 4px 8px; border-radius: 4px; align-self: flex-start; margin-bottom: 8px; font-weight: bold; }
@@ -26,9 +44,11 @@
         .property-meta { font-size: 11px; color: #cbd5e1; margin-bottom: 14px; display: flex; justify-content: space-between; border-top: 1px solid rgba(46, 60, 99, 0.4); padding-top: 10px; }
         .meta-item { display: flex; align-items: center; gap: 4px; }
         
-        /* التعديل المطلوب: شريط معاينة مصغرات الصور المتبقية أسفل العقار */
+        /* شريط معاينة مصغرات الصور المتبقية أسفل العقار */
         .thumbnails-strip { display: flex; gap: 6px; overflow-x: auto; padding: 4px 0 12px 0; margin-bottom: 10px; scrollbar-width: none; }
         .thumbnails-strip::-webkit-scrollbar { display: none; }
+        
+        /* ضبط المصغرات لتظهر كاملة أيضاً بدون تشويه */
         .thumb-box { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; cursor: pointer; border: 1px solid #3a4b7c; opacity: 0.6; transition: 0.2s; flex-shrink: 0; }
         .thumb-box.active { border-color: #f59e0b; opacity: 1; box-shadow: 0 0 5px #f59e0b; }
 
@@ -55,7 +75,6 @@
             const wrapper = document.getElementById('saudiClientWrapper');
             wrapper.innerHTML = '';
             
-            // إصلاح المزامنة: تم تعديل المفتاح البرمجي ليطابق جدول البيانات المحفوظ
             const currentData = localStorage.getItem('saudi_property_vault');
             const dataArray = currentData ? JSON.parse(currentData) : [];
             
@@ -68,12 +87,10 @@
                 const card = document.createElement('div');
                 card.className = 'property-card';
                 
-                // التأكد من توفر مصفوفة الصور
                 const mediaList = item.media_list && item.media_list.length > 0 ? item.media_list : [{ type: 'image', data: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80' }];
                 const firstMedia = mediaList[0];
                 const totalMediaCount = mediaList.length;
 
-                // إعداد معرّف فريد لكل كرت للتحكم بالصور من خلال أزرار المعاينة
                 const viewerId = `viewer_${item.id}`;
                 
                 let mainMediaHtml = '';
@@ -83,7 +100,6 @@
                     mainMediaHtml = `<img id="${viewerId}" src="${firstMedia.data}" class="property-img" alt="عرض عقاري">`;
                 }
 
-                // توليد أزرار ومصغرات المعاينة لبقية الصور (حتى 10 صور أو أكثر) أسفل كل عقار
                 let thumbnailsHtml = '';
                 if(totalMediaCount > 1) {
                     thumbnailsHtml += `<div class="thumbnails-strip">`;
@@ -98,12 +114,9 @@
                     thumbnailsHtml += `</div>`;
                 }
 
-                // توليد رابط جوجل ماب بشكل ديناميكي آمن بالاعتماد على الـ Lat والـ Lng الملتقتين من صفحة الرفع
-                const googleMapUrl = `https://www.google.com/maps?q=${item.lat},${item.lng}`;
-
-                // إعداد نص رسالة الواتساب الاحترافية لفتح تطبيق الجوال تلقائياً
+                const googleMapUrl = `https://maps.google.com/?q=${item.lat || ''},${item.lng || ''}`;
                 const messageText = encodeURIComponent(`مرحباً، أريد الاستفسار عن عقار: (${item.title}) المعروض في صالة العرض بقيمة: (${Number(item.price).toLocaleString()} ريال سعودي). هل العرض متاح؟`);
-                const whatsappUrl = `https://wa.me/${item.phone}?text=${messageText}`;
+                const whatsappUrl = `https://wa.me/${item.phone || ''}?text=${messageText}`;
                 
                 card.innerHTML = `
                     <div class="media-viewer">
@@ -132,19 +145,16 @@
             });
         }
 
-        // دالة التنقل التفاعلية الفورية لتغيير الصورة المعروضة في الكرت عند ضغط الزبون على المصغرات
         function switchCardMedia(viewerId, mediaData, mediaType, thumbElement) {
             const mediaViewer = document.getElementById(viewerId);
             const parentContainer = mediaViewer.parentElement;
             
-            // إزالة الكلاس النشط (active) عن بقية المصغرات في نفس الشريط
             const siblings = thumbElement.parentElement.children;
             for(let sib of siblings) {
                 sib.classList.remove('active');
             }
             thumbElement.classList.add('active');
 
-            // تبديل العنصر الأساسي حسب نوع الوسيط الجديد (صورة أو فيديو)
             if(mediaType === 'video') {
                 parentContainer.innerHTML = `<video id="${viewerId}" src="${mediaData}" controls muted loop autoplay class="property-img"></video><div class="media-badge"><i class="fa-solid fa-photo-film"></i> فيديو</div>`;
             } else {
