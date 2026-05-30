@@ -12,20 +12,20 @@
         :root {
             --bg-body: #f8fafc;
             --bg-panel: #ffffff;
-            --sidebar-bg: #0b132b; /* كحلي فاخر عميق متناسق مع صفحة العميل */
+            --sidebar-bg: #0b132b; 
             --text-primary: #0f172a;
             --text-secondary: #475569;
             --text-light: #f8fafc;
             --border-color: #e2e8f0;
-            --accent-gold: #e11d48; /* برتقالي فخم للهوية */
-            --accent-amber: #d97706; /* ذهبي للأرقام والقيم */
+            --accent-gold: #e11d48; 
+            --accent-amber: #d97706; 
             --accent-blue: #2563eb;
             --accent-green: #059669;
             --accent-red: #dc2626;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
             --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.05);
             --sidebar-width: 280px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.2s ease-in-out;
         }
 
         * { box-sizing: border-box; transition: var(--transition); }
@@ -37,13 +37,10 @@
             margin: 0; padding: 0; 
             display: flex; min-height: 100vh; 
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* القائمة الجانبية الفاخرة */
         .sidebar { width: var(--sidebar-width); background-color: var(--sidebar-bg); color: var(--text-light); display: flex; flex-direction: column; z-index: 1000; box-shadow: 4px 0 24px rgba(0,0,0,0.1); }
         .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); position: relative; }
-        .sidebar-header::after { content: ''; position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-gold), transparent); }
         .sidebar-header h2 { margin: 0; font-size: 1.3rem; color: #ffffff; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .sidebar-header h2 i { color: var(--accent-gold); }
         .sidebar-nav { padding: 24px 0; flex-grow: 1; }
@@ -52,7 +49,6 @@
         .nav-item:hover, .nav-item.active { background: linear-gradient(270deg, rgba(255,255,255,0.04) 0%, transparent 100%); color: #ffffff; }
         .nav-item.active { border-right-color: var(--accent-gold); color: #ffffff; font-weight: 700; }
 
-        /* الهيكل الأساسي والمحتوى */
         .main-content { flex: 1; display: flex; flex-direction: column; width: calc(100% - var(--sidebar-width)); overflow-x: hidden; }
         .top-header { background: var(--bg-panel); padding: 20px 30px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); }
         .menu-toggle { background: none; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; display: none; }
@@ -60,63 +56,48 @@
 
         .dashboard-container { padding: 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
 
-        /* كروت الإحصائيات الذكية */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 35px; }
-        .stat-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); position: relative; overflow: hidden; }
-        .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: #cbd5e1; }
+        .stat-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); }
         .stat-info h3 { margin: 0 0 10px 0; font-size: 14px; color: var(--text-secondary); font-weight: 600; }
-        .stat-info p { margin: 0; font-size: 28px; font-weight: 800; color: var(--sidebar-bg); letter-spacing: -0.5px; }
-        .stat-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: #f1f5f9; color: var(--sidebar-bg); }
+        .stat-info p { margin: 0; font-size: 28px; font-weight: 800; color: var(--sidebar-bg); }
+        .stat-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: #f1f5f9; }
         
-        /* تلوين الكروت بشكل فخم */
         .stat-card:nth-child(1) .stat-icon { background: rgba(37, 99, 235, 0.08); color: var(--accent-blue); }
         .stat-card:nth-child(2) .stat-info p { color: var(--accent-amber); }
         .stat-card:nth-child(2) .stat-icon { background: rgba(217, 119, 6, 0.08); color: var(--accent-amber); }
         .stat-card:nth-child(3) .stat-info p { color: var(--accent-gold); }
         .stat-card:nth-child(3) .stat-icon { background: rgba(225, 29, 72, 0.08); color: var(--accent-gold); }
 
-        /* شبكة النوافذ والعمليات */
         .main-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
         @media (min-width: 1150px) { .main-grid { grid-template-columns: 420px 1fr; } }
 
-        .panel { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-sm); height: fit-content; }
+        .panel { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 20px; padding: 28px; box-shadow: var(--shadow-sm); height: fit-content; margin-bottom: 30px; }
         .panel-title { font-size: 17px; font-weight: 800; margin: 0 0 24px 0; color: var(--sidebar-bg); border-bottom: 1px solid #f1f5f9; padding-bottom: 16px; display: flex; align-items: center; gap: 10px; }
 
-        /* تصميم الاستمارات */
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-size: 13px; color: var(--text-primary); margin-bottom: 10px; font-weight: 700; }
         .form-control { width: 100%; padding: 13px 16px; border-radius: 10px; border: 1px solid var(--border-color); background: #f8fafc; color: var(--text-primary); font-size: 14px; font-family: 'Cairo', sans-serif; }
         .form-control:focus { outline: none; border-color: var(--accent-blue); background: #ffffff; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12); }
 
-        .btn-submit { width: 100%; padding: 15px; background: linear-gradient(90deg, var(--sidebar-bg) 0%, #1c2541 100%); color: #ffffff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; font-family: 'Cairo', sans-serif; cursor: pointer; box-shadow: var(--shadow-sm); }
-        .btn-submit:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); opacity: 0.95; }
+        .btn-submit { width: 100%; padding: 15px; background: linear-gradient(90deg, var(--sidebar-bg) 0%, #1c2541 100%); color: #ffffff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; font-family: 'Cairo', sans-serif; cursor: pointer; }
         
-        /* تجميل الجداول لتكون منزلقة وسلسة على الجوال */
         .table-responsive { width: 100%; overflow-x: auto; border-radius: 12px; border: 1px solid var(--border-color); background: #ffffff; }
         table { width: 100%; border-collapse: collapse; text-align: right; font-size: 14px; white-space: nowrap; }
         th { background: #f8fafc; color: var(--text-secondary); padding: 16px 20px; font-weight: 700; border-bottom: 2px solid var(--border-color); }
-        td { padding: 16px 20px; border-bottom: 1px solid var(--border-color); vertical-align: middle; color: var(--text-primary); }
-        tr:last-child td { border-bottom: none; }
-        tr:hover td { background-color: #f8fafc; }
+        td { padding: 16px 20px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
         
         .table-img { width: 64px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border-color); }
-        
-        .btn-delete { background: #fef2f2; color: var(--accent-red); border: 1px solid rgba(220, 38, 38, 0.1); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 700; font-family: 'Cairo', sans-serif; }
-        .btn-delete:hover { background: var(--accent-red); color: #fff; transform: translateY(-1px); }
-        .btn-contact { background: rgba(5, 150, 105, 0.1); color: var(--accent-green); text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(5, 150, 105, 0.1); }
-        .btn-contact:hover { background: var(--accent-green); color: #ffffff; }
+        .btn-delete { background: #fef2f2; color: var(--accent-red); border: 1px solid rgba(220, 38, 38, 0.1); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 700; }
+        .btn-contact { background: rgba(5, 150, 105, 0.1); color: var(--accent-green); text-decoration: none; padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
 
-        /* شاشات الجوال والتجاوب المرن */
         .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 19, 43, 0.5); backdrop-filter: blur(4px); z-index: 999; }
         
         @media (max-width: 992px) {
-            .sidebar { position: fixed; top: 0; right: calc(var(--sidebar-width) * -1); height: 100vh; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+            .sidebar { position: fixed; top: 0; right: calc(var(--sidebar-width) * -1); height: 100vh; }
             .sidebar.active { right: 0; }
             .sidebar-overlay.active { display: block; }
             .main-content { width: 100%; }
             .menu-toggle { display: block; }
-            .dashboard-container { padding: 20px; }
-            .stats-grid { gap: 16px; }
         }
     </style>
 </head>
@@ -204,14 +185,14 @@
                         </div>
                         <div class="form-group">
                             <label>رابط الصورة الرئيسية</label>
-                            <input type="url" id="pImg1" class="form-control" placeholder="https://images.unsplash.com/..." required>
+                            <input type="url" id="pImg1" class="form-control" placeholder="https://..." required>
                         </div>
                         <div class="form-group">
-                            <label>روابط صور إضافية (ألبوم التصفح)</label>
-                            <input type="url" id="pImg2" class="form-control" placeholder="رابط صورة ثانية إضافية (اختياري)..." style="margin-bottom: 10px;">
-                            <input type="url" id="pImg3" class="form-control" placeholder="رابط صورة ثالثة إضافية (اختياري)...">
+                            <label>روابط صور إضافية</label>
+                            <input type="url" id="pImg2" class="form-control" placeholder="صورة إضافية 2..." style="margin-bottom: 10px;">
+                            <input type="url" id="pImg3" class="form-control" placeholder="صورة إضافية 3...">
                         </div>
-                        <button type="submit" class="btn-submit"><i class="fa-solid fa-cloud-arrow-up"></i> إدراج ونشر الأصل العقاري </button>
+                        <button type="submit" class="btn-submit"><i class="fa-solid fa-cloud-arrow-up"></i> إدراج ونشر الأصل </button>
                     </form>
                 </div>
 
@@ -224,7 +205,7 @@
                                     <th>الصورة</th>
                                     <th>اسم العقار</th>
                                     <th>المدينة</th>
-                                    <th>القيمة الإستثمارية</th>
+                                    <th>القيمة</th>
                                     <th>الإجراء</th>
                                 </tr>
                             </thead>
@@ -241,10 +222,10 @@
                         <thead>
                             <tr>
                                 <th>العقار المستهدف</th>
-                                <th>اسم المستثمر المشتري</th>
-                                <th>العرض المالي المقترح</th>
-                                <th>رقم هاتف الاتصال</th>
-                                <th>الإجراء والاتصال</th>
+                                <th>اسم المستثمر</th>
+                                <th>العرض المالي</th>
+                                <th>رقم الهاتف</th>
+                                <th>الإجراء</th>
                             </tr>
                         </thead>
                         <tbody id="offersTableBody"></tbody>
@@ -256,6 +237,37 @@
     </main>
 
     <script>
+        // دالة إدخال بيانات افتراضية فخمة لكي لا تظهر الشاشة بيضاء للعميل أول مرة
+        function seedInitialData() {
+            if (!localStorage.getItem('saudi_property_vault')) {
+                const dummy = [
+                    {
+                        id: 'prop_1',
+                        title: 'برج سكني استثماري فاخر بإطلالة كاملة',
+                        price: '12500000',
+                        location: 'جدة - الكورنيش',
+                        area: '1200',
+                        phone: '966500000000',
+                        lat: '21.5433',
+                        lng: '39.1728',
+                        media_list: [{type: 'image', data: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80'}]
+                    },
+                    {
+                        id: 'prop_2',
+                        title: 'قصر ملكي مودرن مصمم بهندسة Funda العالمية',
+                        price: '8700000',
+                        location: 'الرياض - حطين',
+                        area: '850',
+                        phone: '966500000000',
+                        lat: '24.7136',
+                        lng: '46.6753',
+                        media_list: [{type: 'image', data: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400&q=80'}]
+                    }
+                ];
+                localStorage.setItem('saudi_property_vault', JSON.stringify(dummy));
+            }
+        }
+
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
             document.getElementById('sidebarOverlay').classList.toggle('active');
@@ -269,21 +281,30 @@
             const title = document.getElementById('pageMainTitle');
 
             if(view === 'properties') {
-                viewProp.style.display = 'grid'; viewOff.style.display = 'none';
+                viewProp.style.setProperty('display', 'grid', 'important'); 
+                viewOff.style.setProperty('display', 'none', 'important');
                 navProp.classList.add('active'); navOff.classList.remove('active');
                 title.innerText = "قاعدة البيانات العقارية";
+                renderDashboard();
             } else {
-                viewProp.style.display = 'none'; viewOff.style.display = 'block';
+                viewProp.style.setProperty('display', 'none', 'important'); 
+                viewOff.style.setProperty('display', 'block', 'important');
                 navProp.classList.remove('active'); navOff.classList.add('active');
                 title.innerText = "إدارة عروض العملاء الواردة";
                 renderOffers();
             }
-            if(window.innerWidth <= 992) toggleSidebar();
+            if(window.innerWidth <= 992) {
+                document.getElementById('sidebar').classList.remove('active');
+                document.getElementById('sidebarOverlay').classList.remove('active');
+            }
         }
 
         function renderDashboard() {
+            seedInitialData();
             const tableBody = document.getElementById('tableBody');
+            if(!tableBody) return;
             tableBody.innerHTML = '';
+            
             const rawData = localStorage.getItem('saudi_property_vault');
             const properties = rawData ? JSON.parse(rawData) : [];
             let totalVolume = 0;
@@ -295,7 +316,7 @@
             document.getElementById('statOffersCount').innerText = offers.length;
             
             if (properties.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 50px; font-weight: 600;">لا توجد أصول استثمارية مدرجة في المحفظة حالياً.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 50px;">لا توجد أصول مدرجة.</td></tr>`;
                 document.getElementById('statTotalVolume').innerText = "0 ر.س";
                 return;
             }
@@ -308,9 +329,9 @@
                 tr.innerHTML = `
                     <td><img src="${firstImg}" class="table-img" alt="عقار"></td>
                     <td style="font-weight: 700; color: var(--sidebar-bg);">${escapeHtml(item.title)}</td>
-                    <td><span style="background: #f1f5f9; padding: 6px 12px; border-radius: 6px; font-weight: 600; font-size: 13px;">${escapeHtml(item.location)}</span></td>
-                    <td style="color: var(--accent-amber); font-weight: 800; font-size: 15px;">${Number(item.price).toLocaleString()} ر.س</td>
-                    <td><button class="btn-delete" onclick="deleteProperty('${item.id}')"><i class="fa-solid fa-trash-can"></i> حذف الأرشيف</button></td>
+                    <td><span style="background: #f1f5f9; padding: 6px 12px; border-radius: 6px; font-weight: 600;">${escapeHtml(item.location)}</span></td>
+                    <td style="color: var(--accent-amber); font-weight: 800;">${Number(item.price).toLocaleString()} ر.س</td>
+                    <td><button class="btn-delete" onclick="deleteProperty('${item.id}')"><i class="fa-solid fa-trash-can"></i> حذف</button></td>
                 `;
                 tableBody.appendChild(tr);
             });
@@ -319,12 +340,13 @@
 
         function renderOffers() {
             const offersBody = document.getElementById('offersTableBody');
+            if(!offersBody) return;
             offersBody.innerHTML = '';
             const rawOffers = localStorage.getItem('saudi_property_offers');
             const offers = rawOffers ? JSON.parse(rawOffers) : [];
 
             if(offers.length === 0) {
-                offersBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 50px; font-weight: 600;">لا توجد عروض شراء واردة من المستثمرين حالياً.</td></tr>`;
+                offersBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 50px;">لا توجد عروض شراء مستلمة حتى الآن.</td></tr>`;
                 return;
             }
 
@@ -333,10 +355,10 @@
                 tr.innerHTML = `
                     <td style="font-weight: 700; color: var(--sidebar-bg);">${escapeHtml(offer.propTitle)}</td>
                     <td style="font-weight: 600;">${escapeHtml(offer.buyerName)}</td>
-                    <td style="color: var(--accent-blue); font-weight: 800; font-size: 15px;">${Number(offer.buyerPrice).toLocaleString()} ر.س</td>
-                    <td style="direction: ltr; text-align: right; font-weight: 600;">+${escapeHtml(offer.buyerPhone)}</td>
+                    <td style="color: var(--accent-blue); font-weight: 800;">${Number(offer.buyerPrice).toLocaleString()} ر.س</td>
+                    <td style="direction: ltr; text-align: right;">+${escapeHtml(offer.buyerPhone)}</td>
                     <td>
-                        <a href="https://wa.me/${offer.buyerPhone}" target="_blank" class="btn-contact"><i class="fa-brands fa-whatsapp"></i> فتح تواصل</a>
+                        <a href="https://wa.me/${offer.buyerPhone}" target="_blank" class="btn-contact"><i class="fa-brands fa-whatsapp"></i> تواصل</a>
                         <button class="btn-delete" style="margin-right: 8px;" onclick="deleteOffer('${offer.id}')"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 `;
@@ -371,11 +393,11 @@
             localStorage.setItem('saudi_property_vault', JSON.stringify(properties));
             document.getElementById('propertyForm').reset();
             renderDashboard();
-            alert('تم نشر وإضافة الأصل العقاري الاستثماري بنجاح.');
+            alert('تم إدراج الأصل العقاري الاستثماري بنجاح.');
         }
 
         function deleteProperty(id) {
-            if(confirm('هل أنت متأكد من حذف هذا الأصل العقاري نهائياً من قاعدة البيانات؟')) {
+            if(confirm('هل أنت متأكد من حذف هذا الأصل العقاري نهائياً؟')) {
                 const rawData = localStorage.getItem('saudi_property_vault');
                 let properties = rawData ? JSON.parse(rawData) : [];
                 properties = properties.filter(p => p.id !== id);
@@ -385,7 +407,7 @@
         }
 
         function deleteOffer(id) {
-            if(confirm('هل تريد حذف سجل هذا العرض الوارد؟')) {
+            if(confirm('هل تريد حذف هذا العرض؟')) {
                 const rawOffers = localStorage.getItem('saudi_property_offers');
                 let offers = rawOffers ? JSON.parse(rawOffers) : [];
                 offers = offers.filter(o => o.id !== id);
