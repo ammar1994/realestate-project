@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>المعرض العقاري الاستثماري | الواجهة الحية</title>
+    <title>المعرض الاستثماري العقاري السعودي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
         :root {
             --primary-navy: #0b132b; 
             --gold-accent: #e11d48; 
-            --amber-text: #d97706;
+            --amber-accent: #d97706;
             --bg-light: #f8fafc;
             --card-bg: #ffffff;
             --text-dark: #0f172a;
@@ -25,91 +25,107 @@
         * { box-sizing: border-box; font-family: 'Cairo', sans-serif; margin: 0; padding: 0; }
         body { background-color: var(--bg-light); color: var(--text-dark); direction: rtl; }
 
-        header { background: var(--primary-navy); color: #fff; padding: 25px 20px; text-align: center; box-shadow: var(--shadow); position: relative; }
-        header h1 { font-size: 1.5rem; font-weight: 800; color: #fff; }
-        header p { font-size: 13px; color: #94a3b8; margin-top: 5px; }
+        header { background: var(--primary-navy); color: #fff; padding: 30px 20px; text-align: center; box-shadow: var(--shadow); }
+        header h1 { font-size: 1.6rem; font-weight: 800; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        header h1 i { color: var(--amber-accent); }
+        header p { font-size: 13px; color: #94a3b8; margin-top: 6px; }
 
         .main-layout { display: grid; grid-template-columns: 1fr; gap: 25px; padding: 25px; max-width: 1400px; margin: 0 auto; }
         @media (min-width: 1024px) { .main-layout { grid-template-columns: 1fr 450px; } }
 
-        /* خريطة تفاعلية فاخرة بجانب العقارات */
         #map-container { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 15px; box-shadow: var(--shadow); height: 500px; position: sticky; top: 25px; }
         #map { width: 100%; height: 100%; border-radius: 14px; z-index: 1; }
 
         .catalog-title { font-size: 18px; font-weight: 800; margin-bottom: 20px; color: var(--primary-navy); display: flex; align-items: center; gap: 8px; }
         
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 20px; }
         .prop-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
-        .prop-card:hover { transform: translateY(-4px); border-color: #cbd5e1; }
         
-        .card-img-wrapper { position: relative; width: 100%; height: 200px; background: #e2e8f0; }
-        .card-img { width: 100%; height: 100%; object-fit: cover; }
-        .card-price { position: absolute; bottom: 15px; right: 15px; background: rgba(11, 19, 43, 0.85); color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 14px; backdrop-filter: blur(4px); }
+        .card-img-wrapper { position: relative; width: 100%; height: 210px; background: #e2e8f0; }
+        .card-img, .card-vid { width: 100%; height: 100%; object-fit: cover; }
+        .card-price { position: absolute; bottom: 15px; right: 15px; background: rgba(11, 19, 43, 0.9); color: #fff; padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 14px; backdrop-filter: blur(4px); }
+        
+        /* أزرار استعراض الوسائط المضافة على الكرت */
+        .media-counter-btn { position: absolute; top: 15px; left: 15px; background: rgba(217, 119, 6, 0.9); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
 
         .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .card-title { font-size: 15px; font-weight: 800; color: var(--primary-navy); margin-bottom: 12px; line-height: 1.5; }
         
         .card-meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-gray); margin-bottom: 20px; background: #f8fafc; padding: 10px; border-radius: 8px; }
-        .card-meta span i { color: var(--gold-accent); margin-left: 5px; }
+        .card-meta span i { color: var(--amber-accent); margin-left: 5px; }
 
         .btn-action { width: 100%; padding: 12px; background: linear-gradient(90deg, var(--primary-navy) 0%, #1c2541 100%); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
         
-        /* النافذة المنبثقة لتقديم عروض الشراء */
+        /* معرض الصور المنبثق بكامل الأبعاد Lightbox */
+        .lightbox { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index: 3000; align-items:center; justify-content:center; }
+        .lightbox.active { display: flex; }
+        .lightbox-content { max-width: 90%; max-height: 80%; display: flex; flex-direction: column; align-items: center; }
+        .lightbox-img, .lightbox-video { max-width: 100%; max-height: 70vh; border-radius: 8px; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 20px; right: 20px; color: white; background: none; border: none; font-size: 30px; cursor: pointer; }
+        .lightbox-nav { display: flex; gap: 40px; margin-top: 20px; }
+        .btn-nav-box { background: rgba(255,255,255,0.1); border: none; color: white; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 14px; }
+
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 19, 43, 0.6); backdrop-filter: blur(5px); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
         .modal.active { display: flex; }
-        .modal-content { background: var(--card-bg); width: 100%; max-width: 480px; border-radius: 20px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; animation: slideUp 0.3s ease; }
-        
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-close { position: absolute; top: 20px; left: 20px; background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; color: var(--text-dark); }
-        .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 20px; color: var(--primary-navy); }
+        .modal-content { background: var(--card-bg); width: 100%; max-width: 480px; border-radius: 20px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; }
+        .modal-close { position: absolute; top: 20px; left: 20px; background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; }
+        .modal-title { font-size: 16px; font-weight: 800; margin-bottom: 20px; color: var(--primary-navy); }
 
         .form-group { margin-bottom: 18px; }
         .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
         .form-control { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border); background: #f8fafc; font-size: 14px; }
-        .form-control:focus { outline: none; border-color: #2563eb; background: #fff; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>المنصة العقارية الاستثمارية الفاخرة</h1>
-        <p>بوابة المستثمر الذكي للأصول العقارية الموثقة</p>
+        <h1><i class="fa-solid fa-gavel"></i> المعرض الاستثماري العقاري السعودي</h1>
+        <p>بوابة المستثمر الموثقة لعقارات الرياض ومناطق المملكة</p>
     </header>
 
     <div class="main-layout">
-        
         <div>
-            <h2 class="catalog-title"><i class="fa-solid fa-building-circle-check" style="color: var(--gold-accent);"></i> المحفظة العقارية النشطة حياً</h2>
+            <h2 class="catalog-title"><i class="fa-solid fa-building-circle-check" style="color: var(--amber-accent);"></i> العقارات المتاحة للتعميد والشراء الحركي</h2>
             <div class="cards-grid" id="cardsContainer"></div>
         </div>
 
         <div id="map-container">
-            <h3 style="font-size:14px; font-weight:800; margin-bottom:10px; color: var(--primary-navy);"><i class="fa-solid fa-map-location-dot"></i> التوزيع الجغرافي الذكي للأصول</h3>
+            <h3 style="font-size:13px; font-weight:800; margin-bottom:10px; color: var(--primary-navy);"><i class="fa-solid fa-map-location-dot"></i> مواقع صكوك العقارات الحية</h3>
             <div id="map"></div>
         </div>
+    </div>
 
+    <div class="lightbox" id="mediaLightbox">
+        <button class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="lightbox-content">
+            <div id="lightboxMediaContainer"></div>
+            <div class="lightbox-nav">
+                <button class="btn-nav-box" onclick="changeLightboxMedia(-1)"><i class="fa-solid fa-arrow-right"></i> السابقة</button>
+                <button class="btn-nav-box" onclick="changeLightboxMedia(1)">التالية <i class="fa-solid fa-arrow-left"></i></button>
+            </div>
+        </div>
     </div>
 
     <div class="modal" id="offerModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeOfferModal()"><i class="fa-solid fa-xmark"></i></button>
-            <h3 class="modal-title" id="modalTargetTitle">تقديم عرض رغبة شرائية</h3>
+            <h3 class="modal-title" id="modalTargetTitle">تقديم رغبة تعميد شراء</h3>
             <form id="offerForm" onsubmit="submitBuyerOffer(event)">
                 <input type="hidden" id="modalPropId">
                 <input type="hidden" id="modalPropTitle">
                 <div class="form-group">
                     <label>الاسم الكامل للمستثمر</label>
-                    <input type="text" id="bName" class="form-control" placeholder="اكتب اسمك الثلاثي الكريم" required>
+                    <input type="text" id="bName" class="form-control" placeholder="اكتب اسمك الكريم" required>
                 </div>
                 <div class="form-group">
-                    <label>قيمة العرض المالي المقترح (ر.س)</label>
-                    <input type="number" id="bPrice" class="form-control" placeholder="مثال: 4600000" required>
+                    <label>قيمة السوم أو الشراء المقترحة (رس)</label>
+                    <input type="number" id="bPrice" class="form-control" placeholder="مثال: 6000000" required>
                 </div>
                 <div class="form-group">
-                    <label>رقم هاتف التواصل (واتساب)</label>
-                    <input type="text" id="bPhone" class="form-control" placeholder="مثال: 966500000000" required>
+                    <label>رقم جوال التواصل (واتساب)</label>
+                    <input type="text" id="bPhone" class="form-control" placeholder="9665xxxxxxxx" required>
                 </div>
-                <button type="submit" class="btn-action" style="background: var(--gold-accent);"><i class="fa-solid fa-paper-plane"></i> إرسال العرض رسمياً للمراجعة </button>
+                <button type="submit" class="btn-action" style="background: var(--amber-accent);"><i class="fa-solid fa-paper-plane"></i> إرسال الطلب للمالك فورا </button>
             </form>
         </div>
     </div>
@@ -118,66 +134,82 @@
     <script>
         let map;
         let markersGroup;
+        let currentPropMedia = [];
+        let currentMediaIndex = 0;
 
-        function seedInitialData() {
-            if (!localStorage.getItem('saudi_property_vault')) {
-                const dummy = [
-                    {
-                        id: 'prop_1',
-                        title: 'برج سكني استثماري فاخر بإطلالة كاملة',
-                        price: '12500000',
-                        location: 'جدة - الكورنيش',
-                        area: '1200',
-                        phone: '966500000000',
-                        lat: '21.5433',
-                        lng: '39.1728',
-                        media_list: [{type: 'image', data: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=400&q=80'}]
-                    },
-                    {
-                        id: 'prop_2',
-                        title: 'قصر ملكي مودرن مصمم بهندسة Funda العالمية',
-                        price: '8700000',
-                        location: 'الرياض - حطين',
-                        area: '850',
-                        phone: '966500000000',
-                        lat: '24.7136',
-                        lng: '46.6753',
-                        media_list: [{type: 'image', data: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400&q=80'}]
-                    }
-                ];
-                localStorage.setItem('saudi_property_vault', JSON.stringify(dummy));
+        const defaultSaudiProperties = [
+            {
+                id: 'saudi_1',
+                title: 'فيلا فخمة مودرن بتصميم نجدى معاصر ومسبح',
+                price: '6200000',
+                location: 'الرياض - حي الملقا',
+                area: '420',
+                phone: '966500000000',
+                lat: '24.7950',
+                lng: '46.6190',
+                media_list: [
+                    {type: 'image', data: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80'},
+                    {type: 'image', data: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80'}
+                ]
+            },
+            {
+                id: 'saudi_2',
+                title: 'شقة بنتهاوس فاخرة مطلة على الواجهة البحرية',
+                price: '3400000',
+                location: 'جدة - أبحر الشمالية',
+                area: '290',
+                phone: '966500000000',
+                lat: '21.7200',
+                lng: '39.1200',
+                media_list: [
+                    {type: 'image', data: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80'}
+                ]
             }
+        ];
+
+        function getVault() {
+            if(!localStorage.getItem('saudi_property_vault')) {
+                localStorage.setItem('saudi_property_vault', JSON.stringify(defaultSaudiProperties));
+            }
+            return JSON.parse(localStorage.getItem('saudi_property_vault'));
         }
 
         function initMap() {
-            map = L.map('map').setView([24.7136, 46.6753], 6);
+            map = L.map('map').setView([24.7136, 46.6753], 5);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
             markersGroup = L.layerGroup().addTo(map);
         }
 
         function renderCatalog() {
-            seedInitialData();
             const container = document.getElementById('cardsContainer');
             container.innerHTML = '';
             markersGroup.clearLayers();
 
-            const rawData = localStorage.getItem('saudi_property_vault');
-            const properties = rawData ? JSON.parse(rawData) : [];
-
-            if(properties.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:40px; color:var(--text-gray); font-weight:600;">لا توجد عقارات معروضة حالياً.</p>`;
-                return;
-            }
+            const properties = getVault();
 
             properties.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'prop-card';
-                const mainImg = item.media_list && item.media_list[0] ? item.media_list[0].data : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80';
+                
+                const hasMedia = item.media_list && item.media_list.length > 0;
+                const firstMedia = hasMedia ? item.media_list[0] : {type: 'image', data: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=400&q=80'};
+                
+                let mediaHtml = '';
+                if(firstMedia.type === 'video') {
+                    mediaHtml = `<video src="${firstMedia.data}" class="card-vid" muted autoplay loop></video>`;
+                } else {
+                    mediaHtml = `<img src="${firstMedia.data}" class="card-img" alt="عقار">`;
+                }
+
+                const totalMediaCount = item.media_list ? item.media_list.length : 1;
 
                 card.innerHTML = `
                     <div class="card-img-wrapper">
-                        <img src="${mainImg}" class="card-img" alt="عقار">
-                        <span class="card-price">${Number(item.price).toLocaleString()} ر.س</span>
+                        ${mediaHtml}
+                        <span class="card-price">${Number(item.price).toLocaleString()} رس</span>
+                        <button class="media-counter-btn" onclick="openMediaLightbox('${item.id}')">
+                            <i class="fa-solid fa-images"></i> عرض الصور وفيديو (${totalMediaCount})
+                        </button>
                     </div>
                     <div class="card-content">
                         <h3 class="card-title">${escapeHtml(item.title)}</h3>
@@ -185,23 +217,60 @@
                             <span><i class="fa-solid fa-location-dot"></i> ${escapeHtml(item.location)}</span>
                             <span><i class="fa-solid fa-ruler-combined"></i> ${Number(item.area).toLocaleString()} م²</span>
                         </div>
-                        <button class="btn-action" onclick="openOfferModal('${item.id}', '${escapeHtml(item.title)}')"><i class="fa-solid fa-gavel"></i> تقديم طلب رغبة شراء </button>
+                        <button class="btn-action" onclick="openOfferModal('${item.id}', '${escapeHtml(item.title)}')"><i class="fa-solid fa-gavel"></i> تقديم رغبة شراء وسوم </button>
                     </div>
                 `;
                 container.appendChild(card);
 
                 if(item.lat && item.lng) {
                     const marker = L.marker([parseFloat(item.lat), parseFloat(item.lng)])
-                        .bindPopup(`<div style="font-family:'Cairo'; text-align:right; font-weight:700; color:var(--primary-navy);">${escapeHtml(item.title)}<br><span style="color:var(--amber-text);">${Number(item.price).toLocaleString()} ر.س</span></div>`);
+                        .bindPopup(`<div style="font-family:'Cairo'; text-align:right; font-weight:700; color:var(--primary-navy);">${escapeHtml(item.title)}<br><span style="color:var(--amber-accent);">${Number(item.price).toLocaleString()} رس</span></div>`);
                     markersGroup.addLayer(marker);
                 }
             });
         }
 
+        function openMediaLightbox(id) {
+            const properties = getVault();
+            const target = properties.find(p => p.id === id);
+            if(!target || !target.media_list) return;
+
+            currentPropMedia = target.media_list;
+            currentMediaIndex = 0;
+            showLightboxMedia();
+            document.getElementById('mediaLightbox').classList.add('active');
+        }
+
+        function showLightboxMedia() {
+            const container = document.getElementById('lightboxMediaContainer');
+            container.innerHTML = '';
+            
+            if(currentPropMedia.length === 0) return;
+            const current = currentPropMedia[currentMediaIndex];
+
+            if(current.type === 'video') {
+                container.innerHTML = `<video src="${current.data}" class="lightbox-video" controls autoplay></video>`;
+            } else {
+                container.innerHTML = `<img src="${current.data}" class="lightbox-img" alt="كامل الأبعاد">`;
+            }
+        }
+
+        function changeLightboxMedia(direction) {
+            currentMediaIndex += direction;
+            if(currentMediaIndex >= currentPropMedia.length) currentMediaIndex = 0;
+            if(currentMediaIndex < 0) currentMediaIndex = currentPropMedia.length - 1;
+            showLightboxMedia();
+        }
+
+        function closeLightbox() {
+            document.getElementById('mediaLightbox').classList.remove('active');
+            document.getElementById('lightboxMediaContainer').innerHTML = '';
+        }
+
         function openOfferModal(id, title) {
             document.getElementById('modalPropId').value = id;
             document.getElementById('modalPropTitle').value = title;
-            document.getElementById('modalTargetTitle').innerText = `تقديم رغبة شراء لـ: ${title}`;
+            document.getElementById('modalTargetTitle').innerText = `تقديم طلب شراء عقار: ${title}`;
             document.getElementById('offerModal').classList.add('active');
         }
 
@@ -226,7 +295,7 @@
 
             offers.unshift(newOffer);
             localStorage.setItem('saudi_property_offers', JSON.stringify(offers));
-            alert('تم تسجيل عرضك المالي رسميًا بنجاح وسيتم التواصل معك قريبًا.');
+            alert('تم تسجيل سومك وعرضك المالي بنجاح، وسيتم مراجعته وتوجيه المالك للتواصل.');
             closeOfferModal();
         }
 
@@ -238,6 +307,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             initMap();
             renderCatalog();
+            
+            // تحديث دوري مريح عند عودة المستخدم من لوحة التحكم لرؤية العقار الجديد مباشرة
+            window.addEventListener('focus', renderCatalog);
         });
     </script>
 </body>
