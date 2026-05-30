@@ -2,310 +2,345 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم الأصول العقارية الاستثمارية</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>لوحة التحكم | المنصة العقارية الاستثمارية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #0b1329;
-            --bg-card: #1c2541;
-            --border-color: #2e3c63;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
+            --bg-body: #f1f5f9;
+            --bg-panel: #ffffff;
+            --sidebar-bg: #0f172a;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --text-light: #f8fafc;
+            --border-color: #e2e8f0;
             --accent-gold: #f59e0b;
-            --accent-green: #10b981;
+            --accent-blue: #2563eb;
             --accent-red: #ef4444;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --sidebar-width: 260px;
         }
 
+        * { box-sizing: border-box; }
+
         body {
-            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-main);
+            font-family: 'Cairo', system-ui, sans-serif;
+            background-color: var(--bg-body);
             color: var(--text-primary);
             margin: 0;
-            padding: 16px;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* تنسيق القائمة الجانبية (Sidebar) الاحترافية */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--sidebar-bg);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 1000;
         }
 
-        h1 {
-            font-size: 1.6rem;
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--accent-gold);
             font-weight: 800;
-            color: var(--text-primary);
-            margin-bottom: 20px;
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            border-right: 4px solid transparent;
         }
 
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(255,255,255,0.05);
+            color: #ffffff;
+            border-right-color: var(--accent-gold);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        /* الشريط العلوي للهاتف */
+        .top-header {
+            background: var(--bg-panel);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .header-title { margin: 0; font-size: 1.3rem; font-weight: 800; }
+
+        .dashboard-container { padding: 24px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+        /* البطاقات الإحصائية */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
+            gap: 20px;
             margin-bottom: 30px;
         }
 
         .stat-card {
-            background: var(--bg-card);
+            background: var(--bg-panel);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 20px;
+            padding: 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: var(--shadow-sm);
         }
 
-        .stat-info h3 {
-            margin: 0 0 5px 0;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .stat-info p {
-            margin: 0;
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--accent-gold);
-        }
+        .stat-info h3 { margin: 0 0 8px 0; font-size: 13px; color: var(--text-secondary); }
+        .stat-info p { margin: 0; font-size: 24px; font-weight: 800; color: var(--accent-blue); }
 
         .stat-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--accent-gold);
+            width: 50px; height: 50px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; background: #eff6ff; color: var(--accent-blue);
         }
+        .stat-card:nth-child(2) .stat-info p { color: var(--accent-gold); }
+        .stat-card:nth-child(2) .stat-icon { background: #fef3c7; color: var(--accent-gold); }
 
+        /* تقسيم اللوحات */
         .main-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 24px;
+            display: grid; grid-template-columns: 1fr; gap: 24px;
         }
 
-        @media (min-width: 992px) {
-            .main-grid { grid-template-columns: 390px 1fr; }
+        @media (min-width: 1100px) {
+            .main-grid { grid-template-columns: 400px 1fr; }
         }
 
         .panel {
-            background: var(--bg-card);
+            background: var(--bg-panel);
             border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
             height: fit-content;
         }
 
         .panel-title {
-            font-size: 15px;
-            font-weight: 700;
-            margin: 0 0 20px 0;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 16px; font-weight: 800; margin: 0 0 24px 0;
+            color: var(--text-primary); border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 12px; display: flex; align-items: center; gap: 8px;
         }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
-
+        /* تنسيق النموذج (Form) بشكل احترافي */
+        .form-group { margin-bottom: 18px; }
         .form-group label {
-            display: block;
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-            font-weight: 600;
+            display: block; font-size: 13px; color: var(--text-primary);
+            margin-bottom: 8px; font-weight: 700;
         }
-
         .form-control {
-            width: 100%;
-            padding: 11px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-main);
-            color: var(--text-primary);
-            font-size: 13px;
-            font-family: 'Cairo', sans-serif;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
+            width: 100%; padding: 12px 14px; border-radius: 8px;
+            border: 1px solid var(--border-color); background: #f8fafc;
+            color: var(--text-primary); font-size: 13px; font-family: 'Cairo', sans-serif;
+            transition: all 0.2s;
         }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--accent-gold);
-        }
+        .form-control:focus { outline: none; border-color: var(--accent-blue); background: #ffffff; box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
 
         .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, var(--accent-gold), #d97706);
-            color: var(--bg-main);
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            font-family: 'Cairo', sans-serif;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+            width: 100%; padding: 14px; background: var(--accent-blue); color: #ffffff;
+            border: none; border-radius: 8px; font-size: 15px; font-weight: 700;
+            font-family: 'Cairo', sans-serif; cursor: pointer; transition: background 0.2s; margin-top: 10px;
         }
+        .btn-submit:hover { background: #1d4ed8; }
 
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: right;
-            font-size: 13px;
-        }
-
-        th {
-            background: var(--bg-main);
-            color: var(--text-secondary);
-            padding: 12px 16px;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .table-img {
-            width: 50px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
-        }
-
+        /* تنسيق الجدول */
+        .table-responsive { width: 100%; overflow-x: auto; border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 13px; white-space: nowrap; }
+        th { background: #f8fafc; color: var(--text-secondary); padding: 14px 16px; font-weight: 700; border-bottom: 1px solid var(--border-color); }
+        td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        
+        .table-img { width: 60px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid var(--border-color); }
+        
         .btn-delete {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--accent-red);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            font-family: 'Cairo', sans-serif;
+            background: #fef2f2; color: var(--accent-red); border: none;
+            padding: 8px 12px; border-radius: 6px; cursor: pointer;
+            font-size: 12px; font-weight: 700; font-family: 'Cairo', sans-serif; transition: 0.2s;
+        }
+        .btn-delete:hover { background: var(--accent-red); color: #fff; }
+
+        /* استجابة الموبايل (السر الحقيقي للتصميم الناجح) */
+        .sidebar-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15,23,42,0.6); z-index: 999;
         }
 
-        .btn-delete:hover {
-            background: var(--accent-red);
-            color: #fff;
+        @media (max-width: 992px) {
+            .sidebar {
+                position: fixed; top: 0; right: calc(var(--sidebar-width) * -1); height: 100vh;
+            }
+            .sidebar.active { right: 0; }
+            .sidebar-overlay.active { display: block; }
+            .main-content { width: 100%; }
+            .menu-toggle { display: block; }
         }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-container">
-        <h1><i class="fa-solid fa-chart-line" style="color: var(--accent-gold);"></i> لوحة تحكم المحفظة العقارية الحية</h1>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-info">
-                    <h3>إجمالي الأصول العقارية</h3>
-                    <p id="statCount">0</p>
-                </div>
-                <div class="stat-icon"><i class="fa-solid fa-building"></i></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-info">
-                    <h3>حجم الاستثمار الكلي</h3>
-                    <p id="statTotalVolume">0 ر.س</p>
-                </div>
-                <div class="stat-icon"><i class="fa-solid fa-vault"></i></div>
-            </div>
-        </div>
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
-        <div class="main-grid">
-            <div class="panel">
-                <h2 class="panel-title"><i class="fa-solid fa-plus-circle"></i> نشر أصل استثماري جديد</h2>
-                <form id="propertyForm" onsubmit="saveNewProperty(event)">
-                    <div class="form-group">
-                        <label>عنوان العقار الاستثماري</label>
-                        <input type="text" id="pTitle" class="form-control" placeholder="مثال: فيلا قصر مودرن بحي حطين" required>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fa-solid fa-layer-group"></i> لوحة الإدارة</h2>
+        </div>
+        <div class="sidebar-nav">
+            <a href="#" class="nav-item active"><i class="fa-solid fa-chart-pie"></i> نظرة عامة</a>
+            <a href="customer.html" target="_blank" class="nav-item"><i class="fa-solid fa-store"></i> معاينة المعرض الحي</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-users"></i> الطلبات والاستفسارات</a>
+            <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> إعدادات المنصة</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+            <h1 class="header-title">المحفظة العقارية</h1>
+            <div style="width: 24px;"></div> </header>
+
+        <div class="dashboard-container">
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>إجمالي الأصول النشطة</h3>
+                        <p id="statCount">0</p>
                     </div>
-                    <div class="form-group">
-                        <label>القيمة المالية للعقار (ر.س)</label>
-                        <input type="number" id="pPrice" class="form-control" placeholder="مثال: 4500000" required>
+                    <div class="stat-icon"><i class="fa-solid fa-building"></i></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>القيمة الإجمالية للمحفظة</h3>
+                        <p id="statTotalVolume">0 ر.س</p>
                     </div>
-                    <div class="form-group">
-                        <label>المدينة / الموقع الجغرافي نصياً</label>
-                        <input type="text" id="pLocation" class="form-control" placeholder="مثال: الرياض، حي النرجس" required>
-                    </div>
-                    <div class="form-group">
-                        <label>المساحة الإجمالية (م²)</label>
-                        <input type="number" id="pArea" class="form-control" placeholder="مثال: 350" required>
-                    </div>
-                    <div class="form-group">
-                        <label>رقم هاتف الواتساب للتواصل السعودي</label>
-                        <input type="text" id="pPhone" class="form-control" placeholder="مثال: 966500000000" required>
-                    </div>
-                    <div class="form-group">
-                        <label>إحداثيات خط العرض (Latitude)</label>
-                        <input type="number" step="any" id="pLat" class="form-control" placeholder="مثال: 24.7136" required>
-                    </div>
-                    <div class="form-group">
-                        <label>إحداثيات خط الطول (Longitude)</label>
-                        <input type="number" step="any" id="pLng" class="form-control" placeholder="مثال: 46.6753" required>
-                    </div>
-                    <div class="form-group">
-                        <label>رابط الصورة الرئيسية (رابط مباشر)</label>
-                        <input type="url" id="pImg1" class="form-control" placeholder="https://..." required>
-                    </div>
-                    <div class="form-group">
-                        <label>رابط الصورة الإضافية الثانية (رابط مباشر)</label>
-                        <input type="url" id="pImg2" class="form-control" placeholder="https://...">
-                    </div>
-                    <div class="form-group">
-                        <label>رابط الصورة الإضافية الثالثة (رابط مباشر)</label>
-                        <input type="url" id="pImg3" class="form-control" placeholder="https://...">
-                    </div>
-                    <button type="submit" class="btn-submit">تأكيد ونشر الأصل فوراً في المعرض</button>
-                </form>
+                    <div class="stat-icon"><i class="fa-solid fa-vault"></i></div>
+                </div>
             </div>
 
-            <div class="panel">
-                <h2 class="panel-title"><i class="fa-solid fa-list-check"></i> العروض والملفات المدرجة حالياً</h2>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>الصورة</th>
-                                <th>العقار</th>
-                                <th>الموقع</th>
-                                <th>القيمة</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
+            <div class="main-grid">
+                <div class="panel">
+                    <h2 class="panel-title"><i class="fa-solid fa-square-plus" style="color: var(--accent-blue);"></i> إضافة أصل استثماري</h2>
+                    <form id="propertyForm" onsubmit="saveNewProperty(event)">
+                        <div class="form-group">
+                            <label>العنوان الوصفي للعقار</label>
+                            <input type="text" id="pTitle" class="form-control" placeholder="مثال: قصر فاخر في حي حطين" required>
+                        </div>
+                        <div class="form-group">
+                            <label>القيمة الاستثمارية (ر.س)</label>
+                            <input type="number" id="pPrice" class="form-control" placeholder="مثال: 4500000" required>
+                        </div>
+                        <div class="form-group">
+                            <label>المدينة / المنطقة</label>
+                            <input type="text" id="pLocation" class="form-control" placeholder="مثال: الرياض" required>
+                        </div>
+                        <div class="form-group">
+                            <label>المساحة (م²)</label>
+                            <input type="number" id="pArea" class="form-control" placeholder="مثال: 450" required>
+                        </div>
+                        <div class="form-group">
+                            <label>رقم هاتف المبيعات (للرد الآلي)</label>
+                            <input type="text" id="pPhone" class="form-control" placeholder="مثال: 966500000000" required>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="form-group" style="flex: 1;">
+                                <label>خط العرض (Lat)</label>
+                                <input type="number" step="any" id="pLat" class="form-control" placeholder="24.7136" required>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>خط الطول (Lng)</label>
+                                <input type="number" step="any" id="pLng" class="form-control" placeholder="46.6753" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>رابط الصورة الرئيسية</label>
+                            <input type="url" id="pImg1" class="form-control" placeholder="https://..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>روابط صور إضافية (اختياري)</label>
+                            <input type="url" id="pImg2" class="form-control" placeholder="الصورة 2..." style="margin-bottom: 8px;">
+                            <input type="url" id="pImg3" class="form-control" placeholder="الصورة 3...">
+                        </div>
+                        <button type="submit" class="btn-submit"><i class="fa-solid fa-cloud-arrow-up"></i> نشر العقار في المعرض الحي</button>
+                    </form>
+                </div>
+
+                <div class="panel">
+                    <h2 class="panel-title"><i class="fa-solid fa-table-list" style="color: var(--text-secondary);"></i> قاعدة بيانات العقارات المدرجة</h2>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>الصورة</th>
+                                    <th>اسم العقار</th>
+                                    <th>المدينة</th>
+                                    <th>القيمة (ر.س)</th>
+                                    <th>الإجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script>
+        // دالة التحكم في القائمة الجانبية للموبايل
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('sidebarOverlay').classList.toggle('active');
+        }
+
         function renderDashboard() {
             const tableBody = document.getElementById('tableBody');
             tableBody.innerHTML = '';
@@ -317,27 +352,27 @@
             document.getElementById('statCount').innerText = properties.length;
             
             if (properties.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 30px;">لا توجد أصول استثمارية منشورة حالياً بالمحفظة.</td></tr>`;
-                document.getElementById('statTotalVolume').innerText = "0 ر.س";
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 40px;">لا توجد أصول استثمارية مدرجة حالياً.</td></tr>`;
+                document.getElementById('statTotalVolume').innerText = "0";
                 return;
             }
 
             properties.forEach(item => {
                 totalVolume += Number(item.price || 0);
                 const tr = document.createElement('tr');
-                const firstImg = item.media_list && item.media_list[0] ? item.media_list[0].data : '';
+                const firstImg = item.media_list && item.media_list[0] ? item.media_list[0].data : 'https://via.placeholder.com/60';
 
                 tr.innerHTML = `
                     <td><img src="${firstImg}" class="table-img" alt="عقار"></td>
-                    <td style="font-weight: 600;">${escapeHtml(item.title)}</td>
-                    <td>${escapeHtml(item.location)}</td>
-                    <td style="color: var(--accent-gold); font-weight: 700;">${Number(item.price).toLocaleString()} ر.س</td>
+                    <td style="font-weight: 700; color: var(--text-primary);">${escapeHtml(item.title)}</td>
+                    <td><span style="background: #f1f5f9; padding: 4px 8px; border-radius: 4px; font-size: 11px;">${escapeHtml(item.location)}</span></td>
+                    <td style="color: var(--accent-gold); font-weight: 800;">${Number(item.price).toLocaleString()}</td>
                     <td><button class="btn-delete" onclick="deleteProperty('${item.id}')"><i class="fa-solid fa-trash-can"></i> حذف</button></td>
                 `;
                 tableBody.appendChild(tr);
             });
 
-            document.getElementById('statTotalVolume').innerText = totalVolume.toLocaleString() + " ر.س";
+            document.getElementById('statTotalVolume').innerText = totalVolume.toLocaleString();
         }
 
         function saveNewProperty(e) {
@@ -365,23 +400,33 @@
                 media_list: media_list
             };
 
-            properties.push(newObj);
+            // إضافة العقار في بداية المصفوفة ليظهر أولاً
+            properties.unshift(newObj);
             localStorage.setItem('saudi_property_vault', JSON.stringify(properties));
             
             document.getElementById('propertyForm').reset();
             renderDashboard();
+            
+            // إغلاق القائمة في الموبايل تلقائياً بعد الإضافة إذا كانت مفتوحة
+            if(window.innerWidth <= 992) {
+                document.getElementById('sidebar').classList.remove('active');
+                document.getElementById('sidebarOverlay').classList.remove('active');
+            }
         }
 
         function deleteProperty(id) {
-            const rawData = localStorage.getItem('saudi_property_vault');
-            let properties = rawData ? JSON.parse(rawData) : [];
-            properties = properties.filter(p => p.id !== id);
-            localStorage.setItem('saudi_property_vault', JSON.stringify(properties));
-            renderDashboard();
+            if(confirm('هل أنت متأكد من حذف هذا العقار من المحفظة؟')) {
+                const rawData = localStorage.getItem('saudi_property_vault');
+                let properties = rawData ? JSON.parse(rawData) : [];
+                properties = properties.filter(p => p.id !== id);
+                localStorage.setItem('saudi_property_vault', JSON.stringify(properties));
+                renderDashboard();
+            }
         }
 
+        // تم تصحيح دالة الحماية لتعمل بشكل قياسي
         function escapeHtml(text) {
-            const map = { '&': '&', '<': '<', '>': '>', '"': '"', "'": ''' };
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
             return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
