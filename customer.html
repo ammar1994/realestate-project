@@ -3,71 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>صالة عروض الأصول الاستثمارية المتاحة</title>
+    <title>المنصة العقارية الاستثمارية | صالة العروض الحية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #0b1329;
-            --bg-card: #1c2541;
-            --border-color: #2e3c63;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-gold: #f59e0b;
+            --bg-main: #f8fafc; /* خلفية هادئة ونظيفة مثل المواقع العالمية */
+            --bg-card: #ffffff;
+            --border-color: #e2e8f0;
+            --text-primary: #0f172a; /* كحلي داكن فاخر للنصوص */
+            --text-secondary: #64748b;
+            --accent-brand: #0f172a; /* اللون الأساسي للمنصة */
+            --accent-gold: #f59e0b; /* لون التمييز والأسعار */
             --accent-green: #10b981;
-            --accent-blue: #3b82f6;
+            --accent-blue: #2563eb;
+            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.02);
+            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.04);
         }
 
         body { 
             font-family: 'Cairo', system-ui, -apple-system, sans-serif; 
             background-color: var(--bg-main); 
             margin: 0; 
-            padding: 16px; 
+            padding: 0; 
             color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
         }
 
-        h1 { 
-            text-align: center; 
-            color: var(--text-primary); 
-            margin: 20px 0 5px 0; 
-            font-size: 1.5rem; 
+        /* الهيدر العلوي */
+        header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        header h1 { 
+            margin: 0 0 6px 0; 
+            font-size: 1.6rem; 
             font-weight: 800; 
+            color: var(--accent-brand);
         }
 
-        p.subtitle { 
-            text-align: center; 
+        header p.subtitle { 
+            margin: 0;
             color: var(--text-secondary); 
-            font-size: 12px; 
-            margin-bottom: 25px; 
+            font-size: 13px; 
+            font-weight: 500;
         }
 
+        /* قسم فلاتر البحث المتطور - متجاوب تماماً */
+        .filter-section {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 16px;
+            box-sizing: border-box;
+        }
+
+        .filter-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            align-items: end;
+        }
+
+        @media (max-width: 480px) {
+            .filter-grid {
+                grid-template-columns: 1fr; /* ترتيب رأسي ذكي على الجوال لتوفير مساحة */
+            }
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-brand);
+        }
+
+        .filter-group select, .filter-group input {
+            font-family: 'Cairo', sans-serif;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #f8fafc;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .filter-group select:focus, .filter-group input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .btn-search {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--accent-brand);
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+        }
+        .btn-search:hover { opacity: 0.9; }
+
+        /* حاوية العقارات */
         .properties-container { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 20px; 
+            gap: 24px; 
             max-width: 1200px; 
-            margin: 0 auto; 
+            margin: 0 auto 40px auto; 
+            padding: 0 16px;
+            box-sizing: border-box;
         }
         
         .property-card { 
             background: var(--bg-card); 
-            border-radius: 14px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4); 
+            border-radius: 16px; 
+            box-shadow: var(--shadow-md); 
             overflow: hidden; 
             display: flex; 
             flex-direction: column; 
             border: 1px solid var(--border-color); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .property-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
         }
         
         .media-viewer { 
             position: relative; 
             width: 100%; 
             height: 220px; 
-            background: #090f1f; 
+            background: #f1f5f9; 
         }
         
         .property-img { 
@@ -82,18 +177,18 @@
             position: absolute; 
             top: 12px; 
             left: 12px; 
-            background: rgba(11, 19, 41, 0.85); 
-            padding: 5px 10px; 
-            border-radius: 6px; 
+            background: rgba(15, 23, 42, 0.85); 
+            padding: 6px 12px; 
+            border-radius: 20px; 
             font-size: 11px; 
-            color: var(--accent-gold); 
-            font-weight: bold; 
+            color: #ffffff; 
+            font-weight: 600; 
             backdrop-filter: blur(4px);
             z-index: 10;
         }
         
         .property-details { 
-            padding: 16px; 
+            padding: 20px; 
             display: flex; 
             flex-direction: column; 
             flex-grow: 1; 
@@ -101,39 +196,39 @@
 
         .tag { 
             font-size: 11px; 
-            background: rgba(16, 185, 129, 0.15); 
+            background: rgba(16, 185, 129, 0.1); 
             color: var(--accent-green); 
-            padding: 4px 8px; 
-            border-radius: 4px; 
+            padding: 4px 10px; 
+            border-radius: 20px; 
             align-self: flex-start; 
-            margin-bottom: 10px; 
-            font-weight: 600; 
+            margin-bottom: 12px; 
+            font-weight: 700; 
         }
 
         .property-price { 
             color: var(--accent-gold); 
-            font-size: 22px; 
+            font-size: 24px; 
             font-weight: 800; 
-            margin-bottom: 6px; 
+            margin-bottom: 8px; 
         }
 
         .property-title { 
-            font-size: 15px; 
+            font-size: 16px; 
             font-weight: 700; 
             color: var(--text-primary); 
-            margin: 0 0 12px 0; 
-            line-height: 1.5;
+            margin: 0 0 16px 0; 
+            line-height: 1.6;
         }
         
         .property-meta { 
-            font-size: 12px; 
+            font-size: 13px; 
             color: var(--text-secondary); 
-            margin-bottom: 12px; 
+            margin-bottom: 16px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center;
-            border-top: 1px solid rgba(46, 60, 99, 0.5); 
-            padding-top: 12px; 
+            border-top: 1px solid var(--border-color); 
+            padding-top: 14px; 
         }
 
         .meta-item { 
@@ -146,74 +241,77 @@
             display: flex; 
             gap: 8px; 
             overflow-x: auto; 
-            padding: 4px 2px 12px 2px; 
-            margin-bottom: 12px; 
+            padding: 4px 2px 14px 2px; 
+            margin-bottom: 14px; 
             scrollbar-width: none; 
         }
         .thumbnails-strip::-webkit-scrollbar { display: none; }
         
         .thumb-box { 
-            width: 48px; height: 48px; border-radius: 6px; object-fit: cover; 
-            cursor: pointer; border: 2px solid transparent; opacity: 0.5; transition: all 0.2s ease; flex-shrink: 0; 
+            width: 52px; height: 52px; border-radius: 8px; object-fit: cover; 
+            cursor: pointer; border: 2px solid transparent; opacity: 0.6; transition: all 0.2s ease; flex-shrink: 0; 
         }
-        .thumb-box.active { border-color: var(--accent-gold); opacity: 1; }
+        .thumb-box.active { border-color: var(--accent-gold); opacity: 1; box-shadow: var(--shadow-sm); }
 
         .action-row { display: flex; gap: 10px; margin-top: auto; }
         
         .btn-action {
-            display: flex; align-items: center; justify-content: center; gap: 6px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
             padding: 12px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; font-family: 'Cairo', sans-serif; border: none; cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
         }
+        .btn-action:active { transform: scale(0.98); }
         .btn-whatsapp { flex: 2; background: var(--accent-green); color: #ffffff; }
-        .btn-map { flex: 1; background: var(--accent-blue); color: #ffffff; }
+        .btn-map { flex: 1; background: #f1f5f9; color: var(--text-primary); border: 1px solid var(--border-color); }
+        .btn-map:hover { background: #e2e8f0; }
         
+        /* تأثيرات الـ Lightbox والأبواب المنبثقة */
         .lightbox-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(7, 11, 21, 0.95); z-index: 9999; justify-content: center; align-items: center; 
+            background: rgba(15, 23, 42, 0.95); z-index: 9999; justify-content: center; align-items: center; 
         }
         
-        .lightbox-content { max-width: 95%; max-height: 80%; object-fit: contain; border-radius: 6px; }
+        .lightbox-content { max-width: 90%; max-height: 85%; object-fit: contain; border-radius: 8px; box-shadow: var(--shadow-lg); }
 
         .map-popup-container {
             background: var(--bg-card);
             width: 92%;
-            max-width: 440px;
-            height: 490px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
+            max-width: 460px;
+            height: 500px;
+            border-radius: 20px;
             position: relative;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            box-shadow: var(--shadow-lg);
         }
 
-        #popupMap { width: 100%; flex-grow: 1; background: #141926; }
+        #popupMap { width: 100%; flex-grow: 1; background: #f8fafc; }
 
         .popup-map-title {
-            padding: 16px;
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--accent-gold);
+            padding: 18px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
             border-bottom: 1px solid var(--border-color);
             margin: 0;
             text-align: center;
-            background: var(--bg-main);
+            background: #ffffff;
         }
 
         .map-external-routing {
-            padding: 14px;
-            background: var(--bg-main);
+            padding: 16px;
+            background: #ffffff;
             border-top: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
         }
 
         .btn-route-external {
-            padding: 13px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 10px;
             font-size: 13px;
-            font-weight: 800;
+            font-weight: 700;
             text-align: center;
             text-decoration: none;
             display: flex;
@@ -221,57 +319,66 @@
             justify-content: center;
             gap: 8px;
             font-family: 'Cairo', sans-serif;
-            border: 1px solid var(--accent-gold);
-            cursor: pointer;
-            background: var(--bg-card);
-            color: var(--text-primary);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.2s ease;
+            background: var(--accent-brand);
+            color: #ffffff;
+            box-shadow: var(--shadow-sm);
+            transition: opacity 0.2s;
         }
-        .btn-route-external:hover {
-            background: var(--accent-gold);
-            color: var(--bg-main);
-        }
+        .btn-route-external:hover { opacity: 0.9; }
 
         .lightbox-close { 
-            position: absolute; top: 16px; right: 16px; font-size: 20px; 
-            color: var(--accent-gold); cursor: pointer; background: #1c2541; 
-            width: 38px; height: 38px; display: flex; align-items: center; 
-            justify-content: center; border-radius: 50%; border: 1px solid var(--border-color); z-index: 10000;
+            position: absolute; top: 16px; right: 16px; font-size: 18px; 
+            color: var(--text-primary); cursor: pointer; background: #ffffff; 
+            width: 40px; height: 40px; display: flex; align-items: center; 
+            justify-content: center; border-radius: 50%; box-shadow: var(--shadow-md); z-index: 10000;
         }
 
-        .pulse-marker {
-            position: relative;
-        }
+        /* مؤشر النبض التفاعلي للخريطة */
+        .pulse-marker { position: relative; }
         .pulse-marker::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 14px;
-            height: 14px;
-            background: rgba(245, 158, 11, 0.4);
-            border-radius: 50%;
-            animation: mapPulse 1.5s infinite ease-out;
-            z-index: -1;
+            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 16px; height: 16px; background: rgba(37, 99, 235, 0.3); border-radius: 50%;
+            animation: mapPulse 1.6s infinite ease-out; z-index: -1;
         }
         @keyframes mapPulse {
-            0% { width: 14px; height: 14px; opacity: 1; }
-            100% { width: 45px; height: 45px; opacity: 0; }
+            0% { width: 16px; height: 16px; opacity: 1; }
+            100% { width: 48px; height: 48px; opacity: 0; }
         }
         
-        .loading-text { text-align: center; font-size: 14px; color: var(--text-secondary); grid-column: 1 / -1; padding: 60px; }
+        .loading-text { text-align: center; font-size: 14px; color: var(--text-secondary); grid-column: 1 / -1; padding: 80px 0; }
     </style>
 </head>
 <body>
 
-    <h1>صالة عروض الأصول الاستثمارية المتاحة</h1>
-    <p class="subtitle">مساحة تفاعلية حية ومحدثة من قبل إدارة المحتوى مباشرة</p>
+    <header>
+        <h1>صالة عروض الأصول الاستثمارية المتاحة</h1>
+        <p class="subtitle">مساحة تفاعلية حية ومحدثة من قبل إدارة المحتوى مباشرة</p>
+    </header>
+
+    <section class="filter-section">
+        <div class="filter-card">
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label><i class="fa-solid fa-map-location"></i> المدينة / المنطقة</label>
+                    <select id="filterLocation">
+                        <option value="">الكل</option>
+                        <option value="الرياض">الرياض</option>
+                        <option value="جدة">جدة</option>
+                        <option value="مكة">مكة</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label><i class="fa-solid fa-money-bill-wave"></i> السعر الأقصى (ر.س)</label>
+                    <input type="number" id="filterPrice" placeholder="مثال: 500,000">
+                </div>
+                <button type="button" class="btn-search" onclick="loadSaudiProperties()"><i class="fa-solid fa-magnifying-glass"></i> تصفية النتائج</button>
+            </div>
+        </div>
+    </section>
     
-    <div class="properties-container" id="saudiClientWrapper">
+    <main class="properties-container" id="saudiClientWrapper">
         <div class="loading-text"><i class="fa-solid fa-circle-notch fa-spin"></i> جاري فحص وتحديث المعروضات الحية بالمحفظة...</div>
-    </div>
+    </main>
 
     <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
         <span class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></span>
@@ -302,10 +409,22 @@
             wrapper.innerHTML = '';
             
             const currentData = localStorage.getItem('saudi_property_vault');
-            const dataArray = currentData ? JSON.parse(currentData) : [];
+            let dataArray = currentData ? JSON.parse(currentData) : [];
             
+            // جلب قيم الفلاتر المحددة من المستخدم
+            const locFilter = document.getElementById('filterLocation').value;
+            const priceFilter = document.getElementById('filterPrice').value;
+
+            // تطبيق التصفية والفلترة المنطقية
+            if (locFilter) {
+                dataArray = dataArray.filter(item => item.location && item.location.includes(locFilter));
+            }
+            if (priceFilter) {
+                dataArray = dataArray.filter(item => item.price && parseFloat(item.price) <= parseFloat(priceFilter));
+            }
+
             if (dataArray.length === 0) {
-                wrapper.innerHTML = `<div class="loading-text">لا توجد عروض منشورة في صالة المبيعات حالياً.</div>`;
+                wrapper.innerHTML = `<div class="loading-text">لا توجد عروض تطابق خيارات البحث الحالية.</div>`;
                 return;
             }
             
@@ -378,33 +497,34 @@
         }
         function closeLightbox() { document.getElementById('lightboxOverlay').style.display = 'none'; }
 
-        function openMapPopup(lat, centerLng, title) {
+        function openMapPopup(lat, lng, title) {
             document.getElementById('popupMapTitle').innerText = "موقع: " + title;
             document.getElementById('mapOverlay').style.display = 'flex';
 
-            // تم تصحيح صياغة الرابط العالمي بنجاح لفتح تطبيق خرائط جوجل للهواتف فوراً ودون أي مشاكل
-            document.getElementById('lnkGoogleMaps').href = `https://www.google.com/maps?q=${lat},${centerLng}`;
+            // تصحيح الرابط المكسور بالكامل ليعمل بشكل سليم وديناميكي 100%
+            document.getElementById('lnkGoogleMaps').href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
 
             if (globalPopupMap === null) {
                 globalPopupMap = L.map('popupMap', { zoomControl: false });
                 L.control.zoom({ position: 'topright' }).addTo(globalPopupMap);
 
+                // استخدام خرائط Voyager ناعمة وفاتحة متناسقة مع التصميم الجديد الفاخر
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
                     maxZoom: 20
                 }).addTo(globalPopupMap);
 
                 var customIcon = L.divIcon({
-                    html: '<div class="pulse-marker"><i class="fa-solid fa-location-dot" style="color: #f59e0b; font-size: 26px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);"></i></div>',
+                    html: '<div class="pulse-marker"><i class="fa-solid fa-location-dot" style="color: #2563eb; font-size: 28px; text-shadow: 0 2px 5px rgba(0,0,0,0.2);"></i></div>',
                     iconSize: [30, 30],
                     iconAnchor: [15, 30]
                 });
 
-                globalPopupMarker = L.marker([lat, centerLng], { icon: customIcon }).addTo(globalPopupMap);
+                globalPopupMarker = L.marker([lat, lng], { icon: customIcon }).addTo(globalPopupMap);
             } else {
-                globalPopupMarker.setLatLng([lat, centerLng]);
+                globalPopupMarker.setLatLng([lat, lng]);
             }
 
-            globalPopupMap.setView([lat, centerLng], 15);
+            globalPopupMap.setView([lat, lng], 15);
             setTimeout(() => { globalPopupMap.invalidateSize(); }, 300);
         }
 
