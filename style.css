@@ -1,0 +1,34 @@
+/* style.css */
+/* إجبار العناصر على عدم الخروج عن حدود الشاشة */
+* {
+    max-width: 100%;
+}
+
+@media (max-width: 992px) {
+    /* جعل الجدول يتمرر أفقياً بلمسة الإصبع */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        display: block;
+    }
+
+    table {
+        min-width: 600px; /* يمنع الجدول من الانضغاط بشكل مشوه */
+    }
+
+    /* تحويل الجريد (Grid) إلى عمود واحد في الجوال */
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .main-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ضبط الخريطة لتناسب عرض الجوال */
+    #mini-map-picker {
+        width: 100%;
+        height: 200px;
+    }
+}
