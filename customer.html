@@ -8,16 +8,16 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #f8fafc; /* خلفية هادئة ونظيفة مثل المواقع العالمية */
+            --bg-main: #f8fafc;
             --bg-card: #ffffff;
             --border-color: #e2e8f0;
-            --text-primary: #0f172a; /* كحلي داكن فاخر للنصوص */
+            --text-primary: #0f172a;
             --text-secondary: #64748b;
-            --accent-brand: #0f172a; /* اللون الأساسي للمنصة */
-            --accent-gold: #f59e0b; /* لون التمييز والأسعار */
+            --accent-brand: #0f172a;
+            --accent-gold: #f59e0b;
             --accent-green: #10b981;
             --accent-blue: #2563eb;
             --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
@@ -26,7 +26,7 @@
         }
 
         body { 
-            font-family: 'Cairo', system-ui, -apple-system, sans-serif; 
+            font-family: 'Cairo', system-ui, sans-serif; 
             background-color: var(--bg-main); 
             margin: 0; 
             padding: 0; 
@@ -34,7 +34,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* الهيدر العلوي */
         header {
             background-color: var(--bg-card);
             border-bottom: 1px solid var(--border-color);
@@ -43,308 +42,109 @@
             box-shadow: var(--shadow-sm);
         }
 
-        header h1 { 
-            margin: 0 0 6px 0; 
-            font-size: 1.6rem; 
-            font-weight: 800; 
-            color: var(--accent-brand);
-        }
+        header h1 { margin: 0 0 6px 0; font-size: 1.6rem; font-weight: 800; color: var(--accent-brand); }
+        header p.subtitle { margin: 0; color: var(--text-secondary); font-size: 13px; font-weight: 500; }
 
-        header p.subtitle { 
-            margin: 0;
-            color: var(--text-secondary); 
-            font-size: 13px; 
-            font-weight: 500;
-        }
+        .filter-section { max-width: 1200px; margin: 24px auto; padding: 0 16px; box-sizing: border-box; }
+        .filter-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; box-shadow: var(--shadow-sm); }
+        .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; align-items: end; }
 
-        /* قسم فلاتر البحث المتطور - متجاوب تماماً */
-        .filter-section {
-            max-width: 1200px;
-            margin: 24px auto;
-            padding: 0 16px;
-            box-sizing: border-box;
-        }
+        @media (max-width: 480px) { .filter-grid { grid-template-columns: 1fr; } }
 
-        .filter-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .filter-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            align-items: end;
-        }
-
-        @media (max-width: 480px) {
-            .filter-grid {
-                grid-template-columns: 1fr; /* ترتيب رأسي ذكي على الجوال لتوفير مساحة */
-            }
-        }
-
-        .filter-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .filter-group label {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--accent-brand);
-        }
-
+        .filter-group { display: flex; flex-direction: column; gap: 6px; }
+        .filter-group label { font-size: 12px; font-weight: 700; color: var(--accent-brand); }
         .filter-group select, .filter-group input {
-            font-family: 'Cairo', sans-serif;
-            padding: 10px 12px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: #f8fafc;
-            color: var(--text-primary);
-            font-size: 13px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .filter-group select:focus, .filter-group input:focus {
-            border-color: var(--accent-gold);
+            font-family: 'Cairo', sans-serif; padding: 10px 12px; border-radius: 8px;
+            border: 1px solid var(--border-color); background-color: #f8fafc; color: var(--text-primary); font-size: 13px; outline: none;
         }
 
         .btn-search {
-            font-family: 'Cairo', sans-serif;
-            background-color: var(--accent-brand);
-            color: #ffffff;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: opacity 0.2s;
+            font-family: 'Cairo', sans-serif; background-color: var(--accent-brand); color: #ffffff;
+            border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 13px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-search:hover { opacity: 0.9; }
 
-        /* حاوية العقارات */
         .properties-container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 24px; 
-            max-width: 1200px; 
-            margin: 0 auto 40px auto; 
-            padding: 0 16px;
-            box-sizing: border-box;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
+            gap: 24px; max-width: 1200px; margin: 0 auto 40px auto; padding: 0 16px; box-sizing: border-box;
         }
         
         .property-card { 
-            background: var(--bg-card); 
-            border-radius: 16px; 
-            box-shadow: var(--shadow-md); 
-            overflow: hidden; 
-            display: flex; 
-            flex-direction: column; 
-            border: 1px solid var(--border-color); 
+            background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-md); 
+            overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-color); 
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .property-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
+        .property-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
         
-        .media-viewer { 
-            position: relative; 
-            width: 100%; 
-            height: 220px; 
-            background: #f1f5f9; 
-        }
-        
-        .property-img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block; 
-            cursor: pointer;
-        }
-
+        .media-viewer { position: relative; width: 100%; height: 220px; background: #f1f5f9; }
+        .property-img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer; }
         .media-badge { 
-            position: absolute; 
-            top: 12px; 
-            left: 12px; 
-            background: rgba(15, 23, 42, 0.85); 
-            padding: 6px 12px; 
-            border-radius: 20px; 
-            font-size: 11px; 
-            color: #ffffff; 
-            font-weight: 600; 
-            backdrop-filter: blur(4px);
-            z-index: 10;
+            position: absolute; top: 12px; left: 12px; background: rgba(15, 23, 42, 0.85); 
+            padding: 6px 12px; border-radius: 20px; font-size: 11px; color: #ffffff; font-weight: 600; z-index: 10;
         }
         
-        .property-details { 
-            padding: 20px; 
-            display: flex; 
-            flex-direction: column; 
-            flex-grow: 1; 
-        }
-
-        .tag { 
-            font-size: 11px; 
-            background: rgba(16, 185, 129, 0.1); 
-            color: var(--accent-green); 
-            padding: 4px 10px; 
-            border-radius: 20px; 
-            align-self: flex-start; 
-            margin-bottom: 12px; 
-            font-weight: 700; 
-        }
-
-        .property-price { 
-            color: var(--accent-gold); 
-            font-size: 24px; 
-            font-weight: 800; 
-            margin-bottom: 8px; 
-        }
-
-        .property-title { 
-            font-size: 16px; 
-            font-weight: 700; 
-            color: var(--text-primary); 
-            margin: 0 0 16px 0; 
-            line-height: 1.6;
-        }
+        .property-details { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+        .tag { font-size: 11px; background: rgba(16, 185, 129, 0.1); color: var(--accent-green); padding: 4px 10px; border-radius: 20px; align-self: flex-start; margin-bottom: 12px; font-weight: 700; }
+        .property-price { color: var(--accent-gold); font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+        .property-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0 0 16px 0; line-height: 1.6; }
         
         .property-meta { 
-            font-size: 13px; 
-            color: var(--text-secondary); 
-            margin-bottom: 16px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            border-top: 1px solid var(--border-color); 
-            padding-top: 14px; 
+            font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; display: flex; 
+            justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 14px; 
         }
-
-        .meta-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-        }
+        .meta-item { display: flex; align-items: center; gap: 6px; }
         
-        .thumbnails-strip { 
-            display: flex; 
-            gap: 8px; 
-            overflow-x: auto; 
-            padding: 4px 2px 14px 2px; 
-            margin-bottom: 14px; 
-            scrollbar-width: none; 
-        }
+        .thumbnails-strip { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 14px 2px; margin-bottom: 14px; scrollbar-width: none; }
         .thumbnails-strip::-webkit-scrollbar { display: none; }
-        
-        .thumb-box { 
-            width: 52px; height: 52px; border-radius: 8px; object-fit: cover; 
-            cursor: pointer; border: 2px solid transparent; opacity: 0.6; transition: all 0.2s ease; flex-shrink: 0; 
-        }
-        .thumb-box.active { border-color: var(--accent-gold); opacity: 1; box-shadow: var(--shadow-sm); }
+        .thumb-box { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; opacity: 0.6; flex-shrink: 0; }
+        .thumb-box.active { border-color: var(--accent-gold); opacity: 1; }
 
-        .action-row { display: flex; gap: 10px; margin-top: auto; }
+        .action-row { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+        .action-buttons-sub { display: flex; gap: 8px; }
         
         .btn-action {
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 12px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; font-family: 'Cairo', sans-serif; border: none; cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
+            padding: 11px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; font-family: 'Cairo', sans-serif; border: none; cursor: pointer;
         }
-        .btn-action:active { transform: scale(0.98); }
-        .btn-whatsapp { flex: 2; background: var(--accent-green); color: #ffffff; }
+        .btn-whatsapp { flex: 1; background: var(--accent-green); color: #ffffff; }
         .btn-map { flex: 1; background: #f1f5f9; color: var(--text-primary); border: 1px solid var(--border-color); }
-        .btn-map:hover { background: #e2e8f0; }
+        .btn-offer { background: var(--accent-blue); color: #ffffff; width: 100%; }
         
-        /* تأثيرات الـ Lightbox والأبواب المنبثقة */
+        /* صناديق الحوار المنبثقة (Modals) */
         .lightbox-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(15, 23, 42, 0.95); z-index: 9999; justify-content: center; align-items: center; 
         }
-        
-        .lightbox-content { max-width: 90%; max-height: 85%; object-fit: contain; border-radius: 8px; box-shadow: var(--shadow-lg); }
+        .lightbox-content { max-width: 90%; max-height: 85%; object-fit: contain; border-radius: 8px; }
 
-        .map-popup-container {
-            background: var(--bg-card);
-            width: 92%;
-            max-width: 460px;
-            height: 500px;
-            border-radius: 20px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
+        .map-popup-container, .offer-popup-container {
+            background: var(--bg-card); width: 92%; max-width: 460px; height: 500px;
+            border-radius: 20px; position: relative; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg);
         }
-
+        .offer-popup-container { height: auto; padding: 24px; }
         #popupMap { width: 100%; flex-grow: 1; background: #f8fafc; }
+        .popup-map-title, .popup-offer-title { padding: 18px; font-size: 15px; font-weight: 700; color: var(--text-primary); border-bottom: 1px solid var(--border-color); margin: 0; text-align: center; }
+        .popup-offer-title { border: none; padding: 0 0 16px 0; text-align: right; font-size: 17px; }
 
-        .popup-map-title {
-            padding: 18px;
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
-            margin: 0;
-            text-align: center;
-            background: #ffffff;
-        }
+        .form-group { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 12px; font-weight: 700; }
+        .form-control { width: 100%; padding: 11px 12px; border-radius: 8px; border: 1px solid var(--border-color); font-family: 'Cairo', sans-serif; font-size: 13px; box-sizing: border-box; }
 
-        .map-external-routing {
-            padding: 16px;
-            background: #ffffff;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .btn-route-external {
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 700;
-            text-align: center;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-family: 'Cairo', sans-serif;
-            background: var(--accent-brand);
-            color: #ffffff;
-            box-shadow: var(--shadow-sm);
-            transition: opacity 0.2s;
-        }
-        .btn-route-external:hover { opacity: 0.9; }
+        .map-external-routing { padding: 16px; background: #ffffff; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; }
+        .btn-route-external { padding: 14px; border-radius: 10px; font-size: 13px; font-weight: 700; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Cairo', sans-serif; background: var(--accent-brand); color: #ffffff; }
 
         .lightbox-close { 
             position: absolute; top: 16px; right: 16px; font-size: 18px; 
             color: var(--text-primary); cursor: pointer; background: #ffffff; 
-            width: 40px; height: 40px; display: flex; align-items: center; 
-            justify-content: center; border-radius: 50%; box-shadow: var(--shadow-md); z-index: 10000;
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: var(--shadow-md); z-index: 10000;
         }
 
-        /* مؤشر النبض التفاعلي للخريطة */
         .pulse-marker { position: relative; }
         .pulse-marker::after {
             content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 16px; height: 16px; background: rgba(37, 99, 235, 0.3); border-radius: 50%;
-            animation: mapPulse 1.6s infinite ease-out; z-index: -1;
+            width: 16px; height: 16px; background: rgba(37, 99, 235, 0.3); border-radius: 50%; animation: mapPulse 1.6s infinite ease-out; z-index: -1;
         }
-        @keyframes mapPulse {
-            0% { width: 16px; height: 16px; opacity: 1; }
-            100% { width: 48px; height: 48px; opacity: 0; }
-        }
-        
+        @keyframes mapPulse { 0% { width: 16px; height: 16px; opacity: 1; } 100% { width: 48px; height: 48px; opacity: 0; } }
         .loading-text { text-align: center; font-size: 14px; color: var(--text-secondary); grid-column: 1 / -1; padding: 80px 0; }
     </style>
 </head>
@@ -368,7 +168,7 @@
                     </select>
                 </div>
                 <div class="filter-group">
-                    <label><i class="fa-solid fa-money-bill-wave"></i> السعر الأقصى (ر.س)</label>
+                    <label><i class="fa-solid fa-money-bill-wave"></i>  السعر الأقصى (ر.س)</label>
                     <input type="number" id="filterPrice" placeholder="مثال: 500,000">
                 </div>
                 <button type="button" class="btn-search" onclick="loadSaudiProperties()"><i class="fa-solid fa-magnifying-glass"></i> تصفية النتائج</button>
@@ -380,6 +180,30 @@
         <div class="loading-text"><i class="fa-solid fa-circle-notch fa-spin"></i> جاري فحص وتحديث المعروضات الحية بالمحفظة...</div>
     </main>
 
+    <div class="lightbox-overlay" id="offerOverlay">
+        <span class="lightbox-close" onclick="closeOfferPopup()"><i class="fa-solid fa-xmark"></i></span>
+        <div class="offer-popup-container">
+            <h3 class="popup-offer-title"><i class="fa-solid fa-gavel" style="color: var(--accent-blue);"></i> تقديم عرض شراء رسمي</h3>
+            <form id="offerForm" onsubmit="submitOffer(event)">
+                <input type="hidden" id="offerPropId">
+                <input type="hidden" id="offerPropTitle">
+                <div class="form-group">
+                    <label>الاسم الكامل</label>
+                    <input type="text" id="buyerName" class="form-control" required placeholder="مثال: عبد الله السديري">
+                </div>
+                <div class="form-group">
+                    <label>رقم الجوال (مع رمز الدولة)</label>
+                    <input type="text" id="buyerPhone" class="form-control" required placeholder="مثال: 966500000000">
+                </div>
+                <div class="form-group">
+                    <label>قيمة عرضك المالي (ر.س)</label>
+                    <input type="number" id="buyerPrice" class="form-control" required placeholder="أدخل القيمة العادلة للعقار">
+                </div>
+                <button type="submit" class="btn-submit btn-action btn-offer" style="margin-top: 10px;">إرسال العرض إلى المالك</button>
+            </form>
+        </div>
+    </div>
+
     <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
         <span class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></span>
         <img class="lightbox-content" id="lightboxImg" src="">
@@ -390,7 +214,6 @@
         <div class="map-popup-container">
             <h3 class="popup-map-title" id="popupMapTitle">الموقع الجغرافي للعين العقارية</h3>
             <div id="popupMap"></div>
-            
             <div class="map-external-routing">
                 <a href="#" target="_blank" id="lnkGoogleMaps" class="btn-route-external">
                     <i class="fa-solid fa-location-arrow"></i> فتح واشتقاق الاتجاهات عبر Google Maps
@@ -407,21 +230,14 @@
         function loadSaudiProperties() {
             const wrapper = document.getElementById('saudiClientWrapper');
             wrapper.innerHTML = '';
-            
             const currentData = localStorage.getItem('saudi_property_vault');
             let dataArray = currentData ? JSON.parse(currentData) : [];
             
-            // جلب قيم الفلاتر المحددة من المستخدم
             const locFilter = document.getElementById('filterLocation').value;
             const priceFilter = document.getElementById('filterPrice').value;
 
-            // تطبيق التصفية والفلترة المنطقية
-            if (locFilter) {
-                dataArray = dataArray.filter(item => item.location && item.location.includes(locFilter));
-            }
-            if (priceFilter) {
-                dataArray = dataArray.filter(item => item.price && parseFloat(item.price) <= parseFloat(priceFilter));
-            }
+            if (locFilter) dataArray = dataArray.filter(item => item.location && item.location.includes(locFilter));
+            if (priceFilter) dataArray = dataArray.filter(item => item.price && parseFloat(item.price) <= parseFloat(priceFilter));
 
             if (dataArray.length === 0) {
                 wrapper.innerHTML = `<div class="loading-text">لا توجد عروض تطابق خيارات البحث الحالية.</div>`;
@@ -436,7 +252,6 @@
                 const validPrice = item.price ? Number(item.price).toLocaleString() : 'اتصل لمعرفة السعر';
                 const validLocation = item.location || 'المملكة العربية السعودية';
                 const validArea = item.area ? item.area : '---';
-
                 const mediaList = item.media_list && item.media_list.length > 0 ? item.media_list : [{ type: 'image', data: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80' }];
                 const firstMedia = mediaList[0];
                 const viewerId = `viewer_${item.id}`;
@@ -453,7 +268,6 @@
                 }
 
                 const whatsappUrl = `https://wa.me/${item.phone || '96650000000'}?text=${encodeURIComponent('استفسار عن: ' + validTitle)}`;
-                
                 const propertyLat = item.lat ? parseFloat(item.lat) : 24.7136;
                 const propertyLng = item.lng ? parseFloat(item.lng) : 46.6753;
 
@@ -472,8 +286,11 @@
                         </div>
                         ${thumbnailsHtml}
                         <div class="action-row">
-                            <a href="${whatsappUrl}" target="_blank" class="btn-action btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> استفسر عبر الواتساب</a>
-                            <button type="button" class="btn-action btn-map" onclick="openMapPopup(${propertyLat}, ${propertyLng}, '${validTitle}')"><i class="fa-solid fa-map-location-dot"></i> الموقع</button>
+                            <div class="action-buttons-sub">
+                                <a href="${whatsappUrl}" target="_blank" class="btn-action btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> واتساب</a>
+                                <button type="button" class="btn-action btn-map" onclick="openMapPopup(${propertyLat}, ${propertyLng}, '${validTitle}')"><i class="fa-solid fa-map-location-dot"></i> الموقع</button>
+                            </div>
+                            <button type="button" class="btn-action btn-offer" onclick="openOfferPopup('${item.id}', '${validTitle}')"><i class="fa-solid fa-gavel"></i> تقديم عرض شراء</button>
                         </div>
                     </div>
                 `;
@@ -482,48 +299,57 @@
         }
 
         function switchCardMedia(viewerId, src, thumb) {
-            const mainImg = document.getElementById(viewerId);
-            mainImg.src = src;
-            mainImg.setAttribute('onclick', `openLightbox('${src}')`);
-            
-            const sibs = thumb.parentElement.children;
-            for(let s of sibs) s.classList.remove('active');
-            thumb.classList.add('active');
+            const mainImg = document.getElementById(viewerId); mainImg.src = src; mainImg.setAttribute('onclick', `openLightbox('${src}')`);
+            const sibs = thumb.parentElement.children; for(let s of sibs) s.classList.remove('active'); thumb.classList.add('active');
         }
 
-        function openLightbox(src) {
-            document.getElementById('lightboxImg').src = src;
-            document.getElementById('lightboxOverlay').style.display = 'flex';
-        }
+        function openLightbox(src) { document.getElementById('lightboxImg').src = src; document.getElementById('lightboxOverlay').style.display = 'flex'; }
         function closeLightbox() { document.getElementById('lightboxOverlay').style.display = 'none'; }
+
+        function openOfferPopup(id, title) {
+            document.getElementById('offerPropId').value = id;
+            document.getElementById('offerPropTitle').value = title;
+            document.getElementById('offerOverlay').style.display = 'flex';
+        }
+        function closeOfferPopup() { document.getElementById('offerOverlay').style.display = 'none'; document.getElementById('offerForm').reset(); }
+
+        function submitOffer(e) {
+            e.preventDefault();
+            const rawOffers = localStorage.getItem('saudi_property_offers');
+            const offers = rawOffers ? JSON.parse(rawOffers) : [];
+
+            const newOffer = {
+                id: 'offer_' + Date.now(),
+                propId: document.getElementById('offerPropId').value,
+                propTitle: document.getElementById('offerPropTitle').value,
+                buyerName: document.getElementById('buyerName').value,
+                buyerPhone: document.getElementById('buyerPhone').value,
+                buyerPrice: document.getElementById('buyerPrice').value
+            };
+
+            offers.unshift(newOffer);
+            localStorage.setItem('saudi_property_offers', JSON.stringify(offers));
+            alert('تم إرسال عرض الشراء بنجاح إلى لوحة التحكم الإدارية!');
+            closeOfferPopup();
+        }
 
         function openMapPopup(lat, lng, title) {
             document.getElementById('popupMapTitle').innerText = "موقع: " + title;
             document.getElementById('mapOverlay').style.display = 'flex';
-
-            // تصحيح الرابط المكسور بالكامل ليعمل بشكل سليم وديناميكي 100%
             document.getElementById('lnkGoogleMaps').href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
 
             if (globalPopupMap === null) {
                 globalPopupMap = L.map('popupMap', { zoomControl: false });
                 L.control.zoom({ position: 'topright' }).addTo(globalPopupMap);
-
-                // استخدام خرائط Voyager ناعمة وفاتحة متناسقة مع التصميم الجديد الفاخر
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                    maxZoom: 20
-                }).addTo(globalPopupMap);
-
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 20 }).addTo(globalPopupMap);
                 var customIcon = L.divIcon({
-                    html: '<div class="pulse-marker"><i class="fa-solid fa-location-dot" style="color: #2563eb; font-size: 28px; text-shadow: 0 2px 5px rgba(0,0,0,0.2);"></i></div>',
-                    iconSize: [30, 30],
-                    iconAnchor: [15, 30]
+                    html: '<div class="pulse-marker"><i class="fa-solid fa-location-dot" style="color: #2563eb; font-size: 28px;"></i></div>',
+                    iconSize: [30, 30], iconAnchor: [15, 30]
                 });
-
                 globalPopupMarker = L.marker([lat, lng], { icon: customIcon }).addTo(globalPopupMap);
             } else {
                 globalPopupMarker.setLatLng([lat, lng]);
             }
-
             globalPopupMap.setView([lat, lng], 15);
             setTimeout(() => { globalPopupMap.invalidateSize(); }, 300);
         }
