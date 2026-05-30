@@ -164,7 +164,7 @@
         .btn-whatsapp { flex: 2; background: var(--accent-green); color: #ffffff; }
         .btn-map { flex: 1; background: var(--accent-blue); color: #ffffff; }
         
-        /* تصميم النوافذ المنبثقة المحسن */
+        /* النوافذ المنبثقة للصور والخريطة الهجينة */
         .lightbox-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(7, 11, 21, 0.95); z-index: 9999; justify-content: center; align-items: center; 
@@ -199,7 +199,6 @@
             background: var(--bg-main);
         }
 
-        /* حاوية أزرار التوجيه المتناسقة تماماً مع الهوية البصرية */
         .map-external-routing {
             padding: 14px;
             background: var(--bg-main);
@@ -238,7 +237,6 @@
             justify-content: center; border-radius: 50%; border: 1px solid var(--border-color); z-index: 10000;
         }
 
-        /* مؤشر الموقع الدائري النابض الفاخر */
         .pulse-marker {
             position: relative;
         }
@@ -280,7 +278,7 @@
     <div class="lightbox-overlay" id="mapOverlay">
         <span class="lightbox-close" onclick="closeMapPopup()"><i class="fa-solid fa-xmark"></i></span>
         <div class="map-popup-container">
-            <h3 class="popup-map-title" id="popupMapTitle">الموقع الجغرافي للعين العقارية</h3>
+            <h3 class="popup-map-title" id="popupMapTitle">الموقع الجغرافي</h3>
             <div id="popupMap"></div>
             
             <div class="map-external-routing">
@@ -315,12 +313,12 @@
                 const validTitle = item.title || 'فيلا مودرن فاخرة';
                 const validPrice = item.price ? Number(item.price).toLocaleString() : 'اتصل لمعرفة السعر';
                 const validLocation = item.location || 'المملكة العربية السعودية';
+                const validArea = item.area ? item.area : '---';
 
                 const mediaList = item.media_list && item.media_list.length > 0 ? item.media_list : [{ type: 'image', data: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80' }];
                 const firstMedia = mediaList[0];
                 const viewerId = `viewer_${item.id}`;
                 
-                // إضافة دالة فتح المعاينة الكبيرة بشكل ديناميكي للصورة الأولى المبدئية
                 let mainMediaHtml = `<img id="${viewerId}" src="${firstMedia.data}" class="property-img" onclick="openLightbox('${firstMedia.data}')" alt="عقار">`;
 
                 let thumbnailsHtml = '';
@@ -348,7 +346,7 @@
                         <h3 class="property-title">${validTitle}</h3>
                         <div class="property-meta">
                             <span class="meta-item"><i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> ${validLocation}</span>
-                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:var(--accent-gold);"></i> ${item.area || '---'} م²</span>
+                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:var(--accent-gold);"></i> ${validArea} م²</span>
                         </div>
                         ${thumbnailsHtml}
                         <div class="action-row">
@@ -361,12 +359,9 @@
             });
         }
 
-        // دالة التبديل المطورة التي تُحدث رابط المعاينة الكبيرة ديناميكياً لتلافي خطأ تثبيت الصورة الأولى
         function switchCardMedia(viewerId, src, thumb) {
             const mainImg = document.getElementById(viewerId);
             mainImg.src = src;
-            
-            // تحديث حدث الضغط للصورة الكبيرة لتفتح الصورة المحددة حالياً بدقة
             mainImg.setAttribute('onclick', `openLightbox('${src}')`);
             
             const sibs = thumb.parentElement.children;
@@ -384,7 +379,8 @@
             document.getElementById('popupMapTitle').innerText = "موقع: " + title;
             document.getElementById('mapOverlay').style.display = 'flex';
 
-            document.getElementById('lnkGoogleMaps').href = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+            // إصلاح الرابط البرمجي لإحداثيات خرائط جوجل للجوال بدون رموز مشوشة لضمان الدقة
+            document.getElementById('lnkGoogleMaps').href = `https://www.google.com/maps?q=${lat},${lng}`;
 
             if (globalPopupMap === null) {
                 globalPopupMap = L.map('popupMap', { zoomControl: false });
