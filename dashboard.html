@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة تحكم الأصول العقارية الاستثمارية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-main: #0b1329;
@@ -18,7 +21,7 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: 'Cairo', system-ui, -apple-system, sans-serif;
             background-color: var(--bg-main);
             color: var(--text-primary);
             margin: 0;
@@ -32,7 +35,7 @@
         }
 
         h1 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: var(--text-primary);
             margin-bottom: 20px;
@@ -41,7 +44,6 @@
             gap: 10px;
         }
 
-        /* كروت الإحصائيات الحية */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -62,13 +64,13 @@
 
         .stat-info h3 {
             margin: 0 0 5px 0;
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
         }
 
         .stat-info p {
             margin: 0;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 800;
             color: var(--accent-gold);
         }
@@ -85,7 +87,6 @@
             color: var(--accent-gold);
         }
 
-        /* قسم إدارة وإدخال البيانات */
         .main-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -93,7 +94,7 @@
         }
 
         @media (min-width: 992px) {
-            .main-grid { grid-template-columns: 380px 1fr; }
+            .main-grid { grid-template-columns: 390px 1fr; }
         }
 
         .panel {
@@ -106,9 +107,9 @@
         }
 
         .panel-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
-            margin-0: 0 0 20px 0;
+            margin: 0 0 20px 0;
             color: var(--text-primary);
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 10px;
@@ -131,12 +132,13 @@
 
         .form-control {
             width: 100%;
-            padding: 10px 12px;
+            padding: 11px 12px;
             border-radius: 8px;
             border: 1px solid var(--border-color);
             background: var(--bg-main);
             color: var(--text-primary);
-            font-size: 14px;
+            font-size: 13px;
+            font-family: 'Cairo', sans-serif;
             box-sizing: border-box;
             transition: border-color 0.2s;
         }
@@ -155,11 +157,11 @@
             border-radius: 8px;
             font-size: 14px;
             font-weight: 700;
+            font-family: 'Cairo', sans-serif;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
         }
 
-        /* جدول العروض المنشورة مخصص للتعامل مع الشاشات الصغيرة */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -204,6 +206,7 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
+            font-family: 'Cairo', sans-serif;
         }
 
         .btn-delete:hover {
@@ -283,7 +286,7 @@
             </div>
 
             <div class="panel">
-                <h2 class="panel-title"><i class="fa-solid fa-list-check"></i> العروض والملفات المدرجة حالياً في الصالة الحية</h2>
+                <h2 class="panel-title"><i class="fa-solid fa-list-check"></i> العروض والملفات المدرجة حالياً</h2>
                 <div class="table-responsive">
                     <table>
                         <thead>
@@ -295,8 +298,7 @@
                                 <th>الإجراءات</th>
                             </tr>
                         </thead>
-                        <tbody id="tableBody">
-                            </tbody>
+                        <tbody id="tableBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -323,10 +325,8 @@
             properties.forEach(item => {
                 totalVolume += Number(item.price || 0);
                 const tr = document.createElement('tr');
-                
                 const firstImg = item.media_list && item.media_list[0] ? item.media_list[0].data : '';
 
-                // استخدام إنشاء العناصر الآمن لتجنب ثغرات الحقن البرمجي وعرض الصور بشكل سليم
                 tr.innerHTML = `
                     <td><img src="${firstImg}" class="table-img" alt="عقار"></td>
                     <td style="font-weight: 600;">${escapeHtml(item.title)}</td>
@@ -381,7 +381,7 @@
         }
 
         function escapeHtml(text) {
-            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            const map = { '&': '&', '<': '<', '>': '>', '"': '"', "'": ''' };
             return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
