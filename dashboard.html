@@ -515,4 +515,19 @@
         });
     </script>
 </body>
-</html>
+</ht/* --- قواعد حماية الجوال - لن تخرب شيئاً على الكمبيوتر --- */
+@media (max-width: 992px) {
+    /* 1. منع تمدد الموقع */
+    body { width: 100vw !important; overflow-x: hidden !important; }
+    
+    /* 2. إصلاح الجدول ليصبح قابلاً للتمرير */
+    .table-responsive { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; width: 100% !important; }
+    table { width: 100% !important; min-width: 500px !important; }
+
+    /* 3. ضمان أن القوائم والبانل لا تتجاوز عرض الشاشة */
+    .dashboard-container, .panel, .stats-grid, .main-grid { width: 100% !important; box-sizing: border-box !important; }
+    
+    /* 4. إجبار الخريطة على الانكماش */
+    #mini-map-picker { width: 100% !important; height: 180px !important; }
+}
+    ml>
