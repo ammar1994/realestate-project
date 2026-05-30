@@ -237,7 +237,6 @@
     </main>
 
     <script>
-        // دالة إدخال بيانات افتراضية فخمة لكي لا تظهر الشاشة بيضاء للعميل أول مرة
         function seedInitialData() {
             if (!localStorage.getItem('saudi_property_vault')) {
                 const dummy = [
@@ -281,22 +280,22 @@
             const title = document.getElementById('pageMainTitle');
 
             if(view === 'properties') {
-                viewProp.style.setProperty('display', 'grid', 'important'); 
-                viewOff.style.setProperty('display', 'none', 'important');
+                viewProp.style.display = 'grid'; 
+                viewOff.style.display = 'none';
                 navProp.classList.add('active'); navOff.classList.remove('active');
                 title.innerText = "قاعدة البيانات العقارية";
                 renderDashboard();
             } else {
-                viewProp.style.setProperty('display', 'none', 'important'); 
-                viewOff.style.setProperty('display', 'block', 'important');
+                viewProp.style.display = 'none'; 
+                viewOff.style.display = 'block';
                 navProp.classList.remove('active'); navOff.classList.add('active');
                 title.innerText = "إدارة عروض العملاء الواردة";
                 renderOffers();
             }
-            if(window.innerWidth <= 992) {
-                document.getElementById('sidebar').classList.remove('active');
-                document.getElementById('sidebarOverlay').classList.remove('active');
-            }
+            
+            // إغلاق القائمة الجانبية تلقائياً بعد الاختيار على الجوال
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('sidebarOverlay').classList.remove('active');
         }
 
         function renderDashboard() {
