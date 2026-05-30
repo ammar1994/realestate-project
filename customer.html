@@ -8,22 +8,23 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2=family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #f8fafc;
+            --bg-main: #f1f5f9;
             --bg-card: #ffffff;
             --border-color: #e2e8f0;
             --text-primary: #0f172a;
-            --text-secondary: #64748b;
-            --accent-brand: #0f172a;
-            --accent-gold: #d97706;
-            --accent-green: #16a34a;
-            --accent-blue: #2563eb;
-            --shadow-sm: 0 4px 6px -1px rgba(0,0,0,0.05);
-            --shadow-md: 0 10px 15px -3px rgba(0,0,0,0.05);
-            --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.08);
-            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --text-secondary: #475569;
+            --accent-brand: #0b132b; /* كحلي فاخر عميق */
+            --accent-gold: #e11d48; /* برتقالي محمر فخم يناسب الهوية العصرية */
+            --accent-amber: #d97706; /* لمسات ذهبية للأسعار والتقييم */
+            --accent-green: #059669;
+            --accent-blue: #3b82f6;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+            --shadow-lg: 0 25px 50px -12px rgba(15, 23, 42, 0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { box-sizing: border-box; transition: var(--transition); }
@@ -37,130 +38,151 @@
         }
 
         header {
-            background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
-            padding: 24px 16px; text-align: center; box-shadow: var(--shadow-sm);
+            background: linear-gradient(135deg, var(--accent-brand) 0%, #1c2541 100%);
+            padding: 40px 20px; text-align: center; box-shadow: var(--shadow-md);
+            color: #ffffff; position: relative; overflow: hidden;
+        }
+        header::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--accent-amber), var(--accent-gold));
         }
 
-        header h1 { margin: 0 0 8px 0; font-size: 1.7rem; font-weight: 800; color: var(--accent-brand); }
-        header p.subtitle { margin: 0; color: var(--text-secondary); font-size: 13px; font-weight: 500; }
+        header h1 { margin: 0 0 12px 0; font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; }
+        header p.subtitle { margin: 0; color: #94a3b8; font-size: 14px; font-weight: 500; }
 
-        .filter-section { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
-        .filter-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; box-shadow: var(--shadow-sm); }
-        .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; align-items: end; }
+        .filter-section { max-width: 1200px; margin: -25px auto 30px auto; padding: 0 16px; position: relative; z-index: 50; }
+        .filter-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; box-shadow: var(--shadow-md); }
+        .filter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; align-items: end; }
 
-        @media (max-width: 768px) { .filter-grid { grid-template-columns: 1fr; gap: 12px; } }
+        @media (max-width: 768px) { 
+            header h1 { font-size: 1.6rem; }
+            .filter-section { margin-top: 15px; }
+            .filter-grid { grid-template-columns: 1fr; gap: 16px; } 
+        }
 
-        .filter-group { display: flex; flex-direction: column; gap: 8px; }
-        .filter-group label { font-size: 13px; font-weight: 700; color: var(--accent-brand); }
+        .filter-group { display: flex; flex-direction: column; gap: 10px; }
+        .filter-group label { font-size: 14px; font-weight: 700; color: var(--accent-brand); display: flex; align-items: center; gap: 8px; }
+        .filter-group label i { color: var(--accent-gold); }
         .filter-group select, .filter-group input {
-            font-family: 'Cairo', sans-serif; padding: 12px; border-radius: 8px;
-            border: 1px solid var(--border-color); background-color: #f8fafc; color: var(--text-primary); font-size: 13px; outline: none;
+            font-family: 'Cairo', sans-serif; padding: 14px; border-radius: 10px;
+            border: 1px solid var(--border-color); background-color: #f8fafc; color: var(--text-primary); font-size: 14px; outline: none;
         }
-        .filter-group select:focus, .filter-group input:focus { border-color: var(--accent-blue); background-color: #fff; }
+        .filter-group select:focus, .filter-group input:focus { border-color: var(--accent-blue); background-color: #fff; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
 
         .btn-search {
-            font-family: 'Cairo', sans-serif; background-color: var(--accent-brand); color: #ffffff;
-            border: none; padding: 13px; border-radius: 8px; font-weight: 700; font-size: 14px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-family: 'Cairo', sans-serif; background: linear-gradient(90deg, var(--accent-brand) 0%, #1c2541 100%); color: #ffffff;
+            border: none; padding: 15px; border-radius: 10px; font-weight: 700; font-size: 15px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: var(--shadow-sm);
         }
-        .btn-search:hover { background-color: #1e293b; transform: translateY(-1px); }
+        .btn-search:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); opacity: 0.95; }
 
         .properties-container { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 24px; max-width: 1200px; margin: 0 auto 40px auto; padding: 0 16px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 30px; max-width: 1200px; margin: 0 auto 50px auto; padding: 0 16px;
+        }
+        @media (max-width: 480px) {
+            .properties-container { grid-template-columns: 1fr; gap: 20px; }
         }
         
         .property-card { 
-            background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-md); 
-            overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-color);
+            background: var(--bg-card); border-radius: 20px; box-shadow: var(--shadow-sm); 
+            overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-color); position: relative;
         }
-        .property-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+        .property-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: #cbd5e1; }
         
-        .media-viewer { position: relative; width: 100%; height: 230px; background: #e2e8f0; overflow: hidden; }
+        .media-viewer { position: relative; width: 100%; height: 240px; background: #e2e8f0; overflow: hidden; }
         .property-img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: pointer; }
-        .property-img:hover { transform: scale(1.03); }
+        .property-img:hover { transform: scale(1.04); }
         .media-badge { 
-            position: absolute; top: 12px; left: 12px; background: rgba(15, 23, 42, 0.85); 
-            padding: 6px 12px; border-radius: 20px; font-size: 11px; color: #ffffff; font-weight: 600; z-index: 10;
+            position: absolute; top: 16px; left: 16px; background: rgba(11, 19, 43, 0.85); backdrop-filter: blur(4px);
+            padding: 6px 14px; border-radius: 30px; font-size: 12px; color: #ffffff; font-weight: 600; z-index: 10;
         }
         
         .property-details { padding: 24px; display: flex; flex-direction: column; flex-grow: 1; }
-        .tag { font-size: 11px; background: rgba(22, 163, 74, 0.1); color: var(--accent-green); padding: 5px 12px; border-radius: 20px; align-self: flex-start; margin-bottom: 12px; font-weight: 700; }
-        .property-price { color: var(--accent-gold); font-size: 26px; font-weight: 800; margin-bottom: 8px; }
-        .property-title { font-size: 17px; font-weight: 700; color: var(--text-primary); margin: 0 0 12px 0; line-height: 1.5; }
-        .property-desc { font-size: 13px; color: var(--text-secondary); margin: 0 0 16px 0; line-height: 1.6; }
+        .tag { font-size: 12px; background: rgba(5, 150, 105, 0.1); color: var(--accent-green); padding: 6px 14px; border-radius: 30px; align-self: flex-start; margin-bottom: 14px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .property-price { color: var(--accent-amber); font-size: 28px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+        .property-price span { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-right: 4px; }
+        .property-title { font-size: 19px; font-weight: 700; color: var(--accent-brand); margin: 0 0 12px 0; line-height: 1.5; }
+        .property-desc { font-size: 14px; color: var(--text-secondary); margin: 0 0 20px 0; line-height: 1.7; text-align: justify; }
         
         .property-meta { 
-            font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; display: flex; 
-            justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 14px; 
+            font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; display: flex; 
+            justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 16px; 
         }
-        .meta-item { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+        .meta-item { display: flex; align-items: center; gap: 8px; font-weight: 600; }
         
-        .thumbnails-strip { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 14px 2px; margin-bottom: 14px; scrollbar-width: none; }
+        .thumbnails-strip { display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 14px 2px; margin-bottom: 16px; scrollbar-width: none; }
         .thumbnails-strip::-webkit-scrollbar { display: none; }
-        .thumb-box { width: 54px; height: 54px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid transparent; opacity: 0.5; flex-shrink: 0; }
-        .thumb-box.active { border-color: var(--accent-gold); opacity: 1; transform: scale(1.05); }
+        .thumb-box { width: 58px; height: 58px; border-radius: 10px; object-fit: cover; cursor: pointer; border: 2px solid transparent; opacity: 0.6; flex-shrink: 0; }
+        .thumb-box.active { border-color: var(--accent-amber); opacity: 1; transform: scale(1.05); box-shadow: var(--shadow-sm); }
 
-        .action-row { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
-        .action-buttons-sub { display: flex; gap: 8px; }
+        .action-row { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+        .action-buttons-sub { display: flex; gap: 10px; }
         
         .btn-action {
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 12px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; font-family: 'Cairo', sans-serif; border: none; cursor: pointer;
+            padding: 14px; border-radius: 10px; text-decoration: none; font-size: 14px; font-weight: 700; font-family: 'Cairo', sans-serif; border: none; cursor: pointer;
         }
         .btn-whatsapp { flex: 1; background: var(--accent-green); color: #ffffff; }
-        .btn-whatsapp:hover { background: #15803d; }
-        .btn-map { flex: 1; background: #f1f5f9; color: var(--text-primary); border: 1px solid var(--border-color); }
-        .btn-map:hover { background: #e2e8f0; }
-        .btn-offer { background: var(--accent-blue); color: #ffffff; width: 100%; }
-        .btn-offer:hover { background: #1d4ed8; }
+        .btn-whatsapp:hover { background: #047857; transform: translateY(-1px); }
+        .btn-map { flex: 1; background: #f8fafc; color: var(--accent-brand); border: 1px solid var(--border-color); }
+        .btn-map:hover { background: #e2e8f0; border-color: #cbd5e1; }
+        .btn-offer { background: linear-gradient(90deg, #1e3a8a 0%, var(--accent-blue) 100%); color: #ffffff; width: 100%; box-shadow: var(--shadow-sm); }
+        .btn-offer:hover { opacity: 0.95; transform: translateY(-1px); box-shadow: var(--shadow-md); }
         
-        /* قوالب الصناديق المنبثقة الفاخرة */
+        /* الصناديق المنبثقة الفاخرة */
         .lightbox-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(15, 23, 42, 0.9); z-index: 9999; justify-content: center; align-items: center; 
+            background: rgba(11, 19, 43, 0.85); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; 
         }
-        .lightbox-content { max-width: 92%; max-height: 85%; object-fit: contain; border-radius: 12px; box-shadow: var(--shadow-lg); }
+        .lightbox-content { max-width: 90%; max-height: 80%; object-fit: contain; border-radius: 16px; box-shadow: var(--shadow-lg); }
 
         .map-popup-container, .offer-popup-container {
-            background: var(--bg-card); width: 92%; max-width: 480px; height: 520px;
+            background: var(--bg-card); width: 92%; max-width: 520px; height: 560px;
             border-radius: 24px; position: relative; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            animation: popupReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .offer-popup-container { height: auto; padding: 28px; }
-        #popupMap { width: 100%; flex-grow: 1; background: #f8fafc; }
-        .popup-map-title, .popup-offer-title { padding: 20px; font-size: 16px; font-weight: 700; color: var(--text-primary); border-bottom: 1px solid var(--border-color); margin: 0; text-align: center; }
-        .popup-offer-title { border: none; padding: 0 0 20px 0; text-align: right; font-size: 18px; }
+        @keyframes popupReveal {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .offer-popup-container { height: auto; padding: 32px; }
+        #popupMap { width: 100%; flex-grow: 1; background: #f1f5f9; }
+        .popup-map-title, .popup-offer-title { padding: 22px; font-size: 18px; font-weight: 800; color: var(--accent-brand); border-bottom: 1px solid var(--border-color); margin: 0; text-align: center; }
+        .popup-offer-title { border: none; padding: 0 0 24px 0; text-align: right; font-size: 20px; display: flex; align-items: center; gap: 10px; }
 
-        .form-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px; }
-        .form-group label { font-size: 13px; font-weight: 700; color: var(--text-primary); }
-        .form-control { width: 100%; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border-color); font-family: 'Cairo', sans-serif; font-size: 13px; box-sizing: border-box; background: #f8fafc; }
-        .form-control:focus { outline: none; border-color: var(--accent-blue); background: #ffffff; }
+        .form-group { margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .form-group label { font-size: 14px; font-weight: 700; color: var(--accent-brand); }
+        .form-control { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid var(--border-color); font-family: 'Cairo', sans-serif; font-size: 14px; box-sizing: border-box; background: #f8fafc; color: var(--text-primary); }
+        .form-control:focus { outline: none; border-color: var(--accent-blue); background: #ffffff; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); }
 
-        .map-external-routing { padding: 16px; background: #ffffff; border-top: 1px solid var(--border-color); }
-        .btn-route-external { padding: 14px; border-radius: 10px; font-size: 14px; font-weight: 700; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Cairo', sans-serif; background: var(--accent-brand); color: #ffffff; }
-        .btn-route-external:hover { background: #1e293b; }
+        .map-external-routing { padding: 20px; background: #ffffff; border-top: 1px solid var(--border-color); }
+        .btn-route-external { padding: 15px; border-radius: 12px; font-size: 15px; font-weight: 700; text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: 'Cairo', sans-serif; background: linear-gradient(90deg, var(--accent-brand) 0%, #1c2541 100%); color: #ffffff; box-shadow: var(--shadow-sm); }
+        .btn-route-external:hover { opacity: 0.95; transform: translateY(-1px); box-shadow: var(--shadow-md); }
 
         .lightbox-close { 
-            position: absolute; top: 16px; right: 16px; font-size: 18px; 
-            color: var(--text-primary); cursor: pointer; background: #ffffff; 
-            width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: var(--shadow-md); z-index: 10000;
+            position: absolute; top: 20px; right: 20px; font-size: 20px; 
+            color: var(--accent-brand); cursor: pointer; background: #ffffff; 
+            width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 50%; box-shadow: var(--shadow-md); z-index: 10000;
         }
+        .lightbox-close:hover { transform: scale(1.05); color: var(--accent-gold); }
 
-        .pulse-marker { position: relative; }
+        .pulse-marker { position: relative; display: flex; align-items: center; justify-content: center; }
         .pulse-marker::after {
-            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 18px; height: 18px; background: rgba(37, 99, 235, 0.3); border-radius: 50%; animation: mapPulse 1.5s infinite ease-out; z-index: -1;
+            content: ''; position: absolute;
+            width: 20px; height: 20px; background: rgba(59, 130, 246, 0.4); border-radius: 50%; animation: mapPulse 1.8s infinite ease-out; z-index: -1;
         }
-        @keyframes mapPulse { 0% { width: 18px; height: 18px; opacity: 1; } 100% { width: 50px; height: 50px; opacity: 0; } }
-        .loading-text { text-align: center; font-size: 15px; color: var(--text-secondary); grid-column: 1 / -1; padding: 100px 0; font-weight: 600; }
+        @keyframes mapPulse { 0% { width: 20px; height: 20px; opacity: 1; } 100% { width: 55px; height: 55px; opacity: 0; } }
+        .loading-text { text-align: center; font-size: 16px; color: var(--text-secondary); grid-column: 1 / -1; padding: 120px 0; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .loading-text i { color: var(--accent-gold); font-size: 28px; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>صالة عروض الأصول الاستثمارية الفاخرة</h1>
-        <p class="subtitle">تصفح حي مباشر للمحفظة العقارية الاستثمارية بالمملكة</p>
+        <p class="subtitle">تصفح استثماري تفاعلي مباشر للمحفظة العقارية الحصرية</p>
     </header>
 
     <section class="filter-section">
@@ -185,12 +207,12 @@
     </section>
     
     <main class="properties-container" id="saudiClientWrapper">
-        <div class="loading-text"><i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحديث المعروضات الحية...</div>
+        <div class="loading-text"><i class="fa-solid fa-circle-notch fa-spin"></i> جاري مزامنة وتحديث المعروضات العقارية الحية...</div>
     </main>
 
     <div class="lightbox-overlay" id="offerOverlay">
-        <span class="lightbox-close" onclick="closeOfferPopup()"><i class="fa-solid fa-xmark"></i></span>
         <div class="offer-popup-container">
+            <span class="lightbox-close" onclick="closeOfferPopup()"><i class="fa-solid fa-xmark"></i></span>
             <h3 class="popup-offer-title"><i class="fa-solid fa-gavel" style="color: var(--accent-blue);"></i> تقديم عرض شراء رسمي</h3>
             <form id="offerForm" onsubmit="submitOffer(event)">
                 <input type="hidden" id="offerPropId">
@@ -218,8 +240,8 @@
     </div>
 
     <div class="lightbox-overlay" id="mapOverlay">
-        <span class="lightbox-close" onclick="closeMapPopup()"><i class="fa-solid fa-xmark"></i></span>
         <div class="map-popup-container">
+            <span class="lightbox-close" onclick="closeMapPopup()"><i class="fa-solid fa-xmark"></i></span>
             <h3 class="popup-map-title" id="popupMapTitle">الموقع الجغرافي</h3>
             <div id="popupMap"></div>
             <div class="map-external-routing">
@@ -248,7 +270,7 @@
             if (priceFilter) dataArray = dataArray.filter(item => item.price && parseFloat(item.price) <= parseFloat(priceFilter));
 
             if (dataArray.length === 0) {
-                wrapper.innerHTML = `<div class="loading-text">لا توجد عروض عقارية متاحة تطابق خيارات التصفية حالياً.</div>`;
+                wrapper.innerHTML = `<div class="loading-text"><i class="fa-solid fa-folder-open"></i> لا توجد عروض عقارية متاحة تطابق خيارات التصفية حالياً.</div>`;
                 return;
             }
             
@@ -256,8 +278,8 @@
                 const card = document.createElement('div');
                 card.className = 'property-card';
                 
-                const validTitle = item.title || 'أصل عقاري استثماري';
-                const validDesc = item.desc || 'لم يتم إضافة وصف إضافي لهذا العقار.';
+                const validTitle = item.title || 'أصل عقاري استثماري فاخر';
+                const validDesc = item.desc || 'لم يتم إضافة وصف إضافي لهذا العقار العقاري المتميز.';
                 const validPrice = item.price ? Number(item.price).toLocaleString() : 'اتصل لمعرفة السعر';
                 const validLocation = item.location || 'المملكة العربية السعودية';
                 const validArea = item.area ? item.area : '---';
@@ -276,7 +298,7 @@
                     thumbnailsHtml += `</div>`;
                 }
 
-                const whatsappUrl = `https://wa.me/${item.phone || '96650000000'}?text=${encodeURIComponent('استفسار عن: ' + validTitle)}`;
+                const whatsappUrl = `https://wa.me/${item.phone || '96650000000'}?text=${encodeURIComponent('مرحباً، أود الاستفسار عن الأصل الاستثماري المعروض: ' + validTitle)}`;
                 const propertyLat = item.lat ? parseFloat(item.lat) : 24.7136;
                 const propertyLng = item.lng ? parseFloat(item.lng) : 46.6753;
 
@@ -286,21 +308,21 @@
                         <div class="media-badge"><i class="fa-solid fa-image"></i> صور: ${mediaList.length}</div>
                     </div>
                     <div class="property-details">
-                        <span class="tag"><i class="fa-solid fa-circle-check"></i> جاهز للاستثمار</span>
-                        <div class="property-price">${validPrice} ر.س</div>
+                        <span class="tag"><i class="fa-solid fa-circle-check"></i> متاح للاستثمار الفوري</span>
+                        <div class="property-price">${validPrice} <span>ر.س</span></div>
                         <h3 class="property-title">${validTitle}</h3>
                         <p class="property-desc">${validDesc}</p>
                         <div class="property-meta">
-                            <span class="meta-item"><i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> ${validLocation}</span>
-                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:var(--accent-gold);"></i> ${validArea} م²</span>
+                            <span class="meta-item"><i class="fa-solid fa-location-dot" style="color:var(--accent-gold);"></i> ${validLocation}</span>
+                            <span class="meta-item"><i class="fa-solid fa-maximize" style="color:var(--accent-amber);"></i> ${validArea} م²</span>
                         </div>
                         ${thumbnailsHtml}
                         <div class="action-row">
                             <div class="action-buttons-sub">
-                                <a href="${whatsappUrl}" target="_blank" class="btn-action btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> تواصل سريع</a>
-                                <button type="button" class="btn-action btn-map" onclick="openMapPopup(${propertyLat}, ${propertyLng}, '${validTitle}')"><i class="fa-solid fa-map-location-dot"></i> الموقع المعين</button>
+                                <a href="${whatsappUrl}" target="_blank" class="btn-action btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> تواصل مستشار</a>
+                                <button type="button" class="btn-action btn-map" onclick="openMapPopup(${propertyLat}, ${propertyLng}, '${validTitle}')"><i class="fa-solid fa-map-location-dot"></i> استكشاف الخريطة</button>
                             </div>
-                            <button type="button" class="btn-action btn-offer" onclick="openOfferPopup('${item.id}', '${validTitle}')"><i class="fa-solid fa-gavel"></i> تقديم عرض شراء</button>
+                            <button type="button" class="btn-action btn-offer" onclick="openOfferPopup('${item.id}', '${validTitle}')"><i class="fa-solid fa-gavel"></i> تقديم عرض رغبة شراء</button>
                         </div>
                     </div>
                 `;
@@ -339,7 +361,7 @@
 
             offers.unshift(newOffer);
             localStorage.setItem('saudi_property_offers', JSON.stringify(offers));
-            alert('تم إرسال عرضك الاستثماري بنجاح تواصل مع الإدارة.');
+            alert('تم تسجيل عرضك الاستثماري بنجاح وسيتم مراجعته من الإدارة فوراً.');
             closeOfferPopup();
         }
 
@@ -351,9 +373,10 @@
             if (globalPopupMap === null) {
                 globalPopupMap = L.map('popupMap', { zoomControl: false });
                 L.control.zoom({ position: 'topright' }).addTo(globalPopupMap);
+                // تفعيل نمط خرائط رمادي أنيق يتوافق مع التصميم الاحترافي
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 20 }).addTo(globalPopupMap);
                 var customIcon = L.divIcon({
-                    html: '<div class="pulse-marker"><i class="fa-solid fa-location-dot" style="color: #2563eb; font-size: 30px;"></i></div>',
+                    html: '<div class="pulse-marker"><i class="fa-solid fa-location-dot" style="color: #e11d48; font-size: 32px;"></i></div>',
                     iconSize: [32, 32], iconAnchor: [16, 32]
                 });
                 globalPopupMarker = L.marker([lat, lng], { icon: customIcon }).addTo(globalPopupMap);
@@ -361,7 +384,7 @@
                 globalPopupMarker.setLatLng([lat, lng]);
             }
             globalPopupMap.setView([lat, lng], 15);
-            setTimeout(() => { globalPopupMap.invalidateSize(); }, 300);
+            setTimeout(() => { globalPopupMap.invalidateSize(); }, 350);
         }
 
         function closeMapPopup() { document.getElementById('mapOverlay').style.display = 'none'; }
